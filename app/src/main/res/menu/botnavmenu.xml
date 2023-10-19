@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_map"
+        android:title="Map"
+        android:icon="@drawable/baseline_map_24">
+    </item>
+    <item
+        android:id="@+id/nav_rides"
+        android:title="Rides"
+        android:icon="@drawable/baseline_directions_bike_24"></item>
+
+</menu>

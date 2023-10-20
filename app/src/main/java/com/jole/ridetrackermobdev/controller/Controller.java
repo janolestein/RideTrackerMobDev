@@ -33,4 +33,5 @@ public class Controller implements ControllerInterface
         return model.getAllRidesList();
     }
 
+
 }

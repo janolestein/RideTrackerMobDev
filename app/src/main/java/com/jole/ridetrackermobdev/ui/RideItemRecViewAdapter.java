@@ -1,6 +1,10 @@
 package com.jole.ridetrackermobdev.ui;
 
+import static androidx.core.content.ContextCompat.startActivity;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +41,7 @@ public class RideItemRecViewAdapter extends RecyclerView.Adapter<RideItemRecView
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position)
+    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position)
     {
         holder.tvTitelRide.setText(rideList.get(position).getName());
         holder.tvDate.setText(rideList.get(position).getDate().toString());
@@ -47,6 +51,16 @@ public class RideItemRecViewAdapter extends RecyclerView.Adapter<RideItemRecView
                 .asBitmap()
                 .load(rideList.get(position).getImgUrl())
                 .into(holder.ivRideScreenShot);
+
+        holder.rideItemCard.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, RideDetailActivity.class);
+                intent.putExtra("RideId", rideList.get(position).getId());
+                context.startActivity(intent);
+
+            }
+        });
 
     }
 
@@ -73,8 +87,8 @@ public class RideItemRecViewAdapter extends RecyclerView.Adapter<RideItemRecView
             super(itemView);
             this.ivRideScreenShot = itemView.findViewById(R.id.ivRideScreenShot);
             this.tvTitelRide = itemView.findViewById(R.id.tvTitelRide);
-            this.tvDate = itemView.findViewById(R.id.tvDate);
-            this.tvDesc = itemView.findViewById(R.id.tvDesc);
+            this.tvDate = itemView.findViewById(R.id.tvDateDetail);
+            this.tvDesc = itemView.findViewById(R.id.tvDescDetail);
             this.rideItemCard = itemView.findViewById(R.id.rideItemCard);
         }
     }

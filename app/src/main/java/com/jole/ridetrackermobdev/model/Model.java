@@ -50,4 +50,17 @@ public class Model implements ModelInterface
     {
         return rideList;
     }
+
+    public Ride findRideById(int id)
+    {
+        Ride ride = null;
+        for (Ride r : rideList)
+        {
+            if (r.getId() == id)
+            {
+                ride = r;
+            }
+        }
+        return ride;
+    }
 }

@@ -1,9 +1,12 @@
 package com.jole.ridetrackermobdev.controller;
 
+import com.jole.ridetrackermobdev.model.Ride;
+
+import java.util.ArrayList;
+
 public interface ControllerInterface
 {
-    /**
-     * Checks Permissions at Runtime for External Storage und Location
-     */
-    public void checkPermissions();
+
+    public ArrayList<Ride> getAllRidesList();
+
 }

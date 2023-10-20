@@ -2,13 +2,18 @@ package com.jole.ridetrackermobdev.ui;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.jole.ridetrackermobdev.R;
+import com.jole.ridetrackermobdev.controller.Controller;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,6 +22,9 @@ import com.jole.ridetrackermobdev.R;
  */
 public class TrackedRidesFragment extends Fragment
 {
+    private RecyclerView recViewAllRides;
+    private RideItemRecViewAdapter adapter;
+
     public static TrackedRidesFragment newInstance(String param1, String param2)
     {
         TrackedRidesFragment fragment = new TrackedRidesFragment();
@@ -36,6 +44,15 @@ public class TrackedRidesFragment extends Fragment
                              Bundle savedInstanceState)
     {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_tracked_rides, container, false);
+        View view =  inflater.inflate(R.layout.fragment_tracked_rides, container, false);
+
+        adapter = new RideItemRecViewAdapter(view.getContext());
+        recViewAllRides = view.findViewById(R.id.recViewAllRides);
+        recViewAllRides.setAdapter(adapter);
+        recViewAllRides.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        adapter.setRides(Controller.getInstance().getAllRidesList());
+
+        return view;
     }
+
 }

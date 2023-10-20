@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:text="Ride Titel"
-            android:textSize="20sp"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="@+id/ivRideScreenShot"
             app:layout_constraintStart_toEndOf="@+id/ivRideScreenShot"
             app:layout_constraintTop_toTopOf="@+id/ivRideScreenShot"

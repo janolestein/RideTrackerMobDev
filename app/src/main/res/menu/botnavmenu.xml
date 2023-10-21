@@ -5,6 +5,12 @@
         android:title="Map"
         android:icon="@drawable/baseline_map_24">
     </item>
+
+    <item
+        android:id="@+id/nav_record"
+        android:title="Rides"
+        android:icon="@drawable/baseline_directions_bike_24"></item>
+
     <item
         android:id="@+id/nav_rides"
         android:title="Rides"

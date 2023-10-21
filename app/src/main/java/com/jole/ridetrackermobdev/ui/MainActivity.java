@@ -29,20 +29,21 @@ public class MainActivity extends AppCompatActivity
 {
     private BottomNavigationView bottomNav;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         bottomNav = findViewById(R.id.bottomNav);
-        checkPermissions();
+        if (needsPermissions())
+        {
+            checkPermissions();
+        }
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.frFragment, MapCurrentFragment.class, null)
                 .setReorderingAllowed(true)
-                .addToBackStack("name") // Name can be null
+                .addToBackStack("MapCurrentFragment")
                 .commit();
 
         bottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener()
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity
                     fragmentManager.beginTransaction()
                             .replace(R.id.frFragment, MapCurrentFragment.class, null)
                             .setReorderingAllowed(true)
-                            .addToBackStack("name") // Name can be null
+                            .addToBackStack("MapCurrentFragment")
                             .commit();
                     return true;
                 }
@@ -65,7 +66,7 @@ public class MainActivity extends AppCompatActivity
                     fragmentManager.beginTransaction()
                             .replace(R.id.frFragment, TrackedRidesFragment.class, null)
                             .setReorderingAllowed(true)
-                            .addToBackStack("name") // Name can be null
+                            .addToBackStack("TrackedRidesFragment")
                             .commit();
                     return true;
                 }
@@ -74,68 +75,64 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-
+    /**
+     * WRITE_EXTTERNAL_STORAGE is only asked for legacy Support, since Android 10 this does nothing
+     */
     final private int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 124;
 
     private boolean needsPermissions() {
-
         List<String> permissions = new ArrayList<>();
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
         }
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
         }
         if (permissions.isEmpty()) {
             return false;
-        } // else: We already have permissions, so handle as normal
+        }
         return true;
 
     }
 
     private void checkPermissions() {
         List<String> permissions = new ArrayList<>();
-        String message = "osmdroid permissions:";
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
-            message += "\nLocation to show user location.";
         }
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            message += "\nStorage access to store map tiles.";
         }
         if (!permissions.isEmpty()) {
-            //Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
             String[] params = permissions.toArray(new String[permissions.size()]);
             requestPermissions(params, REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
-        } // else: We already have permissions, so handle as normal
+        }
     }
-
+    /**
+     * WRITE_EXTERNAL_STORAGE is only asked for legacy Support, since Android 10 this does nothing
+     * Storage boolean is inverted in if statement because in newer SDKs it always returns false.
+     * and check for it is commented out, because it would always show
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         switch (requestCode) {
             case REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS: {
                 Map<String, Integer> perms = new HashMap<>();
-                // Initial
                 perms.put(Manifest.permission.ACCESS_FINE_LOCATION, PackageManager.PERMISSION_GRANTED);
                 perms.put(Manifest.permission.WRITE_EXTERNAL_STORAGE, PackageManager.PERMISSION_GRANTED);
-                // Fill with results
                 for (int i = 0; i < permissions.length; i++)
+                {
                     perms.put(permissions[i], grantResults[i]);
-                // Check for ACCESS_FINE_LOCATION and WRITE_EXTERNAL_STORAGE
+                }
                 Boolean location = perms.get(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
                 Boolean storage = perms.get(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
-                if (location && storage) {
-                    // All Permissions Granted
-                    //Toast.makeText(getContext(), "All permissions granted", Toast.LENGTH_SHORT).show();
+                if (location && !storage) {
                     Snackbar.make(findViewById(R.id.frFragment), "All permissions granted", Snackbar.LENGTH_LONG).show();
-                } else if (storage) {
-                    Toast.makeText(getApplicationContext(), "Storage permission is required to store map tiles to reduce data usage and for offline usage.", Toast.LENGTH_LONG).show();
+//                } else if (!storage) {
+//                    Toast.makeText(getApplicationContext(), "Storage permission is required to store map tiles to reduce data usage and for offline usage.", Toast.LENGTH_LONG).show();
                 } else if (location) {
                     Toast.makeText(getApplicationContext(), "Location permission is required to show the user's location on map.", Toast.LENGTH_LONG).show();
-                } else { // !location && !storage case
-                    // Permission Denied
+                } else {
                     Toast.makeText(getApplicationContext(), "Storage permission is required to store map tiles to reduce data usage and for offline usage." +
                             "\nLocation permission is required to show the user's location on map.", Toast.LENGTH_SHORT).show();
                 }

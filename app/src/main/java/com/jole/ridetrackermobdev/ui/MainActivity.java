@@ -74,6 +74,14 @@ public class MainActivity extends AppCompatActivity
                             .commit();
                     return true;
                 }
+                if(id == R.id.nav_record) {
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.frFragment, RecordRideFragment.class, null)
+                            .setReorderingAllowed(true)
+                            .addToBackStack("TrackedRidesFragment")
+                            .commit();
+                    return true;
+                }
                 return false;
             }
         });

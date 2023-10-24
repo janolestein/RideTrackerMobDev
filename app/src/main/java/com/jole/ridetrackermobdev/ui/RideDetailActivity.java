@@ -12,12 +12,10 @@ import com.jole.ridetrackermobdev.R;
 import com.jole.ridetrackermobdev.model.Model;
 import com.jole.ridetrackermobdev.model.Ride;
 
-import java.util.Map;
-
 public class RideDetailActivity extends AppCompatActivity {
 
     private ImageView ivRideScrennshotDetail;
-    private TextView tvRideTitelDetail, tvDateDetail, tvDescDetail, tvDistanceDetail, tvAvSpeedDetail;
+    private TextView tvRideTitelDetail, tvDateDetail, tvDescDetail, tvDistanceTitelDetail, tvAvSpeedDetailTitel, tvTimeVar, tvTimeTitel, tvDistanceVarDetail, tvAvSpeedVar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +36,9 @@ public class RideDetailActivity extends AppCompatActivity {
         tvRideTitelDetail.setText(ride.getName());
         tvDateDetail.setText(ride.getDate().toString());
         tvDescDetail.setText(ride.getDescription());
-        tvDistanceDetail.setText("placeholder " + "km");
-        tvAvSpeedDetail.setText("placeholder " + "km/s");
+        tvDistanceVarDetail.setText(Double.toString(ride.getRideLengthKm()));
+        tvAvSpeedVar.setText(Double.toString(ride.getAverageSpeed()));
+        tvTimeVar.setText(Double.toString(ride.getTotalRideTime()));
 
         Glide.with(this)
                 .asBitmap()
@@ -55,7 +54,13 @@ public class RideDetailActivity extends AppCompatActivity {
         tvRideTitelDetail = findViewById(R.id.tvRideTitelDetail);
         tvDateDetail = findViewById(R.id.tvDateDetail);
         tvDescDetail = findViewById(R.id.tvDescDetail);
-        tvDistanceDetail = findViewById(R.id.tvDistanceDetail);
-        tvAvSpeedDetail = findViewById(R.id.tvAvSpeedDetail);
+        tvDistanceTitelDetail = findViewById(R.id.tvDistanceTitelDetail);
+        tvAvSpeedDetailTitel = findViewById(R.id.tvAvSpeedDetailTitel);
+        tvTimeVar = findViewById(R.id.tvTimeVar);
+        tvTimeTitel = findViewById(R.id.tvTimeTitel);
+        tvTimeTitel = findViewById(R.id.tvTimeTitel);
+        tvDistanceVarDetail = findViewById(R.id.tvDistanceVarDetail);
+        tvAvSpeedVar = findViewById(R.id.tvAvSpeedVar);
+
     }
 }

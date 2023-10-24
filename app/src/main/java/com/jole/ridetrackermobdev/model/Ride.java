@@ -6,17 +6,22 @@ import java.util.Date;
 public class Ride {
     private int id;
     private String name;
-    private String Description;
+    private String description;
     private LocalDate date;
     private double rideLengthKm;
+    private double averageSpeed;
+    private double totalRideTime;
     private String imgUrl;
 
-    public Ride(int id, String name, String description, LocalDate date, double rideLengthKm, String imgUrl) {
+
+    public Ride(int id, String name, String description, LocalDate date, double rideLengthKm, double averageSpeed, double totalRideTime, String imgUrl) {
         this.id = id;
         this.name = name;
-        Description = description;
+        this.description = description;
         this.date = date;
         this.rideLengthKm = rideLengthKm;
+        this.averageSpeed = averageSpeed;
+        this.totalRideTime = totalRideTime;
         this.imgUrl = imgUrl;
     }
 
@@ -37,11 +42,11 @@ public class Ride {
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
     }
 
     public LocalDate getDate() {
@@ -66,5 +71,21 @@ public class Ride {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public double getAverageSpeed() {
+        return averageSpeed;
+    }
+
+    public void setAverageSpeed(double averageSpeed) {
+        this.averageSpeed = averageSpeed;
+    }
+
+    public double getTotalRideTime() {
+        return totalRideTime;
+    }
+
+    public void setTotalRideTime(double totalRideTime) {
+        this.totalRideTime = totalRideTime;
     }
 }

@@ -18,10 +18,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.RideTrackerMobDev"
         tools:targetApi="31">
+        <activity
+            android:name=".ui.TrackedRideMapActivity"
+            android:exported="false" />
+
         <service
             android:name=".controller.RecordRideService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
 
         <activity
             android:name=".ui.RideDetailActivity"

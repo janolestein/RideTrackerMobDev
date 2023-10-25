@@ -87,14 +87,11 @@ public class MapCurrentFragment extends Fragment
         mLocationOverlay.enableMyLocation();
         mMapView.getOverlays().add(this.mLocationOverlay);
 
-
-
         //On screen compass
         mCompassOverlay = new CompassOverlay(context, new InternalCompassOrientationProvider(context),
                 mMapView);
         mCompassOverlay.enableCompass();
         mMapView.getOverlays().add(this.mCompassOverlay);
-
 
         //map scale
         mScaleBarOverlay = new ScaleBarOverlay(mMapView);

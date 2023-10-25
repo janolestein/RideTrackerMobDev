@@ -27,9 +27,9 @@ public class Model implements ModelInterface
     private static void initData()
     {
 
-        rideList.add(new Ride(1, "Wednesday Evening Ride", "This is a Example Ride Description", LocalDate.now() , 600, 25.6,1.45 ,"https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png"));
+        rideList.add(new Ride(1, "Wednesday Evening Ride", "This is a Example Ride Description", LocalDate.now() , 60, 25.6,1.45 ,"https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png"));
 
-        rideList.add(new Ride(2, "Monday Noon Ride", "This is a Example Ride Description", LocalDate.now(), 250, 28.7, 3.23,  "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png"));
+        rideList.add(new Ride(2, "Monday Noon Ride", "This is a Example Ride Description", LocalDate.now(), 25, 28.7, 3.23,  "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png"));
 
     }
 

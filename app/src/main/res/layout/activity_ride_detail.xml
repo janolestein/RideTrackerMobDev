@@ -81,7 +81,7 @@
         app:layout_constraintTop_toBottomOf="@+id/divider5" />
 
     <Button
-        android:id="@+id/btnVievMap"
+        android:id="@+id/btnViewMap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -152,6 +152,6 @@
         android:layout_height="1dp"
         android:layout_marginTop="16dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintTop_toBottomOf="@+id/btnVievMap"
+        app:layout_constraintTop_toBottomOf="@+id/btnViewMap"
         tools:layout_editor_absoluteX="1dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

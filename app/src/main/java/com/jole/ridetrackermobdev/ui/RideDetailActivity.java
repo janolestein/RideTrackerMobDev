@@ -2,7 +2,10 @@ package com.jole.ridetrackermobdev.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +19,7 @@ public class RideDetailActivity extends AppCompatActivity {
 
     private ImageView ivRideScrennshotDetail;
     private TextView tvRideTitelDetail, tvDateDetail, tvDescDetail, tvDistanceTitelDetail, tvAvSpeedDetailTitel, tvTimeVar, tvTimeTitel, tvDistanceVarDetail, tvAvSpeedVar;
+    private Button btnViewMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +49,16 @@ public class RideDetailActivity extends AppCompatActivity {
                 .load(ride.getImgUrl())
                 .into(ivRideScrennshotDetail);
 
+        btnViewMap.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(RideDetailActivity.this, TrackedRideMapActivity.class);
+                startActivity(intent);
+
+            }
+        });
 
 
     }
@@ -61,6 +75,7 @@ public class RideDetailActivity extends AppCompatActivity {
         tvTimeTitel = findViewById(R.id.tvTimeTitel);
         tvDistanceVarDetail = findViewById(R.id.tvDistanceVarDetail);
         tvAvSpeedVar = findViewById(R.id.tvAvSpeedVar);
+        btnViewMap = findViewById(R.id.btnViewMap);
 
     }
 }

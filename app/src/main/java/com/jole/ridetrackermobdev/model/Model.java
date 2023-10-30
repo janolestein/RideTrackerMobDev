@@ -65,6 +65,7 @@ public class Model implements ModelInterface
             if (r.getId() == id)
             {
                 ride = r;
+                break;
             }
         }
         return ride;

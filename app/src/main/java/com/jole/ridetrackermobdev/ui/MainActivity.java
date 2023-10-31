@@ -40,6 +40,8 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         bottomNav = findViewById(R.id.bottomNav);
 
+
+
         checkPermissions();
         //changed to androidx Preference Manager
         Configuration.getInstance().load(getApplicationContext(), androidx.preference.PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));

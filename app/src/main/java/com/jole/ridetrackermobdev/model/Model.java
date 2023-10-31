@@ -2,6 +2,7 @@ package com.jole.ridetrackermobdev.model;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Model implements ModelInterface
 {
@@ -57,17 +58,11 @@ public class Model implements ModelInterface
         return rideList;
     }
 
-    public Ride findRideById(int id)
+    public Optional<Ride> findRideById(int id)
     {
-        Ride ride = null;
-        for (Ride r : rideList)
-        {
-            if (r.getId() == id)
-            {
-                ride = r;
-                break;
-            }
-        }
-        return ride;
+        return rideList.stream()
+                .filter(r -> r.getId() == id)
+                .findAny();
+
     }
 }

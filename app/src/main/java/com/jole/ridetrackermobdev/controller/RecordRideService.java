@@ -40,12 +40,6 @@ public class RecordRideService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
-    @Nullable
-    @Override
-    public ComponentName startForegroundService(Intent service) {
-        return super.startForegroundService(service);
-    }
-
 
     public Notification getNotification() {
         String channel;
@@ -54,12 +48,15 @@ public class RecordRideService extends Service {
         else {
             channel = "";
         }
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this, channel).setSmallIcon(android.R.drawable.ic_menu_mylocation).setContentTitle("Service Running");
+        NotificationCompat.Builder mBuilder = new NotificationCompat
+                .Builder(this, channel)
+                .setSmallIcon(android.R.drawable.ic_menu_mylocation)
+                .setContentTitle("Service Running");
+
         Notification notification = mBuilder
                 .setPriority(PRIORITY_LOW)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build();
-
 
         return notification;
     }
@@ -69,18 +66,13 @@ public class RecordRideService extends Service {
     private synchronized String createChannel() {
         NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        String name = "snap map fake location ";
-        int importance = NotificationManager.IMPORTANCE_LOW;
+        NotificationChannel mChannel = new NotificationChannel("TrackingService", "name", NotificationManager.IMPORTANCE_LOW);
 
-        NotificationChannel mChannel = new NotificationChannel("snap map channel", name, importance);
-
-        mChannel.enableLights(true);
-        mChannel.setLightColor(Color.BLUE);
         if (mNotificationManager != null) {
             mNotificationManager.createNotificationChannel(mChannel);
         } else {
             stopSelf();
         }
-        return "snap map channel";
+        return "TrackingService";
     }
 }

@@ -15,6 +15,8 @@ import com.jole.ridetrackermobdev.R;
 import com.jole.ridetrackermobdev.model.Model;
 import com.jole.ridetrackermobdev.model.Ride;
 
+import java.util.Optional;
+
 public class RideDetailActivity extends AppCompatActivity {
 
     private ImageView ivRideScrennshotDetail;
@@ -31,22 +33,27 @@ public class RideDetailActivity extends AppCompatActivity {
         if (rideId == -1)
         {
             Toast.makeText(this, "Something went wrong, please try again: No Ride ID found", Toast.LENGTH_SHORT).show();
-        }
-        Ride ride = Model.getInstance().findRideById(rideId);
-        if (ride == null) {
-            Toast.makeText(this, "Something went wrong, please try again: Could not retrieve Ride by ID", Toast.LENGTH_SHORT).show();
+            this.finish();
         }
 
-        tvRideTitelDetail.setText(ride.getName());
-        tvDateDetail.setText(ride.getDate().toString());
-        tvDescDetail.setText(ride.getDescription());
-        tvDistanceVarDetail.setText(Double.toString(ride.getRideLengthKm()));
-        tvAvSpeedVar.setText(Double.toString(ride.getAverageSpeed()));
-        tvTimeVar.setText(Double.toString(ride.getTotalRideTime()));
+        Optional<Ride> ride = Model.getInstance().findRideById(rideId);
+
+        if (!ride.isPresent()) {
+            Toast.makeText(this, "Something went wrong, please try again: Could not retrieve Ride by ID", Toast.LENGTH_SHORT).show();
+            this.finish();
+        }
+
+        tvRideTitelDetail.setText(ride.map(Ride::getName).orElse(""));
+        tvDateDetail.setText(ride.map(r -> r.getDate().toString()).orElse(""));
+        tvDescDetail.setText(ride.map(Ride::getDescription).orElse(""));
+        tvDistanceVarDetail.setText(ride.map(r -> Double.toString(r.getRideLengthKm())).orElse(""));
+        tvAvSpeedVar.setText(ride.map(r -> Double.toString(r.getRideLengthKm())).orElse(""));
+        tvTimeVar.setText(ride.map(r -> Double.toString(r.getTotalRideTime())).orElse(""));
+
 
         Glide.with(this)
                 .asBitmap()
-                .load(ride.getImgUrl())
+                .load(ride.map(Ride::getImgUrl).orElse(""))
                 .into(ivRideScrennshotDetail);
 
         btnViewMap.setOnClickListener(new View.OnClickListener()

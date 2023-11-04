@@ -102,7 +102,7 @@ public class RecordRideFragment extends Fragment {
     public void onStart() {
         super.onStart();
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver((receiver),
-                new IntentFilter()
+                new IntentFilter("loc")
         );
     }
 

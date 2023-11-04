@@ -25,6 +25,7 @@
 
         <service
             android:name=".controller.RecordRideService"
+            android:foregroundServiceType="location"
             android:enabled="true"
             android:exported="true" />
 

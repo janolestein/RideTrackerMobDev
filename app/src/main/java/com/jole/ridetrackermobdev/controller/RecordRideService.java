@@ -69,6 +69,7 @@ public class RecordRideService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.v("ABC", "onCreate");
+        broadcaster = LocalBroadcastManager.getInstance(this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -84,6 +85,7 @@ public class RecordRideService extends Service {
                     if (location != null) {
                         latitude = location.getLatitude();
                         longitude = location.getLongitude();
+                        Log.v("ABC", Double.toString(latitude));
                         sendResult(latitude, longitude);
                     }
                 }
@@ -110,8 +112,10 @@ public class RecordRideService extends Service {
     }
     public void sendResult(Double latitude, Double longitude) {
         Intent intent = new Intent();
+        intent.setAction("loc");
             intent.putExtra("latitude", latitude);
             intent.putExtra("longitude", longitude);
+        Log.v("ABC", "sendresult");
         broadcaster.sendBroadcast(intent);
     }
 

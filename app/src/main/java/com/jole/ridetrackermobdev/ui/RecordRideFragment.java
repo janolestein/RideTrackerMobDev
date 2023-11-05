@@ -20,11 +20,7 @@ import android.widget.TextView;
 import com.jole.ridetrackermobdev.R;
 import com.jole.ridetrackermobdev.controller.RecordRideService;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link RecordRideFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class RecordRideFragment extends Fragment {
     private Button btnStartRecord, btnStopRecord;
     private BroadcastReceiver receiver;
@@ -66,7 +62,7 @@ public class RecordRideFragment extends Fragment {
         btnStartRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().startService(new Intent(getActivity(), RecordRideService.class));
+                getActivity().startForegroundService((new Intent(getActivity(), RecordRideService.class)));
                 btnStartRecord.setVisibility(View.GONE);
                 btnStopRecord.setVisibility(View.VISIBLE);
             }

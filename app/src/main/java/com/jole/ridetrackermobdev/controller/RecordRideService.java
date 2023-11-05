@@ -34,6 +34,11 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.jole.ridetrackermobdev.R;
 
+import org.osmdroid.util.GeoPoint;
+
+import java.util.LinkedList;
+import java.util.List;
+
 
 public class RecordRideService extends Service {
     private FusedLocationProviderClient mFusedLocationClient;
@@ -44,6 +49,12 @@ public class RecordRideService extends Service {
     private LocalBroadcastManager broadcaster;
 
     Double latitude, longitude;
+    List<GeoPoint> GeoPointList;
+    GeoPoint lastKnownGeoPoint;
+
+    public static Boolean isRunning = false;
+
+    Double dist;
 
     public RecordRideService() {
     }
@@ -57,7 +68,8 @@ public class RecordRideService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.v("ABC", "service started");
-
+        isRunning = true;
+        GeoPointList = new LinkedList<>();
 
         startForeground(1001, getNotification());
         Log.v("ABC", "onCreate");
@@ -77,8 +89,21 @@ public class RecordRideService extends Service {
                     if (location != null) {
                         latitude = location.getLatitude();
                         longitude = location.getLongitude();
+                        GeoPoint current = new GeoPoint(latitude, longitude);
                         Log.v("ABC", Double.toString(latitude));
-                        sendResult(latitude, longitude);
+                        GeoPointList.add(current);
+                        if (lastKnownGeoPoint == null)
+                        {
+                            lastKnownGeoPoint = current;
+                        }
+                        else {
+                            dist =+ Util.distanceBetweenTwoGeoPoints(lastKnownGeoPoint, current);
+                            Log.v("ABC", Double.toString(dist));
+                            lastKnownGeoPoint = current;
+                            sendResult(dist, longitude);
+                        }
+
+
                     }
                 }
             }
@@ -96,15 +121,18 @@ public class RecordRideService extends Service {
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mFusedLocationClient.removeLocationUpdates(locationCallback);
+        isRunning = false;
+
+        Log.v("ABC", GeoPointList.toString());
+    }
+
     private void startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+
             return;
         }
         mFusedLocationClient.requestLocationUpdates(locationRequest,
@@ -154,4 +182,7 @@ public class RecordRideService extends Service {
         }
         return "TrackingService";
     }
+
+
+
 }

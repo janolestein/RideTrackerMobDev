@@ -1,5 +1,11 @@
 package com.jole.ridetrackermobdev.ui;
 
+
+
+
+import static com.jole.ridetrackermobdev.controller.RecordRideService.isRunning;
+
+import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -26,9 +32,7 @@ public class RecordRideFragment extends Fragment {
     private BroadcastReceiver receiver;
     private TextView tvDistanceVar, tvAverageSpeedVar;
 
-    public RecordRideFragment() {
-        // Required empty public constructor
-    }
+    public RecordRideFragment() {}
 
 
     public static RecordRideFragment newInstance(String param1, String param2) {
@@ -57,7 +61,18 @@ public class RecordRideFragment extends Fragment {
         btnStopRecord = getView().findViewById(R.id.btnStopRecord);
         tvDistanceVar = getView().findViewById(R.id.tvDistanceVar);
         tvAverageSpeedVar = getView().findViewById(R.id.tvAverageSpeedVar);
-        btnStopRecord.setVisibility(View.GONE);
+
+        if (isRunning = false)
+        {
+            btnStartRecord.setVisibility(View.VISIBLE);
+            btnStopRecord.setVisibility(View.GONE);
+        }
+        if (isRunning = true)
+        {
+            btnStartRecord.setVisibility(View.GONE);
+            btnStopRecord.setVisibility(View.VISIBLE);
+        }
+
 
         btnStartRecord.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,8 +110,9 @@ public class RecordRideFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
+
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver((receiver),
                 new IntentFilter("loc")
         );
@@ -107,4 +123,7 @@ public class RecordRideFragment extends Fragment {
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
         super.onStop();
     }
+
+
+
 }

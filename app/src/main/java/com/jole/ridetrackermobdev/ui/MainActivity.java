@@ -100,8 +100,16 @@ public class MainActivity extends AppCompatActivity
         List<String> permissions = new ArrayList<>();
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         {
-            String[] perm = {Manifest.permission.ACCESS_FINE_LOCATION};
-            requestPermissions(perm, REQUEST_CODE_PERMISSION);
+            permissions.add(Manifest.permission.ACCESS_FINE_LOCATION);
+        }
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)
+        {
+            permissions.add(Manifest.permission.POST_NOTIFICATIONS);
+
+        }
+        if (!permissions.isEmpty()){
+            String[] params = permissions.toArray(new String[permissions.size()]);
+            requestPermissions(params, REQUEST_CODE_PERMISSION);
         }
     }
 
@@ -118,6 +126,10 @@ public class MainActivity extends AppCompatActivity
                 if (grantResults[0] == -1)
                 {
                     Toast.makeText(this, "Location Permission is required for your location und recording your Ride", Toast.LENGTH_SHORT).show();
+                }
+                if (grantResults[1] == -1)
+                {
+                    Toast.makeText(this, "Please allow Notifications", Toast.LENGTH_SHORT).show();
                 }
             }
             break;

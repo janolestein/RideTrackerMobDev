@@ -1,6 +1,7 @@
 package com.jole.ridetrackermobdev.controller;
 
 import static androidx.core.app.NotificationCompat.PRIORITY_LOW;
+import static androidx.core.app.NotificationCompat.PRIORITY_MAX;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -59,17 +60,8 @@ public class RecordRideService extends Service {
 
 
         startForeground(1001, getNotification());
-
-
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-
-    @Override
-    public void onCreate() {
-        super.onCreate();
         Log.v("ABC", "onCreate");
-        LocalBroadcastManager broadcaster = LocalBroadcastManager.getInstance(this);
+        broadcaster = LocalBroadcastManager.getInstance(this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
@@ -85,6 +77,7 @@ public class RecordRideService extends Service {
                     if (location != null) {
                         latitude = location.getLatitude();
                         longitude = location.getLongitude();
+                        Log.v("ABC", Double.toString(latitude));
                         sendResult(latitude, longitude);
                     }
                 }
@@ -92,6 +85,15 @@ public class RecordRideService extends Service {
         };
 
         startLocationUpdates();
+
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
     }
 
     private void startLocationUpdates() {
@@ -114,6 +116,7 @@ public class RecordRideService extends Service {
         intent.setAction("loc");
             intent.putExtra("latitude", latitude);
             intent.putExtra("longitude", longitude);
+        Log.v("ABC", "sendresult");
         broadcaster.sendBroadcast(intent);
     }
 
@@ -130,7 +133,7 @@ public class RecordRideService extends Service {
                 .setContentTitle("Service Running");
 
         Notification notification = mBuilder
-                .setPriority(PRIORITY_LOW)
+                .setPriority(PRIORITY_MAX)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build();
 
@@ -142,7 +145,7 @@ public class RecordRideService extends Service {
     private synchronized String createChannel() {
         NotificationManager mNotificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        NotificationChannel mChannel = new NotificationChannel("TrackingService", "name", NotificationManager.IMPORTANCE_LOW);
+        NotificationChannel mChannel = new NotificationChannel("TrackingService", "name", NotificationManager.IMPORTANCE_HIGH);
 
         if (mNotificationManager != null) {
             mNotificationManager.createNotificationChannel(mChannel);

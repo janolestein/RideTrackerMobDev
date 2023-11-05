@@ -62,12 +62,12 @@ public class RecordRideFragment extends Fragment {
         tvDistanceVar = getView().findViewById(R.id.tvDistanceVar);
         tvAverageSpeedVar = getView().findViewById(R.id.tvAverageSpeedVar);
 
-        if (isRunning = false)
+        if (isRunning == false || isRunning == null)
         {
             btnStartRecord.setVisibility(View.VISIBLE);
             btnStopRecord.setVisibility(View.GONE);
         }
-        if (isRunning = true)
+        if (isRunning == true)
         {
             btnStartRecord.setVisibility(View.GONE);
             btnStopRecord.setVisibility(View.VISIBLE);

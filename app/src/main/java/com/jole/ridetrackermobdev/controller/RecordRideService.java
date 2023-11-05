@@ -20,6 +20,7 @@ import android.os.IBinder;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +33,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.Priority;
 import com.jole.ridetrackermobdev.R;
 
 import org.osmdroid.util.GeoPoint;
@@ -54,30 +56,30 @@ public class RecordRideService extends Service {
 
     public static Boolean isRunning = false;
 
-    Double dist;
+    Double dist = 0D;
 
     public RecordRideService() {
     }
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.v("ABC", "service started");
-        isRunning = true;
-        GeoPointList = new LinkedList<>();
+
 
         startForeground(1001, getNotification());
         Log.v("ABC", "onCreate");
         broadcaster = LocalBroadcastManager.getInstance(this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        locationRequest = LocationRequest.create();
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(20 * 1000);
+        locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10 * 1000)
+                .setWaitForAccurateLocation(false)
+                .setMinUpdateIntervalMillis(500)
+                .setMaxUpdateDelayMillis(1000)
+                .build();
         locationCallback = new LocationCallback() {
             @Override
             public void onLocationResult(LocationResult locationResult) {
@@ -97,7 +99,7 @@ public class RecordRideService extends Service {
                             lastKnownGeoPoint = current;
                         }
                         else {
-                            dist =+ Util.distanceBetweenTwoGeoPoints(lastKnownGeoPoint, current);
+                            dist += Util.distanceBetweenTwoGeoPoints(lastKnownGeoPoint, current);
                             Log.v("ABC", Double.toString(dist));
                             lastKnownGeoPoint = current;
                             sendResult(dist, longitude);
@@ -117,6 +119,8 @@ public class RecordRideService extends Service {
 
     @Override
     public void onCreate() {
+        isRunning = true;
+        GeoPointList = new LinkedList<>();
         super.onCreate();
 
     }
@@ -126,14 +130,18 @@ public class RecordRideService extends Service {
         super.onDestroy();
         mFusedLocationClient.removeLocationUpdates(locationCallback);
         isRunning = false;
-
         Log.v("ABC", GeoPointList.toString());
     }
 
+
+
+    /*
+    UTILS
+     */
     private void startLocationUpdates() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            return;
+            Toast.makeText(this, "You need to grant Location Permission to track your ride", Toast.LENGTH_SHORT).show();
+            onDestroy();
         }
         mFusedLocationClient.requestLocationUpdates(locationRequest,
                 locationCallback,

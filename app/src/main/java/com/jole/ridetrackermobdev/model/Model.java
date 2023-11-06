@@ -18,7 +18,7 @@ public class Model implements ModelInterface
     {
         if(instance == null)
         {
-            rideList = new ArrayList<Ride>();
+            rideList = new ArrayList<>();
             initData();
             instance = new Model();
         }

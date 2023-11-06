@@ -1,11 +1,9 @@
 package com.jole.ridetrackermobdev.ui;
 
 
-
-
 import static com.jole.ridetrackermobdev.controller.RecordRideService.isRunning;
 
-import android.app.ActivityManager;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -27,80 +25,81 @@ import com.jole.ridetrackermobdev.R;
 import com.jole.ridetrackermobdev.controller.RecordRideService;
 
 
-public class RecordRideFragment extends Fragment {
+public class RecordRideFragment extends Fragment
+{
     private Button btnStartRecord, btnStopRecord;
     private BroadcastReceiver receiver;
     private TextView tvDistanceVar, tvAverageSpeedVar;
 
-    public RecordRideFragment() {}
+    public RecordRideFragment()
+    {
+    }
 
 
-    public static RecordRideFragment newInstance(String param1, String param2) {
+    public static RecordRideFragment newInstance()
+    {
         RecordRideFragment fragment = new RecordRideFragment();
-
-
         return fragment;
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         // Inflate the layout for this fragment
 
         return inflater.inflate(R.layout.fragment_record_ride, container, false);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
+    {
         btnStartRecord = getView().findViewById(R.id.btnStartRecord);
         btnStopRecord = getView().findViewById(R.id.btnStopRecord);
         tvDistanceVar = getView().findViewById(R.id.tvDistanceVar);
         tvAverageSpeedVar = getView().findViewById(R.id.tvAverageSpeedVar);
 
-        if (isRunning == false || isRunning == null)
+        if (!isRunning)
         {
             btnStartRecord.setVisibility(View.VISIBLE);
             btnStopRecord.setVisibility(View.GONE);
         }
-        if (isRunning == true)
+        if (isRunning)
         {
             btnStartRecord.setVisibility(View.GONE);
             btnStopRecord.setVisibility(View.VISIBLE);
         }
 
 
-        btnStartRecord.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().startForegroundService((new Intent(getActivity(), RecordRideService.class)));
-                btnStartRecord.setVisibility(View.GONE);
-                btnStopRecord.setVisibility(View.VISIBLE);
-            }
+        btnStartRecord.setOnClickListener(v ->
+        {
+            getActivity().startForegroundService((new Intent(getActivity(), RecordRideService.class)));
+            btnStartRecord.setVisibility(View.GONE);
+            btnStopRecord.setVisibility(View.VISIBLE);
         });
 
-        btnStopRecord.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getActivity().stopService(new Intent(getActivity(), RecordRideService.class));
-                btnStartRecord.setVisibility(View.VISIBLE);
-                btnStopRecord.setVisibility(View.GONE);
-            }
+        btnStopRecord.setOnClickListener(v ->
+        {
+            getActivity().stopService(new Intent(getActivity(), RecordRideService.class));
+            btnStartRecord.setVisibility(View.VISIBLE);
+            btnStopRecord.setVisibility(View.GONE);
         });
-        
 
 
         super.onViewCreated(view, savedInstanceState);
 
-        receiver = new BroadcastReceiver() {
+        receiver = new BroadcastReceiver()
+        {
             @Override
-            public void onReceive(Context context, Intent intent) {
-                Double latitude = intent.getDoubleExtra("latitude", -1);
-                Double longitude = intent.getDoubleExtra("longitude", -1);
+            public void onReceive(Context context, Intent intent)
+            {
+                double latitude = intent.getDoubleExtra("latitude", -1);
+                double longitude = intent.getDoubleExtra("longitude", -1);
 
                 tvDistanceVar.setText(Double.toString(latitude));
                 tvAverageSpeedVar.setText(Double.toString(longitude));
@@ -110,20 +109,19 @@ public class RecordRideFragment extends Fragment {
     }
 
     @Override
-    public void onResume() {
+    public void onResume()
+    {
         super.onResume();
 
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver((receiver),
-                new IntentFilter("loc")
-        );
+        LocalBroadcastManager.getInstance(getActivity()).registerReceiver((receiver), new IntentFilter("loc"));
     }
 
     @Override
-    public void onStop() {
+    public void onStop()
+    {
         LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
         super.onStop();
     }
-
 
 
 }

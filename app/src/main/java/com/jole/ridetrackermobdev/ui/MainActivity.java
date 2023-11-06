@@ -1,32 +1,28 @@
 package com.jole.ridetrackermobdev.ui;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 
+import android.os.Build;
 import android.os.Bundle;
 
 import org.osmdroid.config.Configuration;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.preference.PreferenceManager;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
-import com.google.android.material.snackbar.Snackbar;
 import com.jole.ridetrackermobdev.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -41,7 +37,6 @@ public class MainActivity extends AppCompatActivity
         bottomNav = findViewById(R.id.bottomNav);
 
 
-
         checkPermissions();
         //changed to androidx Preference Manager
         Configuration.getInstance().load(getApplicationContext(), androidx.preference.PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
@@ -53,41 +48,37 @@ public class MainActivity extends AppCompatActivity
                 .addToBackStack("MapCurrentFragment")
                 .commit();
 
-        bottomNav.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener()
+        bottomNav.setOnItemSelectedListener(item ->
         {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item)
+            int id = item.getItemId();
+            if (id == R.id.nav_map)
             {
-                int id = item.getItemId();
-                if (id == R.id.nav_map)
-                {
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.frFragment, MapCurrentFragment.class, null)
-                            .setReorderingAllowed(true)
-                            .addToBackStack("MapCurrentFragment")
-                            .commit();
-                    return true;
-                }
-                if (id == R.id.nav_rides)
-                {
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.frFragment, TrackedRidesFragment.class, null)
-                            .setReorderingAllowed(true)
-                            .addToBackStack("TrackedRidesFragment")
-                            .commit();
-                    return true;
-                }
-                if (id == R.id.nav_record)
-                {
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.frFragment, RecordRideFragment.class, null)
-                            .setReorderingAllowed(true)
-                            .addToBackStack("TrackedRidesFragment")
-                            .commit();
-                    return true;
-                }
-                return false;
+                fragmentManager.beginTransaction()
+                        .replace(R.id.frFragment, MapCurrentFragment.class, null)
+                        .setReorderingAllowed(true)
+                        .addToBackStack("MapCurrentFragment")
+                        .commit();
+                return true;
             }
+            if (id == R.id.nav_rides)
+            {
+                fragmentManager.beginTransaction()
+                        .replace(R.id.frFragment, TrackedRidesFragment.class, null)
+                        .setReorderingAllowed(true)
+                        .addToBackStack("TrackedRidesFragment")
+                        .commit();
+                return true;
+            }
+            if (id == R.id.nav_record)
+            {
+                fragmentManager.beginTransaction()
+                        .replace(R.id.frFragment, RecordRideFragment.class, null)
+                        .setReorderingAllowed(true)
+                        .addToBackStack("TrackedRidesFragment")
+                        .commit();
+                return true;
+            }
+            return false;
         });
     }
 
@@ -95,6 +86,7 @@ public class MainActivity extends AppCompatActivity
     /**
      * Rewrote Permissions because WRITE_EXTERNAL_STORAGE is Deprecated
      */
+
     private void checkPermissions()
     {
         List<String> permissions = new ArrayList<>();
@@ -107,7 +99,8 @@ public class MainActivity extends AppCompatActivity
             permissions.add(Manifest.permission.POST_NOTIFICATIONS);
 
         }
-        if (!permissions.isEmpty()){
+        if (!permissions.isEmpty())
+        {
             String[] params = permissions.toArray(new String[permissions.size()]);
             requestPermissions(params, REQUEST_CODE_PERMISSION);
         }
@@ -119,22 +112,19 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
     {
-        switch (requestCode)
+        if (requestCode == REQUEST_CODE_PERMISSION)
         {
-            case REQUEST_CODE_PERMISSION:
+            if (grantResults[0] == -1)
             {
-                if (grantResults[0] == -1)
-                {
-                    Toast.makeText(this, "Location Permission is required for your location und recording your Ride", Toast.LENGTH_SHORT).show();
-                }
-                if (grantResults[1] == -1)
-                {
-                    Toast.makeText(this, "Please allow Notifications", Toast.LENGTH_SHORT).show();
-                }
+                Toast.makeText(this, "Location Permission is required for your location und recording your Ride", Toast.LENGTH_SHORT).show();
             }
-            break;
-            default:
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            if (grantResults[1] == -1)
+            {
+                Toast.makeText(this, "Please allow Notifications", Toast.LENGTH_SHORT).show();
+            }
+        } else
+        {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 

@@ -1,7 +1,6 @@
 package com.jole.ridetrackermobdev.model;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 public class Ride {
     private int id;

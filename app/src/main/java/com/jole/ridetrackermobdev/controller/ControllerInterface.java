@@ -7,6 +7,6 @@ import java.util.ArrayList;
 public interface ControllerInterface
 {
 
-    public ArrayList<Ride> getAllRidesList();
+    ArrayList<Ride> getAllRidesList();
 
 }

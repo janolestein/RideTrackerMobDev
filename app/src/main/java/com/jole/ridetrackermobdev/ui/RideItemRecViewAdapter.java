@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 public class RideItemRecViewAdapter extends RecyclerView.Adapter<RideItemRecViewAdapter.ViewHolder>{
 
-    private ArrayList<Ride> rideList = new ArrayList<Ride>();
+    private ArrayList<Ride> rideList = new ArrayList<>();
     private Context context;
 
     public RideItemRecViewAdapter(@NonNull Context context)
@@ -52,14 +52,12 @@ public class RideItemRecViewAdapter extends RecyclerView.Adapter<RideItemRecView
                 .load(rideList.get(position).getImgUrl())
                 .into(holder.ivRideScreenShot);
 
-        holder.rideItemCard.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, RideDetailActivity.class);
-                intent.putExtra("RideId", rideList.get(position).getId());
-                context.startActivity(intent);
+        holder.rideItemCard.setOnClickListener(v ->
+        {
+            Intent intent = new Intent(context, RideDetailActivity.class);
+            intent.putExtra("RideId", rideList.get(position).getId());
+            context.startActivity(intent);
 
-            }
         });
 
     }

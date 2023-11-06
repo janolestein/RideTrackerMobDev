@@ -7,10 +7,10 @@ public class Util {
     public static double distanceBetweenTwoGeoPoints(GeoPoint gp1, GeoPoint gp2)
     {
 
-        Double lon1 = Math.toRadians(gp1.getLongitude());
-        Double lon2 = Math.toRadians(gp2.getLongitude());
-        Double lat1 = Math.toRadians(gp1.getLatitude());
-        Double lat2 = Math.toRadians(gp2.getLatitude());
+        double lon1 = Math.toRadians(gp1.getLongitude());
+        double lon2 = Math.toRadians(gp2.getLongitude());
+        double lat1 = Math.toRadians(gp1.getLatitude());
+        double lat2 = Math.toRadians(gp2.getLatitude());
 
         double dlon = lon2 - lon1;
         double dlat = lat2 - lat1;

@@ -94,17 +94,20 @@ public class TrackedRideMapFragment extends Fragment
 
     private final List<GeoPoint> mGeoPoints = getGeoPoints();
 
-    public static MapCurrentFragment newInstance() {
+    public static MapCurrentFragment newInstance()
+    {
         return new MapCurrentFragment();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
         mMapView = new MapView(inflater.getContext());
         mMapView.setDestroyMode(false);
         mMapView.setTag("mapView");
@@ -122,16 +125,17 @@ public class TrackedRideMapFragment extends Fragment
         mPrefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
 
-
         //needed for pinch zooms
         mMapView.setMultiTouchControls(true);
 
         //scales tiles to the current screen's DPI, helps with readability of labels
         mMapView.setTilesScaledToDpi(true);
 
-        mMapView.post(new Runnable() {
+        mMapView.post(new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 final BoundingBox boundingBox = BoundingBox.fromGeoPoints(mGeoPoints);
                 mMapView.zoomToBoundingBox(boundingBox, false, 30);
             }
@@ -140,7 +144,8 @@ public class TrackedRideMapFragment extends Fragment
         addOverlays();
     }
 
-    protected void addOverlays() {
+    protected void addOverlays()
+    {
 
         final Polyline line = new Polyline(mMapView);
         line.getOutlinePaint().setColor(COLOR_POLYLINE_STATIC);
@@ -161,18 +166,22 @@ public class TrackedRideMapFragment extends Fragment
         final ValueAnimator percentageCompletion = ValueAnimator.ofFloat(0, 10000); // 10 kilometers
         percentageCompletion.setDuration(5000); // 5 seconds
         percentageCompletion.setStartDelay(1000); // 1 second
-        percentageCompletion.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+        percentageCompletion.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
+        {
             @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
+            public void onAnimationUpdate(ValueAnimator animation)
+            {
                 mAnimatedMetersSoFar = (float) animation.getAnimatedValue();
                 slicerForPath.setMeterDistanceSlice(0, mAnimatedMetersSoFar);
                 slicerForIcon.setMeterDistanceSlice(mAnimatedMetersSoFar, mAnimatedMetersSoFar);
                 mMapView.invalidate();
             }
         });
-        percentageCompletion.addListener(new AnimatorListenerAdapter() {
+        percentageCompletion.addListener(new AnimatorListenerAdapter()
+        {
             @Override
-            public void onAnimationEnd(Animator animation) {
+            public void onAnimationEnd(Animator animation)
+            {
                 mAnimationEnded = true;
             }
         });
@@ -182,7 +191,8 @@ public class TrackedRideMapFragment extends Fragment
     /**
      * @since 6.0.2
      */
-    private Paint getFillPaint(final int pColor) {
+    private Paint getFillPaint(final int pColor)
+    {
         final Paint paint = new Paint();
         paint.setColor(pColor);
         paint.setStyle(Paint.Style.FILL_AND_STROKE);
@@ -192,7 +202,8 @@ public class TrackedRideMapFragment extends Fragment
     /**
      * @since 6.0.2
      */
-    private Paint getStrokePaint(final int pColor, final float pWidth) {
+    private Paint getStrokePaint(final int pColor, final float pWidth)
+    {
         final Paint paint = new Paint();
         paint.setStrokeWidth(pWidth);
         paint.setStyle(Paint.Style.STROKE);
@@ -205,7 +216,8 @@ public class TrackedRideMapFragment extends Fragment
     /**
      * @since 6.0.2
      */
-    private Paint getTextPaint(final int pColor) {
+    private Paint getTextPaint(final int pColor)
+    {
         final Paint paint = new Paint();
         paint.setColor(pColor);
         paint.setTextSize(TEXT_SIZE);
@@ -218,7 +230,8 @@ public class TrackedRideMapFragment extends Fragment
      *
      * @since 6.0.2
      */
-    private MilestoneManager getKilometerManager() {
+    private MilestoneManager getKilometerManager()
+    {
         final float backgroundRadius = 20;
         final Paint backgroundPaint1 = getFillPaint(COLOR_BACKGROUND);
         final Paint backgroundPaint2 = getFillPaint(COLOR_POLYLINE_ANIMATED);
@@ -227,9 +240,11 @@ public class TrackedRideMapFragment extends Fragment
         final Paint borderPaint = getStrokePaint(COLOR_BACKGROUND, 2);
         return new MilestoneManager(
                 new MilestoneMeterDistanceLister(1000),
-                new MilestoneDisplayer(0, false) {
+                new MilestoneDisplayer(0, false)
+                {
                     @Override
-                    protected void draw(final Canvas pCanvas, final Object pParameter) {
+                    protected void draw(final Canvas pCanvas, final Object pParameter)
+                    {
                         final double meters = (double) pParameter;
                         final int kilometers = (int) Math.round(meters / 1000);
                         final boolean checked = meters < mAnimatedMetersSoFar || (kilometers == 10 && mAnimationEnded);
@@ -251,7 +266,8 @@ public class TrackedRideMapFragment extends Fragment
      *
      * @since 6.0.2
      */
-    private MilestoneManager getHalfKilometerManager() {
+    private MilestoneManager getHalfKilometerManager()
+    {
         final Path arrowPath = new Path(); // a simple arrow towards the right
         arrowPath.moveTo(-5, -5);
         arrowPath.lineTo(5, 0);
@@ -260,11 +276,14 @@ public class TrackedRideMapFragment extends Fragment
         final Paint backgroundPaint = getFillPaint(COLOR_BACKGROUND);
         return new MilestoneManager( // display an arrow at 500m every 1km
                 new MilestoneMeterDistanceLister(500),
-                new MilestonePathDisplayer(0, true, arrowPath, backgroundPaint) {
+                new MilestonePathDisplayer(0, true, arrowPath, backgroundPaint)
+                {
                     @Override
-                    protected void draw(final Canvas pCanvas, final Object pParameter) {
+                    protected void draw(final Canvas pCanvas, final Object pParameter)
+                    {
                         final int halfKilometers = (int) Math.round(((double) pParameter / 500));
-                        if (halfKilometers % 2 == 0) {
+                        if (halfKilometers % 2 == 0)
+                        {
                             return;
                         }
                         super.draw(pCanvas, pParameter);
@@ -278,7 +297,8 @@ public class TrackedRideMapFragment extends Fragment
      *
      * @since 6.0.2
      */
-    private MilestoneManager getAnimatedPathManager(final MilestoneLister pMilestoneLister) {
+    private MilestoneManager getAnimatedPathManager(final MilestoneLister pMilestoneLister)
+    {
         final Paint slicePaint = getStrokePaint(COLOR_POLYLINE_ANIMATED, LINE_WIDTH_BIG);
         return new MilestoneManager(pMilestoneLister, new MilestoneLineDisplayer(slicePaint));
     }
@@ -289,7 +309,8 @@ public class TrackedRideMapFragment extends Fragment
      * @since 6.0.2
      */
     private MilestoneManager getAnimatedIconManager(final MilestoneLister pMilestoneLister,
-                                                    final Bitmap pBitmap) {
+                                                    final Bitmap pBitmap)
+    {
         return new MilestoneManager(
                 pMilestoneLister,
                 new MilestoneBitmapDisplayer(0, true, pBitmap,
@@ -302,14 +323,18 @@ public class TrackedRideMapFragment extends Fragment
      *
      * @since 6.0.2
      */
-    private MilestoneManager getStartManager(final Bitmap pBitmap) {
+    private MilestoneManager getStartManager(final Bitmap pBitmap)
+    {
         return new MilestoneManager(
                 new MilestoneVertexLister(),
                 new MilestoneBitmapDisplayer(0, true,
-                        pBitmap, pBitmap.getWidth() / 2, pBitmap.getHeight() / 2) {
+                        pBitmap, pBitmap.getWidth() / 2, pBitmap.getHeight() / 2)
+                {
                     @Override
-                    protected void draw(final Canvas pCanvas, final Object pParameter) {
-                        if (0 != (int) pParameter) { // we only draw the start
+                    protected void draw(final Canvas pCanvas, final Object pParameter)
+                    {
+                        if (0 != (int) pParameter)
+                        { // we only draw the start
                             return;
                         }
                         super.draw(pCanvas, pParameter);
@@ -319,8 +344,8 @@ public class TrackedRideMapFragment extends Fragment
     }
 
 
-
-    private List<GeoPoint> getGeoPoints() {
+    private List<GeoPoint> getGeoPoints()
+    {
         final List<GeoPoint> pts = new ArrayList<>();
         pts.add(new GeoPoint(52.458159970620216, 13.527038899381642)); // saint paul
         pts.add(new GeoPoint(52.46051831693104, 13.521824258809318)); // hôtel de ville

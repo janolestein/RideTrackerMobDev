@@ -22,14 +22,14 @@ public class RideDetailActivity extends AppCompatActivity {
     private ImageView ivRideScrennshotDetail;
     private TextView tvRideTitelDetail, tvDateDetail, tvDescDetail, tvDistanceTitelDetail, tvAvSpeedDetailTitel, tvTimeVar, tvTimeTitel, tvDistanceVarDetail, tvAvSpeedVar;
     private Button btnViewMap;
-
+    private int rideId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride_detail);
 
         initViews();
-        int rideId = getIntent().getIntExtra("RideId", -1);
+        rideId = getIntent().getIntExtra("RideId", -1);
         if (rideId == -1)
         {
             Toast.makeText(this, "Something went wrong, please try again: No Ride ID found", Toast.LENGTH_SHORT).show();
@@ -56,16 +56,12 @@ public class RideDetailActivity extends AppCompatActivity {
                 .load(ride.map(Ride::getImgUrl).orElse(""))
                 .into(ivRideScrennshotDetail);
 
-        btnViewMap.setOnClickListener(new View.OnClickListener()
+        btnViewMap.setOnClickListener(v ->
         {
-            @Override
-            public void onClick(View v)
-            {
-                Intent intent = new Intent(RideDetailActivity.this, TrackedRideMapActivity.class);
-                intent.putExtra("RideId", getIntent().getIntExtra("RideId", -1));
-                startActivity(intent);
+            Intent intent = new Intent(RideDetailActivity.this, TrackedRideMapActivity.class);
+            intent.putExtra("rideId", rideId);
+            startActivity(intent);
 
-            }
         });
 
 

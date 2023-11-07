@@ -5,6 +5,7 @@ import androidx.fragment.app.FragmentManager;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 
 import com.jole.ridetrackermobdev.R;
@@ -20,6 +21,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 /**
  * This Activity only exists because i better know how to create a Map in a Fragment
+ * TODO: Change that
  */
 public class TrackedRideMapActivity extends AppCompatActivity
 {
@@ -28,11 +30,14 @@ public class TrackedRideMapActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tracked_ride_map);
+        Bundle bundle = new Bundle();
+        bundle.putInt("rideId", getIntent().getIntExtra("rideId", -1));
+        int rideId = getIntent().getIntExtra("rideId", -1);
 
+        Log.v("ABC", Integer.toString(rideId));
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.trackedMapFragment, TrackedRideMapFragment.class, null)
-                .setReorderingAllowed(true)
+                .replace(R.id.trackedMapFragment, TrackedRideMapFragment.newInstance(getIntent().getIntExtra("rideId", -1)))
                 .commit();
     }
 }

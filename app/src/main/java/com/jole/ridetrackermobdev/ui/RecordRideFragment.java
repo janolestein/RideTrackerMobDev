@@ -29,7 +29,7 @@ public class RecordRideFragment extends Fragment
 {
     private Button btnStartRecord, btnStopRecord;
     private BroadcastReceiver receiver;
-    private TextView tvDistanceVar, tvAverageSpeedVar;
+    private TextView tvDistanceVar, tvAverageSpeedVar, tvElapsedTimeVar;
 
     public RecordRideFragment()
     {
@@ -63,6 +63,8 @@ public class RecordRideFragment extends Fragment
         btnStopRecord = getView().findViewById(R.id.btnStopRecord);
         tvDistanceVar = getView().findViewById(R.id.tvDistanceVar);
         tvAverageSpeedVar = getView().findViewById(R.id.tvAverageSpeedVar);
+        tvElapsedTimeVar = getView().findViewById(R.id.tvElapsedTimeVar);
+
 
         if (!isRunning)
         {
@@ -98,11 +100,13 @@ public class RecordRideFragment extends Fragment
             @Override
             public void onReceive(Context context, Intent intent)
             {
-                double latitude = intent.getDoubleExtra("latitude", -1);
-                double longitude = intent.getDoubleExtra("longitude", -1);
+                double dist = intent.getDoubleExtra("distance", -1);
+                double elapsedTime = intent.getDoubleExtra("elapsedTime", -1);
+                double avSpeed = intent.getDoubleExtra("avSpeed", -1);
 
-                tvDistanceVar.setText(Double.toString(latitude));
-                tvAverageSpeedVar.setText(Double.toString(longitude));
+                tvDistanceVar.setText(Double.toString(dist));
+                tvAverageSpeedVar.setText(Double.toString(avSpeed));
+                tvElapsedTimeVar.setText(Double.toString(elapsedTime / 1000));
             }
         };
 

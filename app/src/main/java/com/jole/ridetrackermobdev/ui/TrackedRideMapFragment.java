@@ -19,12 +19,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.jole.ridetrackermobdev.R;
+import com.jole.ridetrackermobdev.model.Model;
+import com.jole.ridetrackermobdev.model.Ride;
 
 import org.osmdroid.tileprovider.tilesource.ITileSource;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -92,22 +96,51 @@ public class TrackedRideMapFragment extends Fragment
     private double mAnimatedMetersSoFar;
     private boolean mAnimationEnded;
 
-    private final List<GeoPoint> mGeoPoints = getGeoPoints();
+    //private final List<GeoPoint> mGeoPoints = Model.getInstance().findRideById(1).get().getGeoPoints();
+    //private final List<GeoPoint> mGeoPoints = getGeoPoints();
+    private  List<GeoPoint> mGeoPoints;
 
-    public static MapCurrentFragment newInstance()
+    public static TrackedRideMapFragment newInstance(int rideId)
     {
-        return new MapCurrentFragment();
+        final TrackedRideMapFragment fragment = new TrackedRideMapFragment();
+        final Bundle args = new Bundle();
+        args.putInt("rideId", rideId);
+
+        fragment.setArguments(args);
+
+        return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+
+        int rideId = -1;
+        Ride ride;
+        Bundle args = this.getArguments();
+        Log.v("ABC", Integer.toString(rideId));
+        if (args != null) {
+            rideId = args.getInt("rideId", -1);
+
+        }
+        Log.v("ABC", Integer.toString(rideId));
+        ride = Model.getInstance().findRideById(rideId).orElse(null);
+        if (ride != null)
+        {
+            mGeoPoints = ride.getGeoPoints();
+
+        }
+        else {
+            Toast.makeText(getActivity(), "Abort", Toast.LENGTH_SHORT).show();
+        }
+        //Log.v("ABC", ride.toString());
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
+
         mMapView = new MapView(inflater.getContext());
         mMapView.setDestroyMode(false);
         mMapView.setTag("mapView");
@@ -117,6 +150,7 @@ public class TrackedRideMapFragment extends Fragment
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
+
         super.onViewCreated(view, savedInstanceState);
 
         final Context context = this.getActivity();

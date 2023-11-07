@@ -28,9 +28,12 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
+import com.jole.ridetrackermobdev.model.Model;
+import com.jole.ridetrackermobdev.model.Ride;
 
 import org.osmdroid.util.GeoPoint;
 
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -38,19 +41,17 @@ import java.util.List;
 public class RecordRideService extends Service
 {
     private FusedLocationProviderClient mFusedLocationClient;
-
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
-
     private LocalBroadcastManager broadcaster;
-
     double latitude, longitude;
-    List<GeoPoint> GeoPointList;
+    List<GeoPoint> geoPointList;
     GeoPoint lastKnownGeoPoint;
-
     public static Boolean isRunning = false;
-
     double dist = 0D;
+    double elapsedTime = 0D;
+    double startTime = 0D;
+    double avSpeed = 0D;
 
     public RecordRideService()
     {
@@ -72,7 +73,7 @@ public class RecordRideService extends Service
         Log.v("ABC", "onCreate");
         broadcaster = LocalBroadcastManager.getInstance(this);
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10 * 1000)
+        locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000)
                 .setWaitForAccurateLocation(false)
                 .setMinUpdateIntervalMillis(500)
                 .setMaxUpdateDelayMillis(1000)
@@ -95,16 +96,18 @@ public class RecordRideService extends Service
                         longitude = location.getLongitude();
                         GeoPoint current = new GeoPoint(latitude, longitude);
                         Log.v("ABC", Double.toString(latitude));
-                        GeoPointList.add(current);
+                        geoPointList.add(current);
                         if (lastKnownGeoPoint == null)
                         {
                             lastKnownGeoPoint = current;
                         } else
                         {
+                            elapsedTime = System.currentTimeMillis() - startTime;
                             dist += Util.distanceBetweenTwoGeoPoints(lastKnownGeoPoint, current);
+                            avSpeed = dist / (elapsedTime / (1000 *  (60 * 60)));
                             Log.v("ABC", Double.toString(dist));
                             lastKnownGeoPoint = current;
-                            sendResult(dist, longitude);
+                            sendResult(dist, elapsedTime, avSpeed);
                         }
 
 
@@ -123,7 +126,8 @@ public class RecordRideService extends Service
     public void onCreate()
     {
         isRunning = true;
-        GeoPointList = new LinkedList<>();
+        geoPointList = new LinkedList<>();
+        startTime = System.currentTimeMillis();
         super.onCreate();
 
     }
@@ -131,10 +135,18 @@ public class RecordRideService extends Service
     @Override
     public void onDestroy()
     {
-        super.onDestroy();
         mFusedLocationClient.removeLocationUpdates(locationCallback);
+        saveRide();
         isRunning = false;
-        Log.v("ABC", GeoPointList.toString());
+        Log.v("ABC", geoPointList.toString());
+        super.onDestroy();
+    }
+
+    public void saveRide()
+    {
+        Model.getInstance().addNewRide(new Ride("Wednesday Evening Ride", "This is a Example Ride Description", LocalDate.now(), dist, avSpeed, elapsedTime,
+                "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", geoPointList));
+
     }
 
 
@@ -154,12 +166,13 @@ public class RecordRideService extends Service
                 Looper.getMainLooper());
     }
 
-    public void sendResult(Double latitude, Double longitude)
+    public void sendResult(double dist, double elapsedTime, double avSpeed)
     {
         Intent intent = new Intent();
         intent.setAction("loc");
-        intent.putExtra("latitude", latitude);
-        intent.putExtra("longitude", longitude);
+        intent.putExtra("distance", dist);
+        intent.putExtra("elapsedTime", elapsedTime);
+        intent.putExtra("avSpeed", avSpeed);
         Log.v("ABC", "sendresult");
         broadcaster.sendBroadcast(intent);
     }
@@ -176,7 +189,7 @@ public class RecordRideService extends Service
         NotificationCompat.Builder mBuilder = new NotificationCompat
                 .Builder(this, channel)
                 .setSmallIcon(android.R.drawable.ic_menu_mylocation)
-                .setContentTitle("Service Running");
+                .setContentTitle("Your Ride is being tracked");
 
         return mBuilder
                 .setPriority(PRIORITY_MAX)

@@ -1,9 +1,13 @@
 package com.jole.ridetrackermobdev.model;
 
+import org.osmdroid.util.GeoPoint;
+
 import java.time.LocalDate;
+import java.util.List;
 
 public class Ride {
     private int id;
+    private static int numberOfRides = 1;
     private String name;
     private String description;
     private LocalDate date;
@@ -11,10 +15,11 @@ public class Ride {
     private double averageSpeed;
     private double totalRideTime;
     private String imgUrl;
+    private List<GeoPoint> geoPoints;
 
 
-    public Ride(int id, String name, String description, LocalDate date, double rideLengthKm, double averageSpeed, double totalRideTime, String imgUrl) {
-        this.id = id;
+    public Ride(String name, String description, LocalDate date, double rideLengthKm, double averageSpeed, double totalRideTime, String imgUrl, List<GeoPoint> geoPoints) {
+        this.id = numberOfRides;
         this.name = name;
         this.description = description;
         this.date = date;
@@ -22,6 +27,8 @@ public class Ride {
         this.averageSpeed = averageSpeed;
         this.totalRideTime = totalRideTime;
         this.imgUrl = imgUrl;
+        this.geoPoints = geoPoints;
+        numberOfRides++;
     }
 
     public int getId() {
@@ -86,5 +93,14 @@ public class Ride {
 
     public void setTotalRideTime(double totalRideTime) {
         this.totalRideTime = totalRideTime;
+    }
+
+    public static int getNumberOfRides()
+    {
+        return numberOfRides;
+    }
+    public List<GeoPoint> getGeoPoints()
+    {
+        return geoPoints;
     }
 }

@@ -47,7 +47,7 @@ public class RideDetailActivity extends AppCompatActivity {
         tvDateDetail.setText(ride.map(r -> r.getDate().toString()).orElse(""));
         tvDescDetail.setText(ride.map(Ride::getDescription).orElse(""));
         tvDistanceVarDetail.setText(ride.map(r -> Double.toString(r.getRideLengthKm())).orElse(""));
-        tvAvSpeedVar.setText(ride.map(r -> Double.toString(r.getRideLengthKm())).orElse(""));
+        tvAvSpeedVar.setText(ride.map(r -> Double.toString(r.getAverageSpeed())).orElse(""));
         tvTimeVar.setText(ride.map(r -> Double.toString(r.getTotalRideTime())).orElse(""));
 
 
@@ -62,6 +62,7 @@ public class RideDetailActivity extends AppCompatActivity {
             public void onClick(View v)
             {
                 Intent intent = new Intent(RideDetailActivity.this, TrackedRideMapActivity.class);
+                intent.putExtra("RideId", getIntent().getIntExtra("RideId", -1));
                 startActivity(intent);
 
             }

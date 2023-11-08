@@ -1,6 +1,7 @@
 package com.jole.ridetrackermobdev.model;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public interface ModelInterface
 {
@@ -10,5 +11,7 @@ public interface ModelInterface
     boolean removeRide(Ride ride);
 
     ArrayList<Ride> getAllRidesList();
+
+    Optional<Ride> findRideById(int id);
 
 }

@@ -56,6 +56,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -99,6 +100,7 @@ public class TrackedRideMapFragment extends Fragment
     //private final List<GeoPoint> mGeoPoints = Model.getInstance().findRideById(1).get().getGeoPoints();
     //private final List<GeoPoint> mGeoPoints = getGeoPoints();
     private  List<GeoPoint> mGeoPoints;
+    private double rideLength;
 
     public static TrackedRideMapFragment newInstance(int rideId)
     {
@@ -116,7 +118,7 @@ public class TrackedRideMapFragment extends Fragment
     {
 
         int rideId = -1;
-        Ride ride;
+        Optional<Ride> ride;
         Bundle args = this.getArguments();
         Log.v("ABC", Integer.toString(rideId));
         if (args != null) {
@@ -124,10 +126,11 @@ public class TrackedRideMapFragment extends Fragment
 
         }
         Log.v("ABC", Integer.toString(rideId));
-        ride = Model.getInstance().findRideById(rideId).orElse(null);
-        if (ride != null)
+        ride = Model.getInstance().findRideById(rideId);
+        if (!ride.isPresent())
         {
-            mGeoPoints = ride.getGeoPoints();
+            mGeoPoints = ride.get().getGeoPoints();
+            rideLength = ride.get().getRideLengthKm();
 
         }
         else {
@@ -197,8 +200,8 @@ public class TrackedRideMapFragment extends Fragment
         managers.add(getStartManager(bitmap));
         line.setMilestoneManagers(managers);
         mMapView.getOverlayManager().add(line);
-        final ValueAnimator percentageCompletion = ValueAnimator.ofFloat(0, 10000); // 10 kilometers
-        percentageCompletion.setDuration(5000); // 5 seconds
+        final ValueAnimator percentageCompletion = ValueAnimator.ofFloat(0,(float) rideLength);
+        percentageCompletion.setDuration(8000); // 5 seconds
         percentageCompletion.setStartDelay(1000); // 1 second
         percentageCompletion.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()
         {

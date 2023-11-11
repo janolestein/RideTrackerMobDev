@@ -44,14 +44,14 @@ public class RecordRideService extends Service
     private LocationRequest locationRequest;
     private LocationCallback locationCallback;
     private LocalBroadcastManager broadcaster;
-    double latitude, longitude;
-    List<GeoPoint> geoPointList;
-    GeoPoint lastKnownGeoPoint;
+    private double latitude, longitude;
+    private List<GeoPoint> geoPointList;
+    private GeoPoint lastKnownGeoPoint;
     public static Boolean isRunning = false;
-    double dist = 0D;
-    double elapsedTime = 0D;
-    double startTime = 0D;
-    double avSpeed = 0D;
+    private double dist = 0D;
+    private double elapsedTime = 0D;
+    private double startTime = 0D;
+    private double avSpeed = 0D;
 
     public RecordRideService()
     {

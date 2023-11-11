@@ -1,5 +1,6 @@
 plugins {
     id("com.android.application")
+    id ("com.google.dagger.hilt.android") version ("2.44") apply false
 }
 
 android {
@@ -43,4 +44,9 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     implementation ("com.google.android.gms:play-services-location:21.0.1")
+    implementation ("com.google.dagger:dagger:2.48.1 ")
+    annotationProcessor ("com.google.dagger:dagger-compiler:2.48.1")
+    implementation ("com.google.dagger:hilt-android:2.44")
+    annotationProcessor ("com.google.dagger:hilt-compiler:2.44")
 }
+

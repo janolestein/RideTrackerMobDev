@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.jole.ridetrackermobdev.R;
-import com.jole.ridetrackermobdev.model.Model;
+import com.jole.ridetrackermobdev.model.RideDao;
 import com.jole.ridetrackermobdev.model.Ride;
 
 import java.util.ArrayList;
@@ -63,7 +63,7 @@ public class RideItemRecViewAdapter extends RecyclerView.Adapter<RideItemRecView
     @Override
     public int getItemCount()
     {
-        return Model.getInstance().getAllRidesList().size();
+        return RideDao.getInstance().getAllRidesList().size();
     }
 
     public void setRides(ArrayList<Ride> rides)

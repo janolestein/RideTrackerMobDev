@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jole.ridetrackermobdev.R;
-import com.jole.ridetrackermobdev.model.Model;
+import com.jole.ridetrackermobdev.model.RideDao;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,7 +48,7 @@ public class TrackedRidesFragment extends Fragment
         recViewAllRides = view.findViewById(R.id.recViewAllRides);
         recViewAllRides.setAdapter(adapter);
         recViewAllRides.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        adapter.setRides(Model.getInstance().getAllRidesList());
+        adapter.setRides(RideDao.getInstance().getAllRidesList());
 
         return view;
     }

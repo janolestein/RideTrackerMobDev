@@ -26,12 +26,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.jole.ridetrackermobdev.R;
-import com.jole.ridetrackermobdev.model.Model;
+import com.jole.ridetrackermobdev.model.RideDao;
 import com.jole.ridetrackermobdev.model.Ride;
 
-import org.osmdroid.tileprovider.tilesource.ITileSource;
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
 import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
 import org.osmdroid.views.MapView;
@@ -40,7 +37,6 @@ import org.osmdroid.views.overlay.MinimapOverlay;
 import org.osmdroid.views.overlay.Polyline;
 import org.osmdroid.views.overlay.ScaleBarOverlay;
 import org.osmdroid.views.overlay.compass.CompassOverlay;
-import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider;
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
 import org.osmdroid.views.overlay.milestones.MilestoneBitmapDisplayer;
 import org.osmdroid.views.overlay.milestones.MilestoneDisplayer;
@@ -51,7 +47,6 @@ import org.osmdroid.views.overlay.milestones.MilestoneMeterDistanceLister;
 import org.osmdroid.views.overlay.milestones.MilestoneMeterDistanceSliceLister;
 import org.osmdroid.views.overlay.milestones.MilestonePathDisplayer;
 import org.osmdroid.views.overlay.milestones.MilestoneVertexLister;
-import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 import java.util.ArrayList;
@@ -126,7 +121,7 @@ public class TrackedRideMapFragment extends Fragment
 
         }
         Log.v("ABC", Integer.toString(rideId));
-        ride = Model.getInstance().findRideById(rideId);
+        ride = RideDao.getInstance().findRideById(rideId);
         if (ride.isPresent())
         {
             mGeoPoints = ride.get().getGeoPoints();

@@ -3,7 +3,7 @@ package com.jole.ridetrackermobdev.model;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public interface ModelInterface
+public interface DaoInterface
 {
 
     boolean addNewRide(Ride ride);

@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -12,7 +11,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.jole.ridetrackermobdev.R;
-import com.jole.ridetrackermobdev.model.Model;
+import com.jole.ridetrackermobdev.model.RideDao;
 import com.jole.ridetrackermobdev.model.Ride;
 
 import java.util.Optional;
@@ -36,7 +35,7 @@ public class RideDetailActivity extends AppCompatActivity {
             this.finish();
         }
 
-        Optional<Ride> ride = Model.getInstance().findRideById(rideId);
+        Optional<Ride> ride = RideDao.getInstance().findRideById(rideId);
 
         if (!ride.isPresent()) {
             Toast.makeText(this, "Something went wrong, please try again: Could not retrieve Ride by ID", Toast.LENGTH_SHORT).show();

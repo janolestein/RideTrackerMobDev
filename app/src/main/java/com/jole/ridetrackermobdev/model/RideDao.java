@@ -1,26 +1,25 @@
 package com.jole.ridetrackermobdev.model;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Optional;
 
-public class Model implements ModelInterface
+public class RideDao implements DaoInterface
 {
     private static ArrayList<Ride> rideList;
 
-    private static Model instance;
+    private static RideDao instance;
 
-    private Model()
+    private RideDao()
     {
     }
 
-    public static Model getInstance()
+    public static RideDao getInstance()
     {
         if (instance == null)
         {
             rideList = new ArrayList<>();
             initData();
-            instance = new Model();
+            instance = new RideDao();
         }
         return instance;
     }

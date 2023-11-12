@@ -21,12 +21,14 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.jole.ridetrackermobdev.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity
 {
-    private final int REQUEST_CODE_PERMISSION = 42;
+    private final int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 42;
     private BottomNavigationView bottomNav;
 
     @Override
@@ -42,40 +44,24 @@ public class MainActivity extends AppCompatActivity
         Configuration.getInstance().load(getApplicationContext(), androidx.preference.PreferenceManager.getDefaultSharedPreferences(getApplicationContext()));
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.frFragment, MapCurrentFragment.class, null)
-                .setReorderingAllowed(true)
-                .addToBackStack("MapCurrentFragment")
-                .commit();
+        fragmentManager.beginTransaction().replace(R.id.frFragment, MapCurrentFragment.class, null).setReorderingAllowed(true).addToBackStack("MapCurrentFragment").commit();
 
         bottomNav.setOnItemSelectedListener(item ->
         {
             int id = item.getItemId();
             if (id == R.id.nav_map)
             {
-                fragmentManager.beginTransaction()
-                        .replace(R.id.frFragment, MapCurrentFragment.class, null)
-                        .setReorderingAllowed(true)
-                        .addToBackStack("MapCurrentFragment")
-                        .commit();
+                fragmentManager.beginTransaction().replace(R.id.frFragment, MapCurrentFragment.class, null).setReorderingAllowed(true).addToBackStack("MapCurrentFragment").commit();
                 return true;
             }
             if (id == R.id.nav_rides)
             {
-                fragmentManager.beginTransaction()
-                        .replace(R.id.frFragment, TrackedRidesFragment.class, null)
-                        .setReorderingAllowed(true)
-                        .addToBackStack("TrackedRidesFragment")
-                        .commit();
+                fragmentManager.beginTransaction().replace(R.id.frFragment, TrackedRidesFragment.class, null).setReorderingAllowed(true).addToBackStack("TrackedRidesFragment").commit();
                 return true;
             }
             if (id == R.id.nav_record)
             {
-                fragmentManager.beginTransaction()
-                        .replace(R.id.frFragment, RecordRideFragment.class, null)
-                        .setReorderingAllowed(true)
-                        .addToBackStack("TrackedRidesFragment")
-                        .commit();
+                fragmentManager.beginTransaction().replace(R.id.frFragment, RecordRideFragment.class, null).setReorderingAllowed(true).addToBackStack("TrackedRidesFragment").commit();
                 return true;
             }
             return false;
@@ -97,12 +83,15 @@ public class MainActivity extends AppCompatActivity
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)
         {
             permissions.add(Manifest.permission.POST_NOTIFICATIONS);
-
+        }
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED)
+        {
+            permissions.add(Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
         if (!permissions.isEmpty())
         {
             String[] params = permissions.toArray(new String[permissions.size()]);
-            requestPermissions(params, REQUEST_CODE_PERMISSION);
+            requestPermissions(params, REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS);
         }
     }
 
@@ -112,19 +101,27 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
     {
-        if (requestCode == REQUEST_CODE_PERMISSION)
+        switch (requestCode)
         {
-            if (grantResults[0] == -1)
+            case REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS:
             {
-                Toast.makeText(this, "Location Permission is required for your location und recording your Ride", Toast.LENGTH_SHORT).show();
+                Map<String, Integer> perms = new HashMap<String, Integer>();
+
+                perms.put(Manifest.permission.ACCESS_FINE_LOCATION, PackageManager.PERMISSION_GRANTED);
+                perms.put(Manifest.permission.POST_NOTIFICATIONS, PackageManager.PERMISSION_GRANTED);
+
+                for (int i = 0; i < permissions.length; i++)
+                    perms.put(permissions[i], grantResults[i]);
+                if (perms.get(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && perms.get(Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED)
+                {
+                } else
+                {
+                    Toast.makeText(MainActivity.this, "Some Permission is Denied", Toast.LENGTH_SHORT).show();
+                }
             }
-//            if (grantResults[1] == -1)
-//            {
-//                Toast.makeText(this, "Please allow Notifications", Toast.LENGTH_SHORT).show();
-//            }
-        } else
-        {
-            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+            break;
+            default:
+                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 

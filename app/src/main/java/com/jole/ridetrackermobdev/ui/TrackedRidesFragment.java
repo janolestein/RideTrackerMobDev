@@ -2,8 +2,6 @@ package com.jole.ridetrackermobdev.ui;
 
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,7 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jole.ridetrackermobdev.R;
-import com.jole.ridetrackermobdev.controller.Controller;
+import com.jole.ridetrackermobdev.model.Model;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,7 +48,7 @@ public class TrackedRidesFragment extends Fragment
         recViewAllRides = view.findViewById(R.id.recViewAllRides);
         recViewAllRides.setAdapter(adapter);
         recViewAllRides.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        adapter.setRides(Controller.getInstance().getAllRidesList());
+        adapter.setRides(Model.getInstance().getAllRidesList());
 
         return view;
     }

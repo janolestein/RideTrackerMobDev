@@ -127,7 +127,7 @@ public class TrackedRideMapFragment extends Fragment
         }
         Log.v("ABC", Integer.toString(rideId));
         ride = Model.getInstance().findRideById(rideId);
-        if (!ride.isPresent())
+        if (ride.isPresent())
         {
             mGeoPoints = ride.get().getGeoPoints();
             rideLength = ride.get().getRideLengthKm();
@@ -200,7 +200,7 @@ public class TrackedRideMapFragment extends Fragment
         managers.add(getStartManager(bitmap));
         line.setMilestoneManagers(managers);
         mMapView.getOverlayManager().add(line);
-        final ValueAnimator percentageCompletion = ValueAnimator.ofFloat(0,(float) rideLength);
+        final ValueAnimator percentageCompletion = ValueAnimator.ofFloat(0, 10000);
         percentageCompletion.setDuration(8000); // 5 seconds
         percentageCompletion.setStartDelay(1000); // 1 second
         percentageCompletion.addUpdateListener(new ValueAnimator.AnimatorUpdateListener()

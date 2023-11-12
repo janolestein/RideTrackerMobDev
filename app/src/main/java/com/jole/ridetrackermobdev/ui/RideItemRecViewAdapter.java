@@ -1,7 +1,5 @@
 package com.jole.ridetrackermobdev.ui;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.jole.ridetrackermobdev.R;
-import com.jole.ridetrackermobdev.controller.Controller;
+import com.jole.ridetrackermobdev.model.Model;
 import com.jole.ridetrackermobdev.model.Ride;
 
 import java.util.ArrayList;
@@ -65,7 +63,7 @@ public class RideItemRecViewAdapter extends RecyclerView.Adapter<RideItemRecView
     @Override
     public int getItemCount()
     {
-        return Controller.getInstance().getAllRidesList().size();
+        return Model.getInstance().getAllRidesList().size();
     }
 
     public void setRides(ArrayList<Ride> rides)

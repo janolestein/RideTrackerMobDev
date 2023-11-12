@@ -1,7 +1,8 @@
 package com.jole.ridetrackermobdev.controller;
 
 import static androidx.core.app.NotificationCompat.PRIORITY_MAX;
-
+import android.os.Binder;
+import android.os.IBinder;
 import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -60,7 +61,7 @@ public class RecordRideService extends Service
     @Override
     public IBinder onBind(Intent intent)
     {
-        throw new UnsupportedOperationException("Not yet implemented");
+        return new Binder();
     }
 
     @Override

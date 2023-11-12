@@ -118,10 +118,10 @@ public class MainActivity extends AppCompatActivity
             {
                 Toast.makeText(this, "Location Permission is required for your location und recording your Ride", Toast.LENGTH_SHORT).show();
             }
-            if (grantResults[1] == -1)
-            {
-                Toast.makeText(this, "Please allow Notifications", Toast.LENGTH_SHORT).show();
-            }
+//            if (grantResults[1] == -1)
+//            {
+//                Toast.makeText(this, "Please allow Notifications", Toast.LENGTH_SHORT).show();
+//            }
         } else
         {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);

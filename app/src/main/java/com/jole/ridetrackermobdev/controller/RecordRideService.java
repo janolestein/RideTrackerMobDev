@@ -28,6 +28,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
+import com.jole.ridetrackermobdev.model.DaoInterface;
 import com.jole.ridetrackermobdev.model.RideDao;
 import com.jole.ridetrackermobdev.model.Ride;
 
@@ -57,7 +58,7 @@ public class RecordRideService extends Service
     private double startTime = 0D;
     private double avSpeed = 0D;
     @Inject
-    RideDao rideDao;
+    DaoInterface rideDao;
 
     public RecordRideService()
     {

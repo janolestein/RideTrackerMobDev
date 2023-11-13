@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.jole.ridetrackermobdev.R;
+import com.jole.ridetrackermobdev.model.DaoInterface;
 import com.jole.ridetrackermobdev.model.RideDao;
 import com.jole.ridetrackermobdev.model.Ride;
 
@@ -28,7 +29,7 @@ public class RideDetailActivity extends AppCompatActivity {
     private Button btnViewMap;
     private int rideId;
     @Inject
-    RideDao rideDao;
+    DaoInterface rideDao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

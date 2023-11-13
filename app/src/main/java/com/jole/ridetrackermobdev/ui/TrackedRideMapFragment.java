@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.jole.ridetrackermobdev.model.DaoInterface;
 import com.jole.ridetrackermobdev.model.RideDao;
 import com.jole.ridetrackermobdev.model.Ride;
 
@@ -100,7 +101,7 @@ public class TrackedRideMapFragment extends Fragment
     private  List<GeoPoint> mGeoPoints;
     private double rideLength;
     @Inject
-    RideDao rideDao;
+    DaoInterface rideDao;
 
     public static TrackedRideMapFragment newInstance(int rideId)
     {

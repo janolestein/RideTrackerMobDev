@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jole.ridetrackermobdev.R;
+import com.jole.ridetrackermobdev.model.DaoInterface;
 import com.jole.ridetrackermobdev.model.RideDao;
 
 import javax.inject.Inject;
@@ -28,7 +29,7 @@ public class TrackedRidesFragment extends Fragment
     private RecyclerView recViewAllRides;
     private RideItemRecViewAdapter adapter;
     @Inject
-    RideDao rideDao;
+    DaoInterface rideDao;
 
     public static TrackedRidesFragment newInstance(String param1, String param2)
     {

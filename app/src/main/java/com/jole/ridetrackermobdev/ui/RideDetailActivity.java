@@ -16,12 +16,19 @@ import com.jole.ridetrackermobdev.model.Ride;
 
 import java.util.Optional;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class RideDetailActivity extends AppCompatActivity {
 
     private ImageView ivRideScrennshotDetail;
     private TextView tvRideTitelDetail, tvDateDetail, tvDescDetail, tvDistanceTitelDetail, tvAvSpeedDetailTitel, tvTimeVar, tvTimeTitel, tvDistanceVarDetail, tvAvSpeedVar;
     private Button btnViewMap;
     private int rideId;
+    @Inject
+    RideDao rideDao;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +42,7 @@ public class RideDetailActivity extends AppCompatActivity {
             this.finish();
         }
 
-        Optional<Ride> ride = RideDao.getInstance().findRideById(rideId);
+        Optional<Ride> ride = rideDao.findRideById(rideId);
 
         if (!ride.isPresent()) {
             Toast.makeText(this, "Something went wrong, please try again: Could not retrieve Ride by ID", Toast.LENGTH_SHORT).show();

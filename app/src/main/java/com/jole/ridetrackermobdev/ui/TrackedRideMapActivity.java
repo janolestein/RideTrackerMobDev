@@ -18,11 +18,14 @@ import org.osmdroid.views.overlay.compass.CompassOverlay;
 import org.osmdroid.views.overlay.gestures.RotationGestureOverlay;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
 
 /**
  * This Activity only exists because i better know how to create a Map in a Fragment
  * TODO: Change that
  */
+@AndroidEntryPoint
 public class TrackedRideMapActivity extends AppCompatActivity
 {
     @Override

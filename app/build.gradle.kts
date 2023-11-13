@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
-    id ("com.google.dagger.hilt.android") version ("2.44") apply false
+    id ("com.google.dagger.hilt.android")
+
 }
 
 android {
@@ -47,5 +48,7 @@ dependencies {
     implementation ("com.google.android.gms:play-services-location:21.0.1")
     implementation ("com.google.dagger:hilt-android:2.44")
     annotationProcessor ("com.google.dagger:hilt-compiler:2.44")
+
+
 }
 

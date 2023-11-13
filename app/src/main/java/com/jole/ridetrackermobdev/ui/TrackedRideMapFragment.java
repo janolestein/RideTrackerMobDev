@@ -53,11 +53,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link TrackedRideMapFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 public class TrackedRideMapFragment extends Fragment
 {
 
@@ -92,10 +97,10 @@ public class TrackedRideMapFragment extends Fragment
     private double mAnimatedMetersSoFar;
     private boolean mAnimationEnded;
 
-    //private final List<GeoPoint> mGeoPoints = Model.getInstance().findRideById(1).get().getGeoPoints();
-    //private final List<GeoPoint> mGeoPoints = getGeoPoints();
     private  List<GeoPoint> mGeoPoints;
     private double rideLength;
+    @Inject
+    RideDao rideDao;
 
     public static TrackedRideMapFragment newInstance(int rideId)
     {
@@ -111,7 +116,7 @@ public class TrackedRideMapFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-
+        super.onCreate(savedInstanceState);
         int rideId = -1;
         Optional<Ride> ride;
         Bundle args = this.getArguments();
@@ -121,7 +126,7 @@ public class TrackedRideMapFragment extends Fragment
 
         }
         Log.v("ABC", Integer.toString(rideId));
-        ride = RideDao.getInstance().findRideById(rideId);
+        ride = rideDao.findRideById(rideId);
         if (ride.isPresent())
         {
             mGeoPoints = ride.get().getGeoPoints();
@@ -132,7 +137,7 @@ public class TrackedRideMapFragment extends Fragment
             Toast.makeText(getActivity(), "Abort", Toast.LENGTH_SHORT).show();
         }
         //Log.v("ABC", ride.toString());
-        super.onCreate(savedInstanceState);
+
     }
 
     @Override

@@ -13,15 +13,22 @@ import android.view.ViewGroup;
 import com.jole.ridetrackermobdev.R;
 import com.jole.ridetrackermobdev.model.RideDao;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link TrackedRidesFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 public class TrackedRidesFragment extends Fragment
 {
     private RecyclerView recViewAllRides;
     private RideItemRecViewAdapter adapter;
+    @Inject
+    RideDao rideDao;
 
     public static TrackedRidesFragment newInstance(String param1, String param2)
     {
@@ -48,7 +55,7 @@ public class TrackedRidesFragment extends Fragment
         recViewAllRides = view.findViewById(R.id.recViewAllRides);
         recViewAllRides.setAdapter(adapter);
         recViewAllRides.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        adapter.setRides(RideDao.getInstance().getAllRidesList());
+        adapter.setRides(rideDao.getAllRidesList());
 
         return view;
     }

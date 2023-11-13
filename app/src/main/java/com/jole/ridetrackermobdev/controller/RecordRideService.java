@@ -37,7 +37,11 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.inject.Inject;
 
+import dagger.hilt.android.AndroidEntryPoint;
+
+@AndroidEntryPoint
 public class RecordRideService extends Service
 {
     private FusedLocationProviderClient mFusedLocationClient;
@@ -52,6 +56,8 @@ public class RecordRideService extends Service
     private double elapsedTime = 0D;
     private double startTime = 0D;
     private double avSpeed = 0D;
+    @Inject
+    RideDao rideDao;
 
     public RecordRideService()
     {
@@ -144,7 +150,7 @@ public class RecordRideService extends Service
 
     public void saveRide()
     {
-        RideDao.getInstance().addNewRide(new Ride("Wednesday Evening Ride", "This is a Example Ride Description", LocalDate.now(), dist, avSpeed, elapsedTime,
+        rideDao.addNewRide(new Ride("Wednesday Evening Ride", "This is a Example Ride Description", LocalDate.now(), dist, avSpeed, elapsedTime,
                 "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", geoPointList));
 
     }

@@ -20,9 +20,16 @@ import com.jole.ridetrackermobdev.model.Ride;
 
 import java.util.ArrayList;
 
+import javax.inject.Inject;
+
+import dagger.hilt.android.AndroidEntryPoint;
+
 public class RideItemRecViewAdapter extends RecyclerView.Adapter<RideItemRecViewAdapter.ViewHolder>{
 
     private ArrayList<Ride> rideList = new ArrayList<>();
+    @Inject
+    RideDao rideDao;
+
     private Context context;
 
     public RideItemRecViewAdapter(@NonNull Context context)
@@ -63,7 +70,7 @@ public class RideItemRecViewAdapter extends RecyclerView.Adapter<RideItemRecView
     @Override
     public int getItemCount()
     {
-        return RideDao.getInstance().getAllRidesList().size();
+        return rideList.size();
     }
 
     public void setRides(ArrayList<Ride> rides)

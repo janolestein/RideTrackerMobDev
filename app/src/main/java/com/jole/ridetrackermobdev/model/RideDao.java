@@ -3,14 +3,20 @@ package com.jole.ridetrackermobdev.model;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import javax.inject.Inject;
+import javax.inject.Singleton;
+
+@Singleton
 public class RideDao implements DaoInterface
 {
     private static ArrayList<Ride> rideList;
 
     private static RideDao instance;
 
-    private RideDao()
+    @Inject
+    public RideDao()
     {
+        rideList = new ArrayList<>();
     }
 
     public static RideDao getInstance()

@@ -46,15 +46,15 @@ public class RideDao implements DaoInterface
     }
 
     @Override
-    public boolean addNewRide(Ride ride)
+    public void addNewRide(Ride ride)
     {
-        return rideList.add(ride);
+        rideList.add(ride);
     }
 
     @Override
-    public boolean removeRide(Ride ride)
+    public void removeRide(Ride ride)
     {
-        return rideList.remove(ride);
+        rideList.remove(ride);
     }
 
     @Override

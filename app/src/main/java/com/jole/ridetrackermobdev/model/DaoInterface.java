@@ -1,17 +1,24 @@
 package com.jole.ridetrackermobdev.model;
 
-import java.util.ArrayList;
-import java.util.Optional;
+import androidx.room.Dao;
+import androidx.room.Delete;
+import androidx.room.Insert;
+import androidx.room.Query;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+@Dao
 public interface DaoInterface
 {
 
-    boolean addNewRide(Ride ride);
-
-    boolean removeRide(Ride ride);
-
-    ArrayList<Ride> getAllRidesList();
-
+    @Insert
+    void addNewRide(Ride ride);
+    @Delete
+    void removeRide(Ride ride);
+    @Query("SELECT * FROM Ride")
+    List<Ride> getAllRidesList();
+    @Query("SELECT * FROM Ride WHERE id LIKE :id LIMIT 1")
     Optional<Ride> findRideById(int id);
 
 }

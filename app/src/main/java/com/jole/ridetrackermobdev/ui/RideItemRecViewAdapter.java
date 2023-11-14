@@ -20,6 +20,7 @@ import com.jole.ridetrackermobdev.model.RideDao;
 import com.jole.ridetrackermobdev.model.Ride;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -27,7 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 public class RideItemRecViewAdapter extends RecyclerView.Adapter<RideItemRecViewAdapter.ViewHolder>{
 
-    private ArrayList<Ride> rideList = new ArrayList<>();
+    private List<Ride> rideList = new ArrayList<>();
     @Inject
     DaoInterface rideDao;
 
@@ -74,7 +75,7 @@ public class RideItemRecViewAdapter extends RecyclerView.Adapter<RideItemRecView
         return rideList.size();
     }
 
-    public void setRides(ArrayList<Ride> rides)
+    public void setRides(List<Ride> rides)
     {
         this.rideList = rides;
         notifyDataSetChanged();

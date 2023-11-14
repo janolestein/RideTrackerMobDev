@@ -55,7 +55,7 @@ public class RideDetailActivity extends AppCompatActivity {
         tvDescDetail.setText(ride.map(Ride::getDescription).orElse(""));
         tvDistanceVarDetail.setText(ride.map(r -> Double.toString(r.getRideLengthKm())).orElse(""));
         tvAvSpeedVar.setText(ride.map(r -> Double.toString(r.getAverageSpeed())).orElse(""));
-        tvTimeVar.setText(ride.map(r -> Double.toString(r.getTotalRideTime())).orElse(""));
+        tvTimeVar.setText(ride.map(r -> Double.toString(r.getTotalRideTime() / 1000)).orElse(""));
 
 
         Glide.with(this)

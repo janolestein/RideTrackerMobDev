@@ -12,7 +12,10 @@ import android.view.ViewGroup;
 
 import com.jole.ridetrackermobdev.R;
 import com.jole.ridetrackermobdev.model.DaoInterface;
+import com.jole.ridetrackermobdev.model.Ride;
 import com.jole.ridetrackermobdev.model.RideDao;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
@@ -56,7 +59,7 @@ public class TrackedRidesFragment extends Fragment
         recViewAllRides = view.findViewById(R.id.recViewAllRides);
         recViewAllRides.setAdapter(adapter);
         recViewAllRides.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        adapter.setRides(rideDao.getAllRidesList());
+        adapter.setRides((ArrayList<Ride>) rideDao.getAllRidesList());
 
         return view;
     }

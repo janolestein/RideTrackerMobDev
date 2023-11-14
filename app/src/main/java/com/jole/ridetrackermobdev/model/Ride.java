@@ -1,25 +1,31 @@
 package com.jole.ridetrackermobdev.model;
 
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+
 import org.osmdroid.util.GeoPoint;
 
 import java.time.LocalDate;
 import java.util.List;
-
+@Entity
 public class Ride {
-    private int id;
-    private static int numberOfRides = 1;
-    private String name;
-    private String description;
-    private LocalDate date;
-    private double rideLengthKm;
-    private double averageSpeed;
-    private double totalRideTime;
-    private String imgUrl;
-    private List<GeoPoint> geoPoints;
+    @PrimaryKey(autoGenerate = true)
+    public int id;
+    //private static int numberOfRides = 1;
+    public String name;
+    public String description;
+    public String date;
+    public double rideLengthKm;
+    public double averageSpeed;
+    public double totalRideTime;
+    public String imgUrl;
+    @TypeConverters({Converters.class})
+    public List<GeoPoint> geoPoints;
 
 
-    public Ride(String name, String description, LocalDate date, double rideLengthKm, double averageSpeed, double totalRideTime, String imgUrl, List<GeoPoint> geoPoints) {
-        this.id = numberOfRides;
+    public Ride(String name, String description, String date, double rideLengthKm, double averageSpeed, double totalRideTime, String imgUrl, List<GeoPoint> geoPoints) {
+        //this.id = numberOfRides;
         this.name = name;
         this.description = description;
         this.date = date;
@@ -28,7 +34,7 @@ public class Ride {
         this.totalRideTime = totalRideTime;
         this.imgUrl = imgUrl;
         this.geoPoints = geoPoints;
-        numberOfRides++;
+        //numberOfRides++;
     }
 
     public int getId() {
@@ -55,12 +61,12 @@ public class Ride {
         this.description = description;
     }
 
-    public LocalDate getDate() {
+    public String getDate() {
         return date;
     }
 
     public void setDate(LocalDate date) {
-        this.date = date;
+        this.date = date.toString();
     }
 
     public double getRideLengthKm() {
@@ -95,10 +101,10 @@ public class Ride {
         this.totalRideTime = totalRideTime;
     }
 
-    public static int getNumberOfRides()
-    {
-        return numberOfRides;
-    }
+//    public static int getNumberOfRides()
+//    {
+//        return numberOfRides;
+//    }
     public List<GeoPoint> getGeoPoints()
     {
         return geoPoints;

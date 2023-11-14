@@ -45,10 +45,13 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class RecordRideService extends Service
 {
-    private FusedLocationProviderClient mFusedLocationClient;
-    private LocationRequest locationRequest;
+    @Inject
+    FusedLocationProviderClient mFusedLocationClient;
+    @Inject
+    LocationRequest locationRequest;
     private LocationCallback locationCallback;
-    private LocalBroadcastManager broadcaster;
+    @Inject
+    LocalBroadcastManager broadcaster;
     private double latitude, longitude;
     private List<GeoPoint> geoPointList;
     private GeoPoint lastKnownGeoPoint;
@@ -74,17 +77,8 @@ public class RecordRideService extends Service
     public int onStartCommand(Intent intent, int flags, int startId)
     {
         Log.v("ABC", "service started");
-
-
         startForeground(1001, getNotification());
         Log.v("ABC", "onCreate");
-        broadcaster = LocalBroadcastManager.getInstance(this);
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000)
-                .setWaitForAccurateLocation(false)
-                .setMinUpdateIntervalMillis(500)
-                .setMaxUpdateDelayMillis(1000)
-                .build();
         locationCallback = new LocationCallback()
         {
             @Override
@@ -151,7 +145,7 @@ public class RecordRideService extends Service
 
     public void saveRide()
     {
-        rideDao.addNewRide(new Ride("Wednesday Evening Ride", "This is a Example Ride Description", LocalDate.now(), dist, avSpeed, elapsedTime,
+        rideDao.addNewRide(new Ride("Wednesday Evening Ride", "This is a Example Ride Description", LocalDate.now().toString(), dist, avSpeed, elapsedTime,
                 "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", geoPointList));
 
     }

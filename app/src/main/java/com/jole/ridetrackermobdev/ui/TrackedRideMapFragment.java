@@ -27,8 +27,9 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.jole.ridetrackermobdev.model.DaoInterface;
-import com.jole.ridetrackermobdev.model.RideDao;
+
 import com.jole.ridetrackermobdev.model.Ride;
+import com.jole.ridetrackermobdev.model.RideRepository;
 
 import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
@@ -101,7 +102,7 @@ public class TrackedRideMapFragment extends Fragment
     private  List<GeoPoint> mGeoPoints;
     private double rideLength;
     @Inject
-    DaoInterface rideDao;
+    RideRepository rideRepository;
 
     public static TrackedRideMapFragment newInstance(int rideId)
     {
@@ -127,7 +128,7 @@ public class TrackedRideMapFragment extends Fragment
 
         }
         Log.v("ABC", Integer.toString(rideId));
-        ride = rideDao.findRideById(rideId);
+        ride = rideRepository.findRideById(rideId);
         if (ride.isPresent())
         {
             mGeoPoints = ride.get().getGeoPoints();

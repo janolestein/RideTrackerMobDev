@@ -3,7 +3,6 @@ package com.jole.ridetrackermobdev.controller;
 import android.app.Application;
 
 import com.jole.ridetrackermobdev.model.DaoInterface;
-import com.jole.ridetrackermobdev.model.RideDao;
 
 import dagger.Binds;
 import dagger.Module;

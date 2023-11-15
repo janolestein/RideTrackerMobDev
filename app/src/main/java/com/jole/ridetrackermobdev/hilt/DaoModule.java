@@ -7,7 +7,7 @@ import androidx.room.Room;
 
 import com.jole.ridetrackermobdev.model.DaoInterface;
 import com.jole.ridetrackermobdev.model.Ride;
-import com.jole.ridetrackermobdev.model.RideDao;
+
 import com.jole.ridetrackermobdev.model.RideDatabase;
 
 import javax.inject.Singleton;
@@ -40,7 +40,6 @@ public class DaoModule
                 context,
                 RideDatabase.class,
                 "rideDb")
-                .allowMainThreadQueries()
                 .build();
 
     }

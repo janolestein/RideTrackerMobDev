@@ -3,6 +3,8 @@ package com.jole.ridetrackermobdev.ui;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -11,11 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jole.ridetrackermobdev.R;
+import com.jole.ridetrackermobdev.controller.MainFragmentsViewModel;
 import com.jole.ridetrackermobdev.model.DaoInterface;
 import com.jole.ridetrackermobdev.model.Ride;
-import com.jole.ridetrackermobdev.model.RideDao;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -31,8 +34,7 @@ public class TrackedRidesFragment extends Fragment
 {
     private RecyclerView recViewAllRides;
     private RideItemRecViewAdapter adapter;
-    @Inject
-    DaoInterface rideDao;
+    private MainFragmentsViewModel mainFragmentsViewModel;
 
     public static TrackedRidesFragment newInstance(String param1, String param2)
     {
@@ -46,6 +48,8 @@ public class TrackedRidesFragment extends Fragment
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        mainFragmentsViewModel = new ViewModelProvider(requireActivity()).get(MainFragmentsViewModel.class);
+
     }
 
     @Override
@@ -59,7 +63,15 @@ public class TrackedRidesFragment extends Fragment
         recViewAllRides = view.findViewById(R.id.recViewAllRides);
         recViewAllRides.setAdapter(adapter);
         recViewAllRides.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        adapter.setRides((ArrayList<Ride>) rideDao.getAllRidesList());
+        mainFragmentsViewModel.getAllRides().observe(getActivity(), new Observer<List<Ride>>()
+        {
+            @Override
+            public void onChanged(List<Ride> rides)
+            {
+                adapter.setRides(rides);
+            }
+        });
+
 
         return view;
     }

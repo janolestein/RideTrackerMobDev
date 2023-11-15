@@ -1,5 +1,6 @@
 package com.jole.ridetrackermobdev.model;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -17,7 +18,7 @@ public interface DaoInterface
     @Delete
     void removeRide(Ride ride);
     @Query("SELECT * FROM Ride")
-    List<Ride> getAllRidesList();
+    LiveData<List<Ride>> getAllRidesList();
     @Query("SELECT * FROM Ride WHERE id LIKE :id LIMIT 1")
     Optional<Ride> findRideById(int id);
 

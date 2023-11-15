@@ -12,8 +12,9 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.jole.ridetrackermobdev.R;
 import com.jole.ridetrackermobdev.model.DaoInterface;
-import com.jole.ridetrackermobdev.model.RideDao;
+
 import com.jole.ridetrackermobdev.model.Ride;
+import com.jole.ridetrackermobdev.model.RideRepository;
 
 import java.util.Optional;
 
@@ -29,8 +30,7 @@ public class RideDetailActivity extends AppCompatActivity {
     private Button btnViewMap;
     private int rideId;
     @Inject
-    DaoInterface rideDao;
-    @Override
+    RideRepository rideRepository;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride_detail);
@@ -43,7 +43,7 @@ public class RideDetailActivity extends AppCompatActivity {
             this.finish();
         }
 
-        Optional<Ride> ride = rideDao.findRideById(rideId);
+        Optional<Ride> ride = rideRepository.findRideById(rideId);
 
         if (!ride.isPresent()) {
             Toast.makeText(this, "Something went wrong, please try again: Could not retrieve Ride by ID", Toast.LENGTH_SHORT).show();

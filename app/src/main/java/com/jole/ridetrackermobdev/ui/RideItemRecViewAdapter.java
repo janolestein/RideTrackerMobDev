@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.jole.ridetrackermobdev.R;
 import com.jole.ridetrackermobdev.model.DaoInterface;
-import com.jole.ridetrackermobdev.model.RideDao;
+
 import com.jole.ridetrackermobdev.model.Ride;
 
 import java.util.ArrayList;
@@ -29,8 +29,6 @@ import dagger.hilt.android.AndroidEntryPoint;
 public class RideItemRecViewAdapter extends RecyclerView.Adapter<RideItemRecViewAdapter.ViewHolder>{
 
     private List<Ride> rideList = new ArrayList<>();
-    @Inject
-    DaoInterface rideDao;
 
     private Context context;
 

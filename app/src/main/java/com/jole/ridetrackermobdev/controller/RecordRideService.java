@@ -29,8 +29,9 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.Priority;
 import com.jole.ridetrackermobdev.model.DaoInterface;
-import com.jole.ridetrackermobdev.model.RideDao;
+
 import com.jole.ridetrackermobdev.model.Ride;
+import com.jole.ridetrackermobdev.model.RideRepository;
 
 import org.osmdroid.util.GeoPoint;
 
@@ -61,7 +62,7 @@ public class RecordRideService extends Service
     private double startTime = 0D;
     private double avSpeed = 0D;
     @Inject
-    DaoInterface rideDao;
+    RideRepository rideRepository;
 
     public RecordRideService()
     {
@@ -145,7 +146,7 @@ public class RecordRideService extends Service
 
     public void saveRide()
     {
-        rideDao.addNewRide(new Ride("Wednesday Evening Ride", "This is a Example Ride Description", LocalDate.now().toString(), dist, avSpeed, elapsedTime,
+        rideRepository.addNewRide(new Ride("Wednesday Evening Ride", "This is a Example Ride Description", LocalDate.now().toString(), dist, avSpeed, elapsedTime,
                 "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", geoPointList));
 
     }

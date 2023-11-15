@@ -3,6 +3,7 @@ package com.jole.ridetrackermobdev.model;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.room.Delete;
 import androidx.room.Query;
 
@@ -20,6 +21,7 @@ public class RideRepository
 
     DaoInterface rideDao;
     private LiveData<List<Ride>> allRides;
+    private MutableLiveData<double[]> rideServiceUiState = new MutableLiveData<double[]>(new double[]{0, 0, 0});
 
 
 
@@ -27,6 +29,14 @@ public class RideRepository
     {
         this.rideDao = rideDao;
         allRides = rideDao.getAllRidesList();
+    }
+
+    public LiveData<double[]> getRideServiceUiState() {
+        return rideServiceUiState;
+    }
+
+    public void setRideServiceUiState(double[] rideServiceUiState) {
+        this.rideServiceUiState.setValue(rideServiceUiState);
     }
 
     public void addNewRide(Ride ride)

@@ -13,6 +13,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.view.LayoutInflater;
@@ -22,6 +24,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.jole.ridetrackermobdev.R;
+import com.jole.ridetrackermobdev.controller.MainFragmentsViewModel;
 import com.jole.ridetrackermobdev.controller.RecordRideService;
 
 
@@ -30,6 +33,7 @@ public class RecordRideFragment extends Fragment
     private Button btnStartRecord, btnStopRecord;
     private BroadcastReceiver receiver;
     private TextView tvDistanceVar, tvAverageSpeedVar, tvElapsedTimeVar;
+    private MainFragmentsViewModel mainFragmentsViewModel;
 
     public RecordRideFragment()
     {
@@ -45,6 +49,7 @@ public class RecordRideFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+        mainFragmentsViewModel = new ViewModelProvider(requireActivity()).get(MainFragmentsViewModel.class);
         super.onCreate(savedInstanceState);
     }
 
@@ -92,23 +97,33 @@ public class RecordRideFragment extends Fragment
             btnStopRecord.setVisibility(View.GONE);
         });
 
+        mainFragmentsViewModel.getUiState().observe(getActivity(), new Observer<double[]>() {
+            @Override
+            public void onChanged(double[] doubles) {
+                tvDistanceVar.setText(Double.toString(doubles[0]));
+                tvElapsedTimeVar.setText(Double.toString(doubles[1] / 1000));
+                tvAverageSpeedVar.setText(Double.toString(doubles[2]));
+
+            }
+        });
+
 
         super.onViewCreated(view, savedInstanceState);
 
-        receiver = new BroadcastReceiver()
-        {
-            @Override
-            public void onReceive(Context context, Intent intent)
-            {
-                double dist = intent.getDoubleExtra("distance", -1);
-                double elapsedTime = intent.getDoubleExtra("elapsedTime", -1);
-                double avSpeed = intent.getDoubleExtra("avSpeed", -1);
-
-                tvDistanceVar.setText(Double.toString(dist));
-                tvAverageSpeedVar.setText(Double.toString(avSpeed));
-                tvElapsedTimeVar.setText(Double.toString(elapsedTime / 1000));
-            }
-        };
+//        receiver = new BroadcastReceiver()
+//        {
+//            @Override
+//            public void onReceive(Context context, Intent intent)
+//            {
+//                double dist = intent.getDoubleExtra("distance", -1);
+//                double elapsedTime = intent.getDoubleExtra("elapsedTime", -1);
+//                double avSpeed = intent.getDoubleExtra("avSpeed", -1);
+//
+//                tvDistanceVar.setText(Double.toString(dist));
+//                tvAverageSpeedVar.setText(Double.toString(avSpeed));
+//                tvElapsedTimeVar.setText(Double.toString(elapsedTime / 1000));
+//            }
+//        };
 
     }
 
@@ -117,13 +132,12 @@ public class RecordRideFragment extends Fragment
     {
         super.onResume();
 
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver((receiver), new IntentFilter("loc"));
+
     }
 
     @Override
     public void onStop()
     {
-        LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(receiver);
         super.onStop();
     }
 

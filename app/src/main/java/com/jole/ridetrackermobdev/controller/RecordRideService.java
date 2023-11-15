@@ -20,6 +20,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.lifecycle.MutableLiveData;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -63,6 +64,8 @@ public class RecordRideService extends Service
     private double avSpeed = 0D;
     @Inject
     RideRepository rideRepository;
+
+
 
     public RecordRideService()
     {
@@ -109,7 +112,7 @@ public class RecordRideService extends Service
                             avSpeed = dist / (elapsedTime / (1000 *  (60 * 60)));
                             Log.v("ABC", Double.toString(dist));
                             lastKnownGeoPoint = current;
-                            sendResult(dist, elapsedTime, avSpeed);
+                            rideRepository.setRideServiceUiState(new double[]{dist, elapsedTime, avSpeed});
                         }
 
 
@@ -148,7 +151,7 @@ public class RecordRideService extends Service
     {
         rideRepository.addNewRide(new Ride("Wednesday Evening Ride", "This is a Example Ride Description", LocalDate.now().toString(), dist, avSpeed, elapsedTime,
                 "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", geoPointList));
-
+        rideRepository.setRideServiceUiState(new double[]{0, 0, 0});
     }
 
 
@@ -168,16 +171,6 @@ public class RecordRideService extends Service
                 Looper.getMainLooper());
     }
 
-    public void sendResult(double dist, double elapsedTime, double avSpeed)
-    {
-        Intent intent = new Intent();
-        intent.setAction("loc");
-        intent.putExtra("distance", dist);
-        intent.putExtra("elapsedTime", elapsedTime);
-        intent.putExtra("avSpeed", avSpeed);
-        Log.v("ABC", "sendresult");
-        broadcaster.sendBroadcast(intent);
-    }
 
     public Notification getNotification()
     {

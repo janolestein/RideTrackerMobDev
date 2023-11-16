@@ -33,6 +33,7 @@ import com.jole.ridetrackermobdev.model.DaoInterface;
 
 import com.jole.ridetrackermobdev.model.Ride;
 import com.jole.ridetrackermobdev.model.RideRepository;
+import com.jole.ridetrackermobdev.model.RideRepositoryInterface;
 
 import org.osmdroid.util.GeoPoint;
 

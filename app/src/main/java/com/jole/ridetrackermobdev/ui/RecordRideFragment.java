@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -97,9 +98,12 @@ public class RecordRideFragment extends Fragment
             btnStopRecord.setVisibility(View.GONE);
         });
 
-        mainFragmentsViewModel.getUiState().observe(getActivity(), new Observer<double[]>() {
+        mainFragmentsViewModel.getUiState().observe(getViewLifecycleOwner(), new Observer<double[]>()
+        {
             @Override
-            public void onChanged(double[] doubles) {
+            public void onChanged(double[] doubles)
+            {
+                Log.v("ABC", "onChanged");
                 tvDistanceVar.setText(Double.toString(doubles[0]));
                 tvElapsedTimeVar.setText(Double.toString(doubles[1] / 1000));
                 tvAverageSpeedVar.setText(Double.toString(doubles[2]));
@@ -110,36 +114,6 @@ public class RecordRideFragment extends Fragment
 
         super.onViewCreated(view, savedInstanceState);
 
-//        receiver = new BroadcastReceiver()
-//        {
-//            @Override
-//            public void onReceive(Context context, Intent intent)
-//            {
-//                double dist = intent.getDoubleExtra("distance", -1);
-//                double elapsedTime = intent.getDoubleExtra("elapsedTime", -1);
-//                double avSpeed = intent.getDoubleExtra("avSpeed", -1);
-//
-//                tvDistanceVar.setText(Double.toString(dist));
-//                tvAverageSpeedVar.setText(Double.toString(avSpeed));
-//                tvElapsedTimeVar.setText(Double.toString(elapsedTime / 1000));
-//            }
-//        };
-
     }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-
-
-    }
-
-    @Override
-    public void onStop()
-    {
-        super.onStop();
-    }
-
 
 }

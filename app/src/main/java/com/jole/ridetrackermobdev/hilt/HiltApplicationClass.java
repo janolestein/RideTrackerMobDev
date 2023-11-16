@@ -1,4 +1,4 @@
-package com.jole.ridetrackermobdev.controller;
+package com.jole.ridetrackermobdev.hilt;
 
 import android.app.Application;
 

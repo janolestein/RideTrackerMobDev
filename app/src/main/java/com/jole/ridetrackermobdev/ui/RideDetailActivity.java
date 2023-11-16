@@ -1,6 +1,7 @@
 package com.jole.ridetrackermobdev.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,10 +12,13 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.jole.ridetrackermobdev.R;
+import com.jole.ridetrackermobdev.controller.MainFragmentsViewModel;
+import com.jole.ridetrackermobdev.controller.RideDetailViewModel;
 import com.jole.ridetrackermobdev.model.DaoInterface;
 
 import com.jole.ridetrackermobdev.model.Ride;
 import com.jole.ridetrackermobdev.model.RideRepository;
+import com.jole.ridetrackermobdev.model.RideRepositoryInterface;
 
 import java.util.Optional;
 
@@ -23,17 +27,19 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 @AndroidEntryPoint
-public class RideDetailActivity extends AppCompatActivity {
-
+public class RideDetailActivity extends AppCompatActivity
+{
     private ImageView ivRideScrennshotDetail;
     private TextView tvRideTitelDetail, tvDateDetail, tvDescDetail, tvDistanceTitelDetail, tvAvSpeedDetailTitel, tvTimeVar, tvTimeTitel, tvDistanceVarDetail, tvAvSpeedVar;
     private Button btnViewMap;
     private int rideId;
-    @Inject
-    RideRepository rideRepository;
-    protected void onCreate(Bundle savedInstanceState) {
+    private RideDetailViewModel rideDetailViewModel;
+
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ride_detail);
+        rideDetailViewModel = new ViewModelProvider(this).get(RideDetailViewModel.class);
 
         initViews();
         rideId = getIntent().getIntExtra("RideId", -1);
@@ -43,9 +49,10 @@ public class RideDetailActivity extends AppCompatActivity {
             this.finish();
         }
 
-        Optional<Ride> ride = rideRepository.findRideById(rideId);
+        Optional<Ride> ride = rideDetailViewModel.findRideById(rideId);
 
-        if (!ride.isPresent()) {
+        if (!ride.isPresent())
+        {
             Toast.makeText(this, "Something went wrong, please try again: Could not retrieve Ride by ID", Toast.LENGTH_SHORT).show();
             this.finish();
         }
@@ -74,7 +81,8 @@ public class RideDetailActivity extends AppCompatActivity {
 
     }
 
-    private void initViews() {
+    private void initViews()
+    {
         ivRideScrennshotDetail = findViewById(R.id.ivRideScrennshotDetail);
         tvRideTitelDetail = findViewById(R.id.tvRideTitelDetail);
         tvDateDetail = findViewById(R.id.tvDateDetail);

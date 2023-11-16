@@ -16,7 +16,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 
-public class RideRepository
+public class RideRepository implements RideRepositoryInterface
 {
 
     DaoInterface rideDao;
@@ -25,13 +25,16 @@ public class RideRepository
 
 
 
+    @Inject
     public RideRepository(DaoInterface rideDao)
     {
         this.rideDao = rideDao;
         allRides = rideDao.getAllRidesList();
+
     }
 
     public LiveData<double[]> getRideServiceUiState() {
+
         return rideServiceUiState;
     }
 

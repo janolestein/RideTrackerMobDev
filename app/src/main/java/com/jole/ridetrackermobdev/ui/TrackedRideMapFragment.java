@@ -17,6 +17,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -26,10 +27,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.jole.ridetrackermobdev.controller.RideDetailViewModel;
 import com.jole.ridetrackermobdev.model.DaoInterface;
 
 import com.jole.ridetrackermobdev.model.Ride;
 import com.jole.ridetrackermobdev.model.RideRepository;
+import com.jole.ridetrackermobdev.model.RideRepositoryInterface;
 
 import org.osmdroid.util.BoundingBox;
 import org.osmdroid.util.GeoPoint;
@@ -101,8 +104,7 @@ public class TrackedRideMapFragment extends Fragment
 
     private  List<GeoPoint> mGeoPoints;
     private double rideLength;
-    @Inject
-    RideRepository rideRepository;
+    RideDetailViewModel rideDetailViewModel;
 
     public static TrackedRideMapFragment newInstance(int rideId)
     {
@@ -118,6 +120,7 @@ public class TrackedRideMapFragment extends Fragment
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
+        rideDetailViewModel = new ViewModelProvider(requireActivity()).get(RideDetailViewModel.class);
         super.onCreate(savedInstanceState);
         int rideId = -1;
         Optional<Ride> ride;
@@ -128,7 +131,7 @@ public class TrackedRideMapFragment extends Fragment
 
         }
         Log.v("ABC", Integer.toString(rideId));
-        ride = rideRepository.findRideById(rideId);
+        ride = rideDetailViewModel.findRideById(rideId);
         if (ride.isPresent())
         {
             mGeoPoints = ride.get().getGeoPoints();

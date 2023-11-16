@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.jole.ridetrackermobdev.model.DaoInterface;
 import com.jole.ridetrackermobdev.model.RideRepository;
+import com.jole.ridetrackermobdev.model.RideRepositoryInterface;
 
 import javax.inject.Singleton;
 
@@ -20,7 +21,9 @@ public class RideRepositoryModule
 {
     @Singleton
     @Provides
-    public RideRepository provideRideRepositoryModule(DaoInterface rideDao){
+    public RideRepository bindRideRepository(DaoInterface rideDao)
+    {
         return new RideRepository(rideDao);
     }
+
 }

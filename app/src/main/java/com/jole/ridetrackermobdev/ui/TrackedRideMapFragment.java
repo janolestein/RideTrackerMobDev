@@ -389,17 +389,17 @@ public class TrackedRideMapFragment extends Fragment
     private List<GeoPoint> getGeoPoints()
     {
         final List<GeoPoint> pts = new ArrayList<>();
-        pts.add(new GeoPoint(52.458159970620216, 13.527038899381642)); // saint paul
-        pts.add(new GeoPoint(52.46051831693104, 13.521824258809318)); // hôtel de ville
-        pts.add(new GeoPoint(52.46187056912226, 13.516528352449457)); // louvre 1
-        pts.add(new GeoPoint(52.46330523870933, 13.510321300073972)); // louvre 2
-        pts.add(new GeoPoint(52.462761066704125, 13.506884073289987)); // opéra loop 1
-        pts.add(new GeoPoint(52.46080964195072, 13.503933924512413)); // opéra loop 2
-        pts.add(new GeoPoint(52.46082614030988, 13.501795751994008)); // opéra loop 3
-        pts.add(new GeoPoint(52.45821491925012, 13.497420340748592)); // opéra loop 4
-        pts.add(new GeoPoint(52.46126039973983, 13.4932430495305)); // opéra loop 5
-        pts.add(new GeoPoint(52.46363503504482, 13.489868695841839)); // opéra loop 6
-        pts.add(new GeoPoint(52.4661139469194, 13.495570882101445)); // opéra loop 7
+        pts.add(new GeoPoint(52.458159970620216, 13.527038899381642));
+        pts.add(new GeoPoint(52.46051831693104, 13.521824258809318));
+        pts.add(new GeoPoint(52.46187056912226, 13.516528352449457));
+        pts.add(new GeoPoint(52.46330523870933, 13.510321300073972));
+        pts.add(new GeoPoint(52.462761066704125, 13.506884073289987));
+        pts.add(new GeoPoint(52.46080964195072, 13.503933924512413));
+        pts.add(new GeoPoint(52.46082614030988, 13.501795751994008));
+        pts.add(new GeoPoint(52.45821491925012, 13.497420340748592));
+        pts.add(new GeoPoint(52.46126039973983, 13.4932430495305));
+        pts.add(new GeoPoint(52.46363503504482, 13.489868695841839));
+        pts.add(new GeoPoint(52.4661139469194, 13.495570882101445));
         return pts;
     }
 }

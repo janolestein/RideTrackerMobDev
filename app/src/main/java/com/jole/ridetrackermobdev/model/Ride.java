@@ -123,4 +123,19 @@ public class Ride {
     {
         this.geoPoints = geoPoints;
     }
+
+    @Override
+    public String toString() {
+        return "Ride{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", date='" + date + '\'' +
+                ", rideLengthKm=" + rideLengthKm +
+                ", averageSpeed=" + averageSpeed +
+                ", totalRideTime=" + totalRideTime +
+                ", imgUrl='" + imgUrl + '\'' +
+                ", geoPoints=" + geoPoints +
+                '}';
+    }
 }

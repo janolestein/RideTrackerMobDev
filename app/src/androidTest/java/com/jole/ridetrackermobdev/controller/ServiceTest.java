@@ -1,4 +1,4 @@
-package com.jole.ridetrackermobdev;
+package com.jole.ridetrackermobdev.controller;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;

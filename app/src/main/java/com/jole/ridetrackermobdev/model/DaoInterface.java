@@ -19,6 +19,8 @@ public interface DaoInterface
     void removeRide(Ride ride);
     @Query("SELECT * FROM Ride")
     LiveData<List<Ride>> getAllRidesList();
+    @Query("SELECT * FROM Ride")
+    List<Ride> getAllRidesListSync();
     @Query("SELECT * FROM Ride WHERE id LIKE :id LIMIT 1")
     Optional<Ride> findRideById(int id);
 

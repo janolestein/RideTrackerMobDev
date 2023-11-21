@@ -15,7 +15,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.jole.ridetrackermobdev.hilt.HiltCustomTestRunner"
     }
 
     buildTypes {
@@ -55,6 +55,13 @@ dependencies {
     testImplementation ("androidx.room:room-testing:2.6.0")
     implementation ("androidx.room:room-paging:2.6.0")
     implementation ("com.google.code.gson:gson:2.10.1")
+    testAnnotationProcessor ("com.google.dagger:hilt-android-compiler:2.44")
+    androidTestImplementation ("com.google.dagger:hilt-android-testing:2.44")
+    androidTestAnnotationProcessor ("com.google.dagger:hilt-android-compiler:2.44")
+    androidTestImplementation ("androidx.arch.core:core-testing:2.2.0")
+    testImplementation ("androidx.arch.core:core-testing:2.2.0")
+    testImplementation ("org.mockito:mockito-core:3.10.0")
+    androidTestImplementation ("org.mockito:mockito-android:3.10.0")
 
 
 }

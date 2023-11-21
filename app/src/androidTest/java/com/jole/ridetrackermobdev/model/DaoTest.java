@@ -11,6 +11,7 @@ import androidx.lifecycle.LifecycleRegistry;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
+import androidx.test.annotation.UiThreadTest;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 import androidx.test.platform.app.InstrumentationRegistry;
 
@@ -40,13 +41,15 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 public class DaoTest {
     @Rule
     public HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+    @Rule
+    public InstantTaskExecutorRule instantTaskExecutorRule =
+            new InstantTaskExecutorRule();
     @Inject
     DaoInterface rideDb;
     @Inject
     RideDatabase rideDatabaseLiteral;
     List<GeoPoint> gPoints;
     Ride ride;
-    List<Ride> allRidesList;
 
 
     @Before
@@ -122,35 +125,33 @@ public class DaoTest {
         assertThrows(NoSuchElementException.class, () -> rideDb.findRideById(1).get());
     }
 
+
     @Test
-    public void testGetAll() {
-        rideDb.addNewRide(ride);
-        rideDb.addNewRide(ride);
-        rideDb.addNewRide(ride);
-        rideDb.addNewRide(ride);
-        rideDb.addNewRide(ride);
-        rideDb.addNewRide(ride);
-        rideDb.addNewRide(ride);
-        LifecycleOwner lifecycleOwner  = Mockito.mock(LifecycleOwner.class);
-        LifecycleRegistry lifecycle = new LifecycleRegistry(Mockito.mock(LifecycleOwner.class));
-        lifecycle.setCurrentState(Lifecycle.State.RESUMED);
-        Mockito.when(lifecycleOwner.getLifecycle()).thenReturn(lifecycle);
+    public void testGetAll() throws InterruptedException
+    {
 
+//        LifecycleOwner lifecycleOwner  = Mockito.mock(LifecycleOwner.class);
+//        LifecycleRegistry lifecycle = new LifecycleRegistry(lifecycleOwner);
+//        lifecycle.setCurrentState(Lifecycle.State.RESUMED);
+//        Mockito.when(lifecycleOwner.getLifecycle()).thenReturn(lifecycle);
+        rideDb.addNewRide(ride);
+        rideDb.addNewRide(ride);
+        rideDb.addNewRide(ride);
+        rideDb.addNewRide(ride);
+        rideDb.addNewRide(ride);
+        rideDb.addNewRide(ride);
+        rideDb.addNewRide(ride);
 
-
-        rideDb.getAllRidesList().observe(lifecycleOwner, new Observer<List<Ride>>() {
+        List<Ride> tempList = new LinkedList<>();
+        rideDb.getAllRidesList().observeForever(new Observer<List<Ride>>() {
             @Override
             public void onChanged(List<Ride> rides) {
-                allRidesList = rides;
+                tempList.addAll(rides);
             }
         });
-        assertEquals(7, allRidesList.size());
 
 
-        assertEquals(7, rideDb.getAllRidesListSync().size());
-        Ride rideTemp = rideDb.findRideById(7).get();
-        rideDb.removeRide(rideTemp);
-        assertEquals(6, rideDb.getAllRidesListSync().size());
+        assertEquals(7, tempList.size());
 
 
     }

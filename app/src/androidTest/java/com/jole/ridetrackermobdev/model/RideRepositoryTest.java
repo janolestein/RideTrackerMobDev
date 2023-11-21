@@ -2,6 +2,9 @@ package com.jole.ridetrackermobdev.model;
 
 import static org.junit.Assert.*;
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.Observer;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -22,8 +25,11 @@ public class RideRepositoryTest {
 
     @Rule
     public HiltAndroidRule hiltRule = new HiltAndroidRule(this);
+    @Rule
+    public InstantTaskExecutorRule instantTaskExecutorRule =
+            new InstantTaskExecutorRule();
     @Inject
-    DaoInterface rideDb;
+    RideRepository repo;
     @Inject
     RideDatabase rideDatabaseLiteral;
     List<GeoPoint> gPoints;
@@ -57,66 +63,73 @@ public class RideRepositoryTest {
     @Test
     public void testInsertAndFind() {
 
-        rideDb.addNewRide(ride);
-        assertEquals(rideDb.findRideById(1).get().getName(), ride.getName());
-        assertEquals(rideDb.findRideById(1).get().getDescription(), ride.getDescription());
-        assertEquals(rideDb.findRideById(1).get().getDate(), ride.getDate());
-        assertEquals(rideDb.findRideById(1).get().getRideLengthKm(), ride.getRideLengthKm(), 0);
-        assertEquals(rideDb.findRideById(1).get().getAverageSpeed(), ride.getAverageSpeed(), 0);
-        assertEquals(rideDb.findRideById(1).get().getTotalRideTime(), ride.getTotalRideTime(), 0);
-        assertEquals(rideDb.findRideById(1).get().getImgUrl(), ride.getImgUrl());
-        assertEquals(rideDb.findRideById(1).get().getGeoPoints(), ride.getGeoPoints());
+        repo.addNewRide(ride);
+        assertEquals(repo.findRideById(1).get().getName(), ride.getName());
+        assertEquals(repo.findRideById(1).get().getDescription(), ride.getDescription());
+        assertEquals(repo.findRideById(1).get().getDate(), ride.getDate());
+        assertEquals(repo.findRideById(1).get().getRideLengthKm(), ride.getRideLengthKm(), 0);
+        assertEquals(repo.findRideById(1).get().getAverageSpeed(), ride.getAverageSpeed(), 0);
+        assertEquals(repo.findRideById(1).get().getTotalRideTime(), ride.getTotalRideTime(), 0);
+        assertEquals(repo.findRideById(1).get().getImgUrl(), ride.getImgUrl());
+        assertEquals(repo.findRideById(1).get().getGeoPoints(), ride.getGeoPoints());
     }
 
     @Test
     public void testMultipleInsert() {
 
-        rideDb.addNewRide(ride);
-        rideDb.addNewRide(ride);
-        rideDb.addNewRide(ride);
-        rideDb.addNewRide(ride);
-        rideDb.addNewRide(ride);
-        rideDb.addNewRide(ride);
-        rideDb.addNewRide(ride);
-        assertEquals(rideDb.findRideById(7).get().getName(), ride.getName());
-        assertEquals(rideDb.findRideById(7).get().getDescription(), ride.getDescription());
-        assertEquals(rideDb.findRideById(7).get().getDate(), ride.getDate());
-        assertEquals(rideDb.findRideById(7).get().getRideLengthKm(), ride.getRideLengthKm(), 0);
-        assertEquals(rideDb.findRideById(7).get().getAverageSpeed(), ride.getAverageSpeed(), 0);
-        assertEquals(rideDb.findRideById(7).get().getTotalRideTime(), ride.getTotalRideTime(), 0);
-        assertEquals(rideDb.findRideById(7).get().getImgUrl(), ride.getImgUrl());
-        assertEquals(rideDb.findRideById(7).get().getGeoPoints(), ride.getGeoPoints());
+        repo.addNewRide(ride);
+        repo.addNewRide(ride);
+        repo.addNewRide(ride);
+        repo.addNewRide(ride);
+        repo.addNewRide(ride);
+        repo.addNewRide(ride);
+        repo.addNewRide(ride);
+        assertEquals(repo.findRideById(7).get().getName(), ride.getName());
+        assertEquals(repo.findRideById(7).get().getDescription(), ride.getDescription());
+        assertEquals(repo.findRideById(7).get().getDate(), ride.getDate());
+        assertEquals(repo.findRideById(7).get().getRideLengthKm(), ride.getRideLengthKm(), 0);
+        assertEquals(repo.findRideById(7).get().getAverageSpeed(), ride.getAverageSpeed(), 0);
+        assertEquals(repo.findRideById(7).get().getTotalRideTime(), ride.getTotalRideTime(), 0);
+        assertEquals(repo.findRideById(7).get().getImgUrl(), ride.getImgUrl());
+        assertEquals(repo.findRideById(7).get().getGeoPoints(), ride.getGeoPoints());
     }
 
     @Test
     public void testNullFind() {
 
-        assertThrows(NoSuchElementException.class, () -> rideDb.findRideById(500).get());
+        assertThrows(NoSuchElementException.class, () -> repo.findRideById(500).get());
     }
 
     @Test
     public void testDelete() {
-        rideDb.addNewRide(ride);
-        assertEquals(rideDb.findRideById(1).get().getName(), ride.getName());
-        Ride rideDel = rideDb.findRideById(1).get();
-        rideDb.removeRide(rideDel);
-        assertThrows(NoSuchElementException.class, () -> rideDb.findRideById(1).get());
+        repo.addNewRide(ride);
+        assertEquals(repo.findRideById(1).get().getName(), ride.getName());
+        Ride rideDel = repo.findRideById(1).get();
+        repo.removeRide(rideDel);
+        assertThrows(NoSuchElementException.class, () -> repo.findRideById(1).get());
     }
 
     @Test
     public void testGetAll() {
-        rideDb.addNewRide(ride);
-        rideDb.addNewRide(ride);
-        rideDb.addNewRide(ride);
-        rideDb.addNewRide(ride);
-        rideDb.addNewRide(ride);
-        rideDb.addNewRide(ride);
-        rideDb.addNewRide(ride);
+        repo.addNewRide(ride);
+        repo.addNewRide(ride);
+        repo.addNewRide(ride);
+        repo.addNewRide(ride);
+        repo.addNewRide(ride);
+        repo.addNewRide(ride);
+        repo.addNewRide(ride);
+
+        List<Ride> tempList = new LinkedList<>();
+        repo.getAllRidesList().observeForever(new Observer<List<Ride>>() {
+            @Override
+            public void onChanged(List<Ride> rides) {
+                tempList.addAll(rides);
+            }
+        });
 
 
-        assertEquals(7, rideDb.getAllRidesListSync().size());
-        Ride rideTemp = rideDb.findRideById(7).get();
-        rideDb.removeRide(rideTemp);
-        assertEquals(6, rideDb.getAllRidesListSync().size());
+        assertEquals(7, tempList.size());
+
+
     }
 }

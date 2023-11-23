@@ -24,6 +24,7 @@ import dagger.hilt.testing.TestInstallIn;
 public class DaoModuleMock
 {
 
+    @Singleton
     @Provides
     public DaoInterface provideDaoInterface(RideDatabase rideDb)
     {

@@ -9,6 +9,8 @@ import androidx.lifecycle.Observer;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.osmdroid.util.GeoPoint;
 
 import java.time.LocalDate;
@@ -31,9 +33,10 @@ public class RideRepositoryTest {
     public InstantTaskExecutorRule instantTaskExecutorRule =
             new InstantTaskExecutorRule();
     @Inject
-    RideRepository repo;
-    @Inject
     RideDatabase rideDatabaseLiteral;
+    @Mock
+    DaoInterface dao;
+    RideRepository repo = new RideRepository(dao);
     List<GeoPoint> gPoints;
     Ride ride;
     double[] liveDataArr;
@@ -41,7 +44,7 @@ public class RideRepositoryTest {
 
     @Before
     public void init() {
-        hiltRule.inject();
+        MockitoAnnotations.openMocks(this);
 
         gPoints = new LinkedList<>();
         gPoints.add(new GeoPoint(52.458159970620216, 13.527038899381642));

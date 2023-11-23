@@ -27,10 +27,10 @@ public class FusedLocationProviderModuleMock
     @Provides
     public FusedLocationProviderClient provideFusedLocationProvider(@ApplicationContext Context context)
     {
-       return LocationServices.getFusedLocationProviderClient(context);
-//       FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(context);
-//       client.setMockMode(true);
-//       return client;
+//       return LocationServices.getFusedLocationProviderClient(context);
+       FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(context);
+       client.setMockMode(true);
+       return client;
     }
 }
 

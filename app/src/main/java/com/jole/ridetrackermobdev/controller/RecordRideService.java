@@ -1,5 +1,6 @@
 package com.jole.ridetrackermobdev.controller;
 
+import static androidx.core.app.ActivityCompat.requestPermissions;
 import static androidx.core.app.NotificationCompat.PRIORITY_MAX;
 import android.os.Binder;
 import android.os.IBinder;
@@ -20,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.MutableLiveData;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -38,6 +40,7 @@ import com.jole.ridetrackermobdev.model.RideRepositoryInterface;
 import org.osmdroid.util.GeoPoint;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -48,28 +51,32 @@ import dagger.hilt.android.AndroidEntryPoint;
 @AndroidEntryPoint
 public class RecordRideService extends Service
 {
+    private final int REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS = 42;
     @Inject
     FusedLocationProviderClient mFusedLocationClient;
     @Inject
     LocationRequest locationRequest;
-    private LocationCallback locationCallback;
+    public LocationCallback locationCallback;
     @Inject
     LocalBroadcastManager broadcaster;
     private double latitude, longitude;
-    private List<GeoPoint> geoPointList;
+    private List<GeoPoint> geoPointList = new LinkedList<>();;
     private GeoPoint lastKnownGeoPoint;
     public static Boolean isRunning = false;
     private double dist = 0D;
     private double elapsedTime = 0D;
-    private double startTime = 0D;
+    private double startTime = System.currentTimeMillis();;
     private double avSpeed = 0D;
     @Inject
     RideRepository rideRepository;
 
+    public RecordRideService(){
 
+    }
 
-    public RecordRideService()
+    public RecordRideService(RideRepository rideRepository)
     {
+        this.rideRepository = rideRepository;
     }
 
     @Override
@@ -84,6 +91,15 @@ public class RecordRideService extends Service
         Log.v("ABC", "service started");
         startForeground(1001, getNotification());
         Log.v("ABC", "onCreate");
+
+        registerLocationCallback();
+        startLocationUpdates();
+
+        return super.onStartCommand(intent, flags, startId);
+    }
+
+
+    public void registerLocationCallback(){
         locationCallback = new LocationCallback()
         {
             @Override
@@ -121,20 +137,13 @@ public class RecordRideService extends Service
                 }
             }
         };
-
-        startLocationUpdates();
-
-        return super.onStartCommand(intent, flags, startId);
     }
-
 
     @Override
     public void onCreate()
     {
 
         isRunning = true;
-        geoPointList = new LinkedList<>();
-        startTime = System.currentTimeMillis();
         super.onCreate();
     }
 

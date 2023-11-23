@@ -131,11 +131,11 @@ public class RecordRideService extends Service
     @Override
     public void onCreate()
     {
+
         isRunning = true;
         geoPointList = new LinkedList<>();
         startTime = System.currentTimeMillis();
         super.onCreate();
-
     }
 
     @Override
@@ -165,7 +165,7 @@ public class RecordRideService extends Service
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         {
             Toast.makeText(this, "You need to grant Location Permission to track your ride", Toast.LENGTH_SHORT).show();
-            stopSelf();
+            //stopSelf();
         }
         mFusedLocationClient.requestLocationUpdates(locationRequest,
                 locationCallback,

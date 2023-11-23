@@ -150,6 +150,28 @@ public class DaoTest {
             }
         });
 
+        Thread t = new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e)
+                {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        t.start();
+        try
+        {
+            t.join();
+        } catch (InterruptedException e)
+        {
+            throw new RuntimeException(e);
+        }
 
         assertEquals(7, tempList.size());
 

@@ -3,6 +3,7 @@ package com.jole.ridetrackermobdev.model;
 import static org.junit.Assert.*;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 
 import org.junit.Before;
@@ -11,6 +12,7 @@ import org.junit.Test;
 import org.osmdroid.util.GeoPoint;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -34,6 +36,7 @@ public class RideRepositoryTest {
     RideDatabase rideDatabaseLiteral;
     List<GeoPoint> gPoints;
     Ride ride;
+    double[] liveDataArr;
 
 
     @Before
@@ -110,7 +113,8 @@ public class RideRepositoryTest {
     }
 
     @Test
-    public void testGetAll() {
+    public void testGetAll()
+    {
         repo.addNewRide(ride);
         repo.addNewRide(ride);
         repo.addNewRide(ride);
@@ -127,9 +131,60 @@ public class RideRepositoryTest {
             }
         });
 
+        Thread t = new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                try
+                {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e)
+                {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        t.start();
+        try
+        {
+            t.join();
+        } catch (InterruptedException e)
+        {
+            throw new RuntimeException(e);
+        }
 
         assertEquals(7, tempList.size());
 
+    }
 
+    @Test
+    public void testGetUiStateLiveData(){
+
+        repo.getRideServiceUiState().observeForever(new Observer<double[]>()
+        {
+            @Override
+            public void onChanged(double[] doubles)
+            {
+                liveDataArr = doubles;
+            }
+        });
+
+        assertTrue(Arrays.equals(liveDataArr, new double[]{0, 0, 0}));
+    }
+
+    @Test
+    public void testSetUiStateLiveData(){
+        repo.setRideServiceUiState(new double[]{45,768,234});
+        repo.getRideServiceUiState().observeForever(new Observer<double[]>()
+        {
+            @Override
+            public void onChanged(double[] doubles)
+            {
+                liveDataArr = doubles;
+            }
+        });
+
+        assertTrue(Arrays.equals(liveDataArr, new double[]{45,768,234}));
     }
 }

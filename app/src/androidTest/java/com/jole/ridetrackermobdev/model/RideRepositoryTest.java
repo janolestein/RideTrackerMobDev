@@ -1,50 +1,56 @@
 package com.jole.ridetrackermobdev.model;
 
 import static org.junit.Assert.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.osmdroid.util.GeoPoint;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import dagger.hilt.android.testing.HiltAndroidRule;
 import dagger.hilt.android.testing.HiltAndroidTest;
 
-@HiltAndroidTest
+
 public class RideRepositoryTest {
 
     @Rule
-    public HiltAndroidRule hiltRule = new HiltAndroidRule(this);
-    @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule =
             new InstantTaskExecutorRule();
-    @Inject
-    RideDatabase rideDatabaseLiteral;
     @Mock
     DaoInterface dao;
-    RideRepository repo = new RideRepository(dao);
+    RideRepository repo;
     List<GeoPoint> gPoints;
     Ride ride;
     double[] liveDataArr;
+    private CountDownLatch lock = new CountDownLatch(4);
+    LiveData<List<Ride>> lRideList;
 
 
     @Before
     public void init() {
-        MockitoAnnotations.openMocks(this);
+        MockitoAnnotations.initMocks(this);
 
         gPoints = new LinkedList<>();
         gPoints.add(new GeoPoint(52.458159970620216, 13.527038899381642));
@@ -61,103 +67,77 @@ public class RideRepositoryTest {
 
         ride = new Ride("Wednesday Evening Ride", "This is a Example Ride Description", LocalDate.now().toString(), 60, 25.6, 1.45,
                 "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
-        rideDatabaseLiteral.clearAllTables();
+        ArrayList<Ride> aList = new ArrayList<>();
+        aList.add(ride);
+        aList.add(ride);
+        lRideList = new MutableLiveData<>(aList);
+        when(dao.getAllRidesList()).thenReturn(lRideList);
+        repo = new RideRepository(dao);
+
+
 
 
     }
 
     @Test
-    public void testInsertAndFind() {
+    public void testInsert() throws InterruptedException {
 
         repo.addNewRide(ride);
-        assertEquals(repo.findRideById(1).get().getName(), ride.getName());
-        assertEquals(repo.findRideById(1).get().getDescription(), ride.getDescription());
-        assertEquals(repo.findRideById(1).get().getDate(), ride.getDate());
-        assertEquals(repo.findRideById(1).get().getRideLengthKm(), ride.getRideLengthKm(), 0);
-        assertEquals(repo.findRideById(1).get().getAverageSpeed(), ride.getAverageSpeed(), 0);
-        assertEquals(repo.findRideById(1).get().getTotalRideTime(), ride.getTotalRideTime(), 0);
-        assertEquals(repo.findRideById(1).get().getImgUrl(), ride.getImgUrl());
-        assertEquals(repo.findRideById(1).get().getGeoPoints(), ride.getGeoPoints());
+        lock.countDown();
+        lock.await(5000, TimeUnit.MILLISECONDS);
+        Mockito.verify(dao, Mockito.times(1)).addNewRide(ride);
+        repo.addNewRide(ride);
+        lock.countDown();
+        lock.await(5000, TimeUnit.MILLISECONDS);
+        Mockito.verify(dao, Mockito.times(2)).addNewRide(ride);
+
     }
 
     @Test
-    public void testMultipleInsert() {
+    public void testFindById() throws InterruptedException {
 
-        repo.addNewRide(ride);
-        repo.addNewRide(ride);
-        repo.addNewRide(ride);
-        repo.addNewRide(ride);
-        repo.addNewRide(ride);
-        repo.addNewRide(ride);
-        repo.addNewRide(ride);
-        assertEquals(repo.findRideById(7).get().getName(), ride.getName());
-        assertEquals(repo.findRideById(7).get().getDescription(), ride.getDescription());
-        assertEquals(repo.findRideById(7).get().getDate(), ride.getDate());
-        assertEquals(repo.findRideById(7).get().getRideLengthKm(), ride.getRideLengthKm(), 0);
-        assertEquals(repo.findRideById(7).get().getAverageSpeed(), ride.getAverageSpeed(), 0);
-        assertEquals(repo.findRideById(7).get().getTotalRideTime(), ride.getTotalRideTime(), 0);
-        assertEquals(repo.findRideById(7).get().getImgUrl(), ride.getImgUrl());
-        assertEquals(repo.findRideById(7).get().getGeoPoints(), ride.getGeoPoints());
+        repo.findRideById(1);
+        lock.countDown();
+        lock.await(5000, TimeUnit.MILLISECONDS);
+        Mockito.verify(dao, Mockito.times(1)).findRideById(1);
+        repo.findRideById(2);
+        lock.countDown();
+        lock.await(5000, TimeUnit.MILLISECONDS);
+        Mockito.verify(dao, Mockito.times(1)).findRideById(2);
+        repo.findRideById(1);
+        lock.countDown();
+        lock.await(5000, TimeUnit.MILLISECONDS);
+        Mockito.verify(dao, Mockito.times(2)).findRideById(1);
+        Optional<Ride> oRide = Optional.ofNullable(ride);
+        when(dao.findRideById(23)).thenReturn(oRide);
+        Ride tempRide = repo.findRideById(23).get();
+        lock.countDown();
+        lock.await(5000, TimeUnit.MILLISECONDS);
+        assertEquals(oRide.get(), tempRide);
+
+    }
+
+
+
+    @Test
+    public void testDelete() throws InterruptedException {
+        repo.removeRide(ride);
+        lock.countDown();
+        lock.await(5000, TimeUnit.MILLISECONDS);
+        Mockito.verify(dao, Mockito.times(1)).removeRide(ride);
+        repo.removeRide(ride);
+        lock.countDown();
+        lock.await(5000, TimeUnit.MILLISECONDS);
+        Mockito.verify(dao, Mockito.times(2)).removeRide(ride);
     }
 
     @Test
-    public void testNullFind() {
+    public void testGetAll() throws InterruptedException {
 
-        assertThrows(NoSuchElementException.class, () -> repo.findRideById(500).get());
-    }
+        Mockito.verify(dao, Mockito.times(1)).getAllRidesList();
 
-    @Test
-    public void testDelete() {
-        repo.addNewRide(ride);
-        assertEquals(repo.findRideById(1).get().getName(), ride.getName());
-        Ride rideDel = repo.findRideById(1).get();
-        repo.removeRide(rideDel);
-        assertThrows(NoSuchElementException.class, () -> repo.findRideById(1).get());
-    }
 
-    @Test
-    public void testGetAll()
-    {
-        repo.addNewRide(ride);
-        repo.addNewRide(ride);
-        repo.addNewRide(ride);
-        repo.addNewRide(ride);
-        repo.addNewRide(ride);
-        repo.addNewRide(ride);
-        repo.addNewRide(ride);
-
-        List<Ride> tempList = new LinkedList<>();
-        repo.getAllRidesList().observeForever(new Observer<List<Ride>>() {
-            @Override
-            public void onChanged(List<Ride> rides) {
-                tempList.addAll(rides);
-            }
-        });
-
-        Thread t = new Thread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e)
-                {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-        t.start();
-        try
-        {
-            t.join();
-        } catch (InterruptedException e)
-        {
-            throw new RuntimeException(e);
-        }
-
-        assertEquals(7, tempList.size());
+        assertEquals(repo.getAllRidesList(), lRideList);
 
     }
 

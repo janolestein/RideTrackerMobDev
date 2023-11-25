@@ -66,6 +66,7 @@ dependencies {
     testImplementation ("org.mockito:mockito-core:3.11.2")
     androidTestImplementation ("org.mockito:mockito-android:3.10.0")
     testImplementation ("org.mockito:mockito-inline:3.11.2")
+    debugImplementation ("androidx.fragment:fragment-testing:1.6.2")
 
 
 }

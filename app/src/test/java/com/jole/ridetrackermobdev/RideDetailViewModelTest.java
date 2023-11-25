@@ -1,47 +1,48 @@
-package com.jole.ridetrackermobdev.controller;
+package com.jole.ridetrackermobdev;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
 
-import com.jole.ridetrackermobdev.model.DaoInterface;
+import com.jole.ridetrackermobdev.controller.MainFragmentsViewModel;
+import com.jole.ridetrackermobdev.controller.RideDetailViewModel;
 import com.jole.ridetrackermobdev.model.Ride;
-import com.jole.ridetrackermobdev.model.RideDatabase;
+import com.jole.ridetrackermobdev.model.RideRepository;
 
 import org.junit.Before;
 import org.junit.Rule;
+import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.osmdroid.util.GeoPoint;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
-import javax.inject.Inject;
+public class RideDetailViewModelTest {
 
-import dagger.hilt.android.testing.HiltAndroidRule;
-import dagger.hilt.android.testing.HiltAndroidTest;
-
-@HiltAndroidTest
-public class MainFragmentsViewModelTest
-{
-    @Rule
-    public HiltAndroidRule hiltRule = new HiltAndroidRule(this);
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule =
             new InstantTaskExecutorRule();
-
-    @Inject
-    DaoInterface rideDb;
-    @Inject
-    RideDatabase rideDatabaseLiteral;
     List<GeoPoint> gPoints;
     Ride ride;
+    @Mock
+    RideRepository repo;
+    RideDetailViewModel vModel;
 
 
     @Before
     public void setUp() throws Exception
     {
-        hiltRule.inject();
+        MockitoAnnotations.initMocks(this);
 
         gPoints = new LinkedList<>();
         gPoints.add(new GeoPoint(52.458159970620216, 13.527038899381642));
@@ -58,6 +59,17 @@ public class MainFragmentsViewModelTest
 
         ride = new Ride("Wednesday Evening Ride", "This is a Example Ride Description", LocalDate.now().toString(), 60, 25.6, 1.45,
                 "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
-        rideDatabaseLiteral.clearAllTables();
+
+
+        vModel = new RideDetailViewModel(repo);
+
+    }
+
+    @Test
+    public void testFindRideById(){
+        when(repo.findRideById(1)).thenReturn(Optional.ofNullable(ride));
+
+        assertEquals(Optional.ofNullable(ride), vModel.findRideById(1));
+        Mockito.verify(repo, times(1)).findRideById(1);
     }
 }

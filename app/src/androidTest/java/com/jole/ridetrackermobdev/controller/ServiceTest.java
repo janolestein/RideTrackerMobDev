@@ -34,9 +34,12 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -59,12 +62,11 @@ public class ServiceTest
 {
     @Inject
     FusedLocationProviderClient client;
-    @Inject
+    @Mock
     RideRepository repo;
-
-
+    @Captor
+    ArgumentCaptor<double[]> captor;
     double[] liveDataArr;
-
     @Rule
     public final ServiceTestRule mServiceRule = new ServiceTestRule();
     @Rule
@@ -77,6 +79,7 @@ public class ServiceTest
 
     @Before
     public void setUp(){
+        MockitoAnnotations.initMocks(this);
         hiltRule.inject();
     }
 
@@ -94,76 +97,31 @@ public class ServiceTest
         Location location2 = new Location("flp");
         location.setLatitude(53.0);
         location.setLongitude(14.0);
-        locations.add(location);
+        locations.add(location2);
 
         LocationResult locationResult = LocationResult.create(locations);
 
         service.locationCallback.onLocationResult(locationResult);
 
-        Mockito.verify(repo, times(1)).setRideServiceUiState(any());
+        Mockito.verify(repo, times(1)).setRideServiceUiState(captor.capture());
+        double[] capture = captor.getValue();
+        assertEquals(capture[0], 6034.766786115431d, 0);
+        assertTrue(capture[1] > 0);
+        assertTrue(capture[2] > 0);
 
         service.locationCallback.onLocationResult(locationResult);
 
-        Mockito.verify(repo, times(3)).setRideServiceUiState(any());
+        Mockito.verify(repo, times(3)).setRideServiceUiState(captor.capture());
 
-//        Thread t = new Thread(new Runnable()
-//        {
-//            @Override
-//            public void run()
-//            {
-//                try
-//                {
-//                    Thread.sleep(5000);
-//                } catch (InterruptedException e)
-//                {
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//        });
-//        t.start();
-//        try
-//        {
-//            t.join();
-//        } catch (InterruptedException e)
-//        {
-//            throw new RuntimeException(e);
-//        }
-//
-//        repo.getRideServiceUiState().observeForever(new Observer<double[]>()
-//        {
-//            @Override
-//            public void onChanged(double[] doubles)
-//            {
-//                liveDataArr = doubles;
-//            }
-//        });
-//
-//        Thread t2 = new Thread(new Runnable()
-//        {
-//            @Override
-//            public void run()
-//            {
-//                try
-//                {
-//                    Thread.sleep(3000);
-//                } catch (InterruptedException e)
-//                {
-//                    throw new RuntimeException(e);
-//                }
-//            }
-//        });
-//        t2.start();
-//        try
-//        {
-//            t2.join();
-//        } catch (InterruptedException e)
-//        {
-//            throw new RuntimeException(e);
-//        }
-//        assertTrue(liveDataArr[1] > 0);
-//        Log.v("test", Double.toString(liveDataArr[0]));
-//        Log.v("test", Double.toString(liveDataArr[1]));
-//        Log.v("test", Double.toString(liveDataArr[2]));
+        capture = captor.getValue();
+        assertEquals(capture[0], 18104.300358346292, 0);
+        assertTrue(capture[1] > 0);
+        assertTrue(capture[2] > 0);
+
+        service.locationCallback.onLocationResult(locationResult);
+
+        Mockito.verify(repo, times(5)).setRideServiceUiState(any());
+
     }
 
     @Test
@@ -174,15 +132,6 @@ public class ServiceTest
         mServiceRule.startService(
                 new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), RecordRideService.class));
         assertTrue(RecordRideService.isRunning);
-
-
-
-
     }
-
-
-
-
-
 }
 

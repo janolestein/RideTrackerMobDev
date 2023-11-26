@@ -28,7 +28,9 @@ import com.jole.ridetrackermobdev.R;
 import com.jole.ridetrackermobdev.controller.MainFragmentsViewModel;
 import com.jole.ridetrackermobdev.controller.RecordRideService;
 
+import dagger.hilt.android.AndroidEntryPoint;
 
+@AndroidEntryPoint
 public class RecordRideFragment extends Fragment
 {
     private Button btnStartRecord, btnStopRecord;

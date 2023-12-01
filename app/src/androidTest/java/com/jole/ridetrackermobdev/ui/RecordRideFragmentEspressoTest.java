@@ -46,6 +46,7 @@ public class RecordRideFragmentEspressoTest {
     LiveData<double[]> uiStateMock = new MutableLiveData<>(new double[]{345D, 475698D, 567567D});
 
 
+
     @Before
     public void setUp(){
         Mockito.when(vModel.getUiState()).thenReturn(uiStateMock);

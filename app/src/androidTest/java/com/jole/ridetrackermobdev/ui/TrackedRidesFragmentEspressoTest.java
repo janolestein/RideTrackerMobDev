@@ -1,28 +1,34 @@
 package com.jole.ridetrackermobdev.ui;
 
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.jole.ridetrackermobdev.ui.HiltContainer.launchFragmentInHiltContainer;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.LiveData;
+import androidx.test.espresso.PerformException;
 import androidx.test.espresso.contrib.RecyclerViewActions;
+import androidx.test.espresso.matcher.ViewMatchers;
 import androidx.test.filters.LargeTest;
 
 import com.jole.ridetrackermobdev.HiltTestActivity;
 import com.jole.ridetrackermobdev.R;
 import com.jole.ridetrackermobdev.controller.MainFragmentsViewModel;
+import com.jole.ridetrackermobdev.controller.RideDetailViewModel;
 import com.jole.ridetrackermobdev.model.DaoInterface;
 import com.jole.ridetrackermobdev.model.Ride;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.osmdroid.util.GeoPoint;
 
@@ -48,20 +54,19 @@ public class TrackedRidesFragmentEspressoTest {
     @BindValue
     MainFragmentsViewModel vModel = mock(MainFragmentsViewModel.class);
 
+    @BindValue
+    RideDetailViewModel vModelDetail = mock(RideDetailViewModel.class);
+
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule =
             new InstantTaskExecutorRule();
-
     List<Ride> rideList;
-
     List<GeoPoint> gPoints;
     @Inject
     DaoInterface dao;
-
-    Ride ride;
-    Ride ride2;
-
+    Ride ride1, ride2, ride3, ride4, ride5, ride6, ride7, ride8;
     private CountDownLatch lock = new CountDownLatch(4);
+
 
     @Before
     public void setUp() throws InterruptedException
@@ -80,40 +85,75 @@ public class TrackedRidesFragmentEspressoTest {
         gPoints.add(new GeoPoint(52.46363503504482, 13.489868695841839));
         gPoints.add(new GeoPoint(52.4661139469194, 13.495570882101445));
 
-        ride = new Ride("Wednesday Evening Ride", "This is a Example Ride Description", LocalDate.now().toString(), 60, 25.6, 1.45,
+        ride1 = new Ride("Test1", "This is a Example Ride Description", LocalDate.now().toString(), 60, 25.6, 1.45,
                 "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
-        ride2 = new Ride("Sunday Evening Ride", "This is a test", LocalDate.now().toString(), 60, 25.6, 1.45,
+        ride2 = new Ride("Test2", "This is a test", LocalDate.now().toString(), 60, 25.6, 1.45,
+                "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
+        ride3 = new Ride("Test3", "This is a test", LocalDate.now().toString(), 60, 25.6, 1.45,
+                "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
+        ride4 = new Ride("Test4", "This is a test", LocalDate.now().toString(), 60, 25.6, 1.45,
+                "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
+        ride5 = new Ride("Test5", "This is a test", LocalDate.now().toString(), 60, 25.6, 1.45,
+                "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
+        ride6 = new Ride("Test6", "This is a test", LocalDate.now().toString(), 60, 25.6, 1.45,
+                "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
+        ride7 = new Ride("Test7", "This is a test", LocalDate.now().toString(), 60, 25.6, 1.45,
+                "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
+        ride8 = new Ride("Test8", "This is a test", LocalDate.now().toString(), 60, 25.6, 1.45,
                 "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
 
 
-        dao.addNewRide(ride);
-        dao.addNewRide(ride);
-        dao.addNewRide(ride);
-        dao.addNewRide(ride);
-        dao.addNewRide(ride);
-        dao.addNewRide(ride);
-        dao.addNewRide(ride);
-        dao.addNewRide(ride);
-        dao.addNewRide(ride);
-        dao.addNewRide(ride);
+        dao.addNewRide(ride1);
+        dao.addNewRide(ride2);
+        dao.addNewRide(ride3);
+        dao.addNewRide(ride4);
+        dao.addNewRide(ride5);
+        dao.addNewRide(ride6);
+        dao.addNewRide(ride7);
+        dao.addNewRide(ride8);
+
         LiveData<List<Ride>> rideList = dao.getAllRidesList();
         lock.countDown();
         lock.await(5000, TimeUnit.MILLISECONDS);
+
         Mockito.when(vModel.getAllRides()).thenReturn(rideList);
+        Mockito.when(vModelDetail.findRideById(anyInt())).thenAnswer(i -> dao.findRideById((Integer) i.getArguments()[0]));
 
         launchFragmentInHiltContainer(HiltTestActivity.class, TrackedRidesFragment.class);
-
     }
 
     @Test
-    public void testRecyclerViewPosition(){
-        onView(withId(R.id.recViewAllRides)).perform(RecyclerViewActions.scrollToPosition(500));
-        onView(withId(R.id.recViewAllRides)).perform(RecyclerViewActions.scrollToPosition(15));
+    public void testRecyclerViewPosition() throws InterruptedException
+    {
+        onView(withId(R.id.recViewAllRides)).perform(RecyclerViewActions.actionOnItemAtPosition(7, click()));
+
     }
 
     @Test
     public void testDifferentHolders(){
-        onView(withId(R.id.recViewAllRides))
-                .check(matches(atPosition(0, hasDescendant(withText("First Element")))));
+        onView(ViewMatchers.withId(R.id.recViewAllRides))
+                // scrollTo will fail the test if no item matches.
+                .perform(RecyclerViewActions.scrollTo(
+                        hasDescendant(withText("Test3"))
+                ));
+        onView(ViewMatchers.withId(R.id.recViewAllRides))
+                // scrollTo will fail the test if no item matches.
+                .perform(RecyclerViewActions.scrollTo(
+                        hasDescendant(withText("Test5"))
+                ));        onView(ViewMatchers.withId(R.id.recViewAllRides))
+                // scrollTo will fail the test if no item matches.
+                .perform(RecyclerViewActions.scrollTo(
+                        hasDescendant(withText("Test8"))
+                ));
+    }
+
+    @Test(expected = PerformException.class)
+    public void testOutOfBoundsThrowsException(){
+        onView(ViewMatchers.withId(R.id.recViewAllRides))
+                // scrollTo will fail the test if no item matches.
+                .perform(RecyclerViewActions.scrollTo(
+                        hasDescendant(withText("Test15"))
+                ));
+        onView(withId(R.id.recViewAllRides)).perform(RecyclerViewActions.actionOnItemAtPosition(15, click()));
     }
 }

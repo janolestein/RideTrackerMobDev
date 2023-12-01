@@ -1,22 +1,38 @@
 package com.jole.ridetrackermobdev.ui;
 
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.jole.ridetrackermobdev.ui.HiltContainer.launchFragmentInHiltContainer;
 import static org.mockito.Mockito.mock;
 
+
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
+import androidx.lifecycle.LiveData;
+import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.filters.LargeTest;
 
 import com.jole.ridetrackermobdev.HiltTestActivity;
+import com.jole.ridetrackermobdev.R;
 import com.jole.ridetrackermobdev.controller.MainFragmentsViewModel;
+import com.jole.ridetrackermobdev.model.DaoInterface;
 import com.jole.ridetrackermobdev.model.Ride;
 
 import org.junit.Before;
 import org.junit.Rule;
+import org.junit.Test;
 import org.mockito.Mockito;
 import org.osmdroid.util.GeoPoint;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+
+import javax.inject.Inject;
 
 import dagger.hilt.android.testing.BindValue;
 import dagger.hilt.android.testing.HiltAndroidRule;
@@ -32,15 +48,25 @@ public class TrackedRidesFragmentEspressoTest {
     @BindValue
     MainFragmentsViewModel vModel = mock(MainFragmentsViewModel.class);
 
+    @Rule
+    public InstantTaskExecutorRule instantTaskExecutorRule =
+            new InstantTaskExecutorRule();
+
     List<Ride> rideList;
 
     List<GeoPoint> gPoints;
+    @Inject
+    DaoInterface dao;
 
     Ride ride;
     Ride ride2;
 
+    private CountDownLatch lock = new CountDownLatch(4);
+
     @Before
-    public void setUp(){
+    public void setUp() throws InterruptedException
+    {
+        hiltRule.inject();
         gPoints = new LinkedList<>();
         gPoints.add(new GeoPoint(52.458159970620216, 13.527038899381642));
         gPoints.add(new GeoPoint(52.46051831693104, 13.521824258809318));
@@ -59,22 +85,35 @@ public class TrackedRidesFragmentEspressoTest {
         ride2 = new Ride("Sunday Evening Ride", "This is a test", LocalDate.now().toString(), 60, 25.6, 1.45,
                 "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
 
-        rideList = new LinkedList<>();
-        rideList.add(ride);
-        rideList.add(ride);
-        rideList.add(ride);
-        rideList.add(ride);
-        rideList.add(ride);
-        rideList.add(ride);
-        rideList.add(ride);
-        rideList.add(ride);
-        rideList.add(ride);
-        rideList.add(ride);
-        rideList.add(ride);
-        rideList.add(ride);
-        rideList.add(ride);
 
-        //Mockito.when(vModel.getUiState()).thenReturn(uiStateMock);
+        dao.addNewRide(ride);
+        dao.addNewRide(ride);
+        dao.addNewRide(ride);
+        dao.addNewRide(ride);
+        dao.addNewRide(ride);
+        dao.addNewRide(ride);
+        dao.addNewRide(ride);
+        dao.addNewRide(ride);
+        dao.addNewRide(ride);
+        dao.addNewRide(ride);
+        LiveData<List<Ride>> rideList = dao.getAllRidesList();
+        lock.countDown();
+        lock.await(5000, TimeUnit.MILLISECONDS);
+        Mockito.when(vModel.getAllRides()).thenReturn(rideList);
+
         launchFragmentInHiltContainer(HiltTestActivity.class, TrackedRidesFragment.class);
+
+    }
+
+    @Test
+    public void testRecyclerViewPosition(){
+        onView(withId(R.id.recViewAllRides)).perform(RecyclerViewActions.scrollToPosition(500));
+        onView(withId(R.id.recViewAllRides)).perform(RecyclerViewActions.scrollToPosition(15));
+    }
+
+    @Test
+    public void testDifferentHolders(){
+        onView(withId(R.id.recViewAllRides))
+                .check(matches(atPosition(0, hasDescendant(withText("First Element")))));
     }
 }

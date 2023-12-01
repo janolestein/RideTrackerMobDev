@@ -127,7 +127,6 @@ public class ServiceTest
     @Test
     public void testServiceStarted() throws TimeoutException
     {
-        // Create the service Intent.
         assertFalse(RecordRideService.isRunning);
         mServiceRule.startService(
                 new Intent(InstrumentationRegistry.getInstrumentation().getTargetContext(), RecordRideService.class));

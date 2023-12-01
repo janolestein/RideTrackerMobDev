@@ -53,10 +53,10 @@ dependencies {
     implementation ("com.google.android.gms:play-services-location:21.0.1")
     implementation ("com.google.dagger:hilt-android:2.44")
     annotationProcessor ("com.google.dagger:hilt-compiler:2.44")
-    implementation ("androidx.room:room-runtime:2.6.0")
-    annotationProcessor ("androidx.room:room-compiler:2.6.0")
-    testImplementation ("androidx.room:room-testing:2.6.0")
-    implementation ("androidx.room:room-paging:2.6.0")
+    implementation ("androidx.room:room-runtime:2.6.1")
+    annotationProcessor ("androidx.room:room-compiler:2.6.1")
+    testImplementation ("androidx.room:room-testing:2.6.1")
+    implementation ("androidx.room:room-paging:2.6.1")
     implementation ("com.google.code.gson:gson:2.10.1")
     testAnnotationProcessor ("com.google.dagger:hilt-android-compiler:2.44")
     androidTestImplementation ("com.google.dagger:hilt-android-testing:2.44")
@@ -67,6 +67,8 @@ dependencies {
     androidTestImplementation ("org.mockito:mockito-android:3.10.0")
     testImplementation ("org.mockito:mockito-inline:3.11.2")
     debugImplementation ("androidx.fragment:fragment-testing:1.6.2")
+    androidTestImplementation ("androidx.test.espresso:espresso-contrib:3.5.1")
+    androidTestImplementation ("org.hamcrest:hamcrest:2.2")
 
 
 }

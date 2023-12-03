@@ -68,7 +68,7 @@ public class RecordRideService extends Service
     private double startTime = System.currentTimeMillis();;
     private double avSpeed = 0D;
     @Inject
-    RideRepository rideRepository;
+    RideRepositoryInterface rideRepository;
 
     public RecordRideService(){
 

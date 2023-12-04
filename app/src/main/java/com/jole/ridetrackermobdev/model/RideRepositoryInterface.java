@@ -27,7 +27,7 @@ public interface RideRepositoryInterface
 
     /**
      * Removes a Ride from the Database
-     * @param ride object ro to be removed
+     * @param ride object to be removed
      */
     public void removeRide(Ride ride);
 

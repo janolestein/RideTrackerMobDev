@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.jole.ridetrackermobdev.model.Ride;
 import com.jole.ridetrackermobdev.model.RideRepository;
+import com.jole.ridetrackermobdev.model.RideRepositoryInterface;
 
 import java.util.Optional;
 
@@ -15,11 +16,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 @HiltViewModel
 public class RideDetailViewModel extends ViewModel
 {
-    RideRepository rideRepository;
+    RideRepositoryInterface rideRepository;
 
 
     @Inject
-    public RideDetailViewModel(RideRepository rideRepository) {
+    public RideDetailViewModel(RideRepositoryInterface rideRepository) {
         this.rideRepository = rideRepository;
     }
 

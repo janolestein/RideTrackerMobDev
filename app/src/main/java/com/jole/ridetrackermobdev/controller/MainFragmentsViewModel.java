@@ -25,12 +25,12 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
 public class MainFragmentsViewModel extends ViewModel {
     private LiveData<List<Ride>> allRides;
 
-    RideRepository rideRepository;
+    RideRepositoryInterface rideRepository;
 
     private LiveData<double[]> uiState;
 
     @Inject
-    public MainFragmentsViewModel(RideRepository rideRepository) {
+    public MainFragmentsViewModel(RideRepositoryInterface rideRepository) {
         this.rideRepository = rideRepository;
         this.allRides = rideRepository.getAllRidesList();
         this.uiState = rideRepository.getRideServiceUiState();

@@ -21,7 +21,7 @@ public class RideRepositoryModule
 {
     @Singleton
     @Provides
-    public RideRepository bindRideRepository(DaoInterface rideDao)
+    public RideRepositoryInterface bindRideRepository(DaoInterface rideDao)
     {
         return new RideRepository(rideDao);
     }

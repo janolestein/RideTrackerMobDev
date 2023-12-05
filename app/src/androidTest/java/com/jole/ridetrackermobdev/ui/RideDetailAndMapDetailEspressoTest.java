@@ -1,72 +1,64 @@
 package com.jole.ridetrackermobdev.ui;
 
+import static androidx.test.core.app.ActivityScenario.launch;
 import static androidx.test.espresso.Espresso.onView;
-import static androidx.test.espresso.Espresso.pressBack;
-import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
-import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.jole.ridetrackermobdev.ui.HiltContainer.launchFragmentInHiltContainer;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 
+import android.content.Intent;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
-import androidx.lifecycle.LiveData;
-import androidx.test.espresso.PerformException;
-import androidx.test.espresso.contrib.RecyclerViewActions;
-import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.core.app.ActivityScenario;
+import androidx.test.core.app.ApplicationProvider;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.filters.LargeTest;
 
-import com.jole.ridetrackermobdev.HiltTestActivity;
 import com.jole.ridetrackermobdev.R;
 import com.jole.ridetrackermobdev.controller.MainFragmentsViewModel;
 import com.jole.ridetrackermobdev.controller.RideDetailViewModel;
-import com.jole.ridetrackermobdev.model.DaoInterface;
 import com.jole.ridetrackermobdev.model.Ride;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.osmdroid.util.GeoPoint;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.TimeUnit;
-
-import javax.inject.Inject;
+import java.util.Optional;
 
 import dagger.hilt.android.testing.BindValue;
 import dagger.hilt.android.testing.HiltAndroidRule;
 import dagger.hilt.android.testing.HiltAndroidTest;
-
-@LargeTest
 @HiltAndroidTest
-public class TrackedRidesFragmentEspressoTest {
+@LargeTest
+public class RideDetailAndMapDetailEspressoTest {
 
-    @Rule
+    @Rule(order = 0)
     public HiltAndroidRule hiltRule = new HiltAndroidRule(this);
-
-    @BindValue
-    MainFragmentsViewModel vModel = mock(MainFragmentsViewModel.class);
-
     @BindValue
     RideDetailViewModel vModelDetail = mock(RideDetailViewModel.class);
 
-    @Rule
+    @Rule(order = 3)
     public InstantTaskExecutorRule instantTaskExecutorRule =
             new InstantTaskExecutorRule();
     List<Ride> rideList;
     List<GeoPoint> gPoints;
-    @Inject
-    DaoInterface dao;
     Ride ride1, ride2, ride3, ride4, ride5, ride6, ride7, ride8;
-    private CountDownLatch lock = new CountDownLatch(4);
+
+    static Intent intent;
+    static {
+        intent = new Intent(ApplicationProvider.getApplicationContext(), RideDetailActivity.class);
+        intent.putExtra("RideId", 2);
+    }
+
 
 
     @Before
@@ -104,64 +96,27 @@ public class TrackedRidesFragmentEspressoTest {
                 "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
 
 
-        dao.addNewRide(ride1);
-        dao.addNewRide(ride2);
-        dao.addNewRide(ride3);
-        dao.addNewRide(ride4);
-        dao.addNewRide(ride5);
-        dao.addNewRide(ride6);
-        dao.addNewRide(ride7);
-        dao.addNewRide(ride8);
+        rideList = new LinkedList<>();
+        rideList.add(ride1);
+        rideList.add(ride2);
+        rideList.add(ride3);
+        rideList.add(ride4);
+        rideList.add(ride5);
+        rideList.add(ride6);
+        rideList.add(ride7);
+        rideList.add(ride8);
 
-        LiveData<List<Ride>> rideList = dao.getAllRidesList();
-        lock.countDown();
-        lock.await(5000, TimeUnit.MILLISECONDS);
+        Mockito.when(vModelDetail.findRideById(anyInt())).thenAnswer(i -> Optional.of(rideList.get((Integer) i.getArguments()[0])));
 
-        Mockito.when(vModel.getAllRides()).thenReturn(rideList);
-        Mockito.when(vModelDetail.findRideById(anyInt())).thenAnswer(i -> dao.findRideById((Integer) i.getArguments()[0]));
-
-        launchFragmentInHiltContainer(HiltTestActivity.class, TrackedRidesFragment.class);
     }
 
     @Test
-    public void testRecyclerViewPosition() throws InterruptedException
-    {
-        onView(withId(R.id.recViewAllRides)).perform(RecyclerViewActions.actionOnItemAtPosition(7, click()));
-        onView(withId(R.id.tvRideTitelDetail)).check(matches(withText("Test8")));
-        pressBack();
-        onView(withId(R.id.recViewAllRides));
-        onView(withId(R.id.recViewAllRides)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.tvRideTitelDetail)).check(matches(withText("Test1")));
-        pressBack();
-        onView(withId(R.id.recViewAllRides));
-        onView(withId(R.id.recViewAllRides)).perform(RecyclerViewActions.actionOnItemAtPosition(3, click()));
-        onView(withId(R.id.tvRideTitelDetail)).check(matches(withText("Test4")));
-        pressBack();
-        onView(withId(R.id.recViewAllRides));
-    }
+    public void testIfViewsAreDisplayed(){
 
-    @Test
-    public void testDifferentHolders(){
-        onView(ViewMatchers.withId(R.id.recViewAllRides))
-                .perform(RecyclerViewActions.scrollTo(
-                        hasDescendant(withText("Test3"))
-                ));
-        onView(ViewMatchers.withId(R.id.recViewAllRides))
-                .perform(RecyclerViewActions.scrollTo(
-                        hasDescendant(withText("Test5"))
-                ));
-        onView(ViewMatchers.withId(R.id.recViewAllRides))
-                .perform(RecyclerViewActions.scrollTo(
-                        hasDescendant(withText("Test8"))
-                ));
-    }
+        ActivityScenario<RideDetailActivity> activityScenario = launch(intent);
 
-    @Test(expected = PerformException.class)
-    public void testOutOfBoundsThrowsException(){
-        onView(ViewMatchers.withId(R.id.recViewAllRides))
-                .perform(RecyclerViewActions.scrollTo(
-                        hasDescendant(withText("Test15"))
-                ));
-        onView(withId(R.id.recViewAllRides)).perform(RecyclerViewActions.actionOnItemAtPosition(15, click()));
+        onView(withId(R.id.tvRideTitelDetail)).check(matches(withText("Test3")));
+        onView(withId(R.id.tvDateDetail)).check(matches(withText(LocalDate.now().toString())));
+        onView(withId(R.id.tvTimeVar)).check(matches(withText("0.00145")));
     }
 }

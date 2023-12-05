@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ public class RideDetailActivity extends AppCompatActivity
 
         initViews();
         rideId = getIntent().getIntExtra("RideId", -1);
+        Log.v("Test", Integer.toString(rideId));
         if (rideId == -1)
         {
             Toast.makeText(this, "Something went wrong, please try again: No Ride ID found", Toast.LENGTH_SHORT).show();

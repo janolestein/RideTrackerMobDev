@@ -28,6 +28,7 @@ import com.jole.ridetrackermobdev.controller.RecordRideService;
 import com.jole.ridetrackermobdev.hilt.RideRepositoryModule;
 import com.jole.ridetrackermobdev.hilt.RideRepositoryModuleMock;
 import com.jole.ridetrackermobdev.model.RideRepository;
+import com.jole.ridetrackermobdev.model.RideRepositoryInterface;
 
 import org.junit.After;
 import org.junit.Before;
@@ -85,7 +86,7 @@ public class ServiceTest
 
     @Test
     public void testCallback(){
-        RecordRideService service = new RecordRideService(repo);
+        RecordRideService service = new RecordRideService((RideRepository) repo);
         service.registerLocationCallback();
 
         List<Location> locations = new LinkedList<>();

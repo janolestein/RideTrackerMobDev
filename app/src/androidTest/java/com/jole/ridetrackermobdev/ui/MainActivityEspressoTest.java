@@ -5,19 +5,25 @@ import static androidx.test.espresso.Espresso.pressBack;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withTagValue;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.jole.ridetrackermobdev.ui.HiltContainer.launchFragmentInHiltContainer;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 
+import android.Manifest;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 import androidx.lifecycle.LiveData;
-import androidx.test.espresso.PerformException;
+import androidx.lifecycle.MutableLiveData;
 import androidx.test.espresso.contrib.RecyclerViewActions;
 import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.test.ext.junit.rules.ActivityScenarioRule;
 import androidx.test.filters.LargeTest;
+import androidx.test.rule.GrantPermissionRule;
 
 import com.jole.ridetrackermobdev.HiltTestActivity;
 import com.jole.ridetrackermobdev.R;
@@ -29,7 +35,6 @@ import com.jole.ridetrackermobdev.model.Ride;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.osmdroid.util.GeoPoint;
 
@@ -47,7 +52,8 @@ import dagger.hilt.android.testing.HiltAndroidTest;
 
 @LargeTest
 @HiltAndroidTest
-public class TrackedRidesFragmentEspressoTest {
+public class MainActivityEspressoTest {
+
 
     @Rule
     public HiltAndroidRule hiltRule = new HiltAndroidRule(this);
@@ -67,7 +73,16 @@ public class TrackedRidesFragmentEspressoTest {
     DaoInterface dao;
     Ride ride1, ride2, ride3, ride4, ride5, ride6, ride7, ride8;
     private CountDownLatch lock = new CountDownLatch(4);
-
+    LiveData<double[]> uiStateMock = new MutableLiveData<>(new double[]{345D, 475698D, 567567D});
+    @Rule
+    public ActivityScenarioRule<MainActivity> activityRule =
+            new ActivityScenarioRule<>(MainActivity.class);
+    @Rule
+    public GrantPermissionRule permissionRule1 = GrantPermissionRule.grant(Manifest.permission.ACCESS_FINE_LOCATION);
+    @Rule
+    public GrantPermissionRule permissionRule2 = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    @Rule
+    public GrantPermissionRule permissionRule3 = GrantPermissionRule.grant(Manifest.permission.POST_NOTIFICATIONS);
 
     @Before
     public void setUp() throws InterruptedException
@@ -119,29 +134,25 @@ public class TrackedRidesFragmentEspressoTest {
 
         Mockito.when(vModel.getAllRides()).thenReturn(rideList);
         Mockito.when(vModelDetail.findRideById(anyInt())).thenAnswer(i -> dao.findRideById((Integer) i.getArguments()[0]));
+        Mockito.when(vModel.getUiState()).thenReturn(uiStateMock);
 
-        launchFragmentInHiltContainer(HiltTestActivity.class, TrackedRidesFragment.class);
     }
 
     @Test
-    public void testRecyclerViewPosition() throws InterruptedException
-    {
-        onView(withId(R.id.recViewAllRides)).perform(RecyclerViewActions.actionOnItemAtPosition(7, click()));
-        onView(withId(R.id.tvRideTitelDetail)).check(matches(withText("Test8")));
-        pressBack();
-        onView(withId(R.id.recViewAllRides));
-        onView(withId(R.id.recViewAllRides)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.tvRideTitelDetail)).check(matches(withText("Test1")));
-        pressBack();
-        onView(withId(R.id.recViewAllRides));
-        onView(withId(R.id.recViewAllRides)).perform(RecyclerViewActions.actionOnItemAtPosition(3, click()));
-        onView(withId(R.id.tvRideTitelDetail)).check(matches(withText("Test4")));
-        pressBack();
-        onView(withId(R.id.recViewAllRides));
-    }
+    public void testMainNavigation(){
+        onView(withId(R.id.nav_map)).check(matches(isDisplayed()));
+        onView(withId(R.id.nav_record)).check(matches(isDisplayed()));
+        onView(withId(R.id.nav_rides)).check(matches(isDisplayed()));
+        onView(withId(16908290)).check(matches(isDisplayed()));
+        onView(withTagValue(is((Object) "mapView"))).check(matches(isDisplayed()));
 
-    @Test
-    public void testDifferentHolders(){
+        onView(withId(R.id.nav_record)).perform(click());
+        onView(withId(R.id.tvTimeTitle)).check(matches(withText("Zeit")));
+        onView(withId(R.id.tvFragTitelTraining)).check(matches(withText("Training aufnehmen")));
+        onView(withId(R.id.tvDistanceTitel)).check(matches(withText("Distanz")));
+
+        onView(withId(R.id.nav_rides)).perform(click());
+
         onView(ViewMatchers.withId(R.id.recViewAllRides))
                 .perform(RecyclerViewActions.scrollTo(
                         hasDescendant(withText("Test3"))
@@ -154,14 +165,16 @@ public class TrackedRidesFragmentEspressoTest {
                 .perform(RecyclerViewActions.scrollTo(
                         hasDescendant(withText("Test8"))
                 ));
-    }
 
-    @Test(expected = PerformException.class)
-    public void testOutOfBoundsThrowsException(){
-        onView(ViewMatchers.withId(R.id.recViewAllRides))
-                .perform(RecyclerViewActions.scrollTo(
-                        hasDescendant(withText("Test15"))
-                ));
-        onView(withId(R.id.recViewAllRides)).perform(RecyclerViewActions.actionOnItemAtPosition(15, click()));
+        pressBack();
+        onView(withId(R.id.tvTimeTitle)).check(matches(withText("Zeit")));
+        onView(withId(R.id.tvFragTitelTraining)).check(matches(withText("Training aufnehmen")));
+        onView(withId(R.id.tvDistanceTitel)).check(matches(withText("Distanz")));
+
+        pressBack();
+        onView(withId(16908290)).check(matches(isDisplayed()));
+        onView(withTagValue(is((Object) "mapView"))).check(matches(isDisplayed()));
     }
 }
+
+

@@ -2,6 +2,7 @@ package com.jole.ridetrackermobdev.hilt;
 
 import com.jole.ridetrackermobdev.model.DaoInterface;
 import com.jole.ridetrackermobdev.model.RideRepository;
+import com.jole.ridetrackermobdev.model.RideRepositoryInterface;
 
 import org.mockito.Mockito;
 
@@ -22,7 +23,7 @@ public class RideRepositoryModuleMock
 {
     @Singleton
     @Provides
-    public RideRepository bindRideRepository(DaoInterface rideDao)
+    public RideRepositoryInterface bindRideRepository(DaoInterface rideDao)
     {
         return Mockito.mock(RideRepository.class);
     }

@@ -2,10 +2,15 @@ package com.jole.ridetrackermobdev.ui;
 
 import static androidx.test.core.app.ActivityScenario.launch;
 import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.Espresso.pressBack;
+import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withTagValue;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static com.jole.ridetrackermobdev.ui.HiltContainer.launchFragmentInHiltContainer;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 
@@ -53,14 +58,6 @@ public class RideDetailAndMapDetailEspressoTest {
     List<GeoPoint> gPoints;
     Ride ride1, ride2, ride3, ride4, ride5, ride6, ride7, ride8;
 
-    static Intent intent;
-    static {
-        intent = new Intent(ApplicationProvider.getApplicationContext(), RideDetailActivity.class);
-        intent.putExtra("RideId", 2);
-    }
-
-
-
     @Before
     public void setUp() throws InterruptedException
     {
@@ -92,7 +89,7 @@ public class RideDetailAndMapDetailEspressoTest {
                 "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
         ride7 = new Ride("Test7", "This is a test", LocalDate.now().toString(), 60, 25.6, 1.45,
                 "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
-        ride8 = new Ride("Test8", "This is a test", LocalDate.now().toString(), 60, 25.6, 1.45,
+        ride8 = new Ride("Test8", "This is a test", LocalDate.now().toString(), 60, 25.6, 1.456,
                 "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
 
 
@@ -112,9 +109,33 @@ public class RideDetailAndMapDetailEspressoTest {
 
     @Test
     public void testIfViewsAreDisplayed(){
+        Intent intent1 = new Intent(ApplicationProvider.getApplicationContext(), RideDetailActivity.class);
+        intent1.putExtra("RideId", 2);
+        ActivityScenario<RideDetailActivity> activityScenario1 = launch(intent1);
 
-        ActivityScenario<RideDetailActivity> activityScenario = launch(intent);
+        onView(withId(R.id.tvRideTitelDetail)).check(matches(withText("Test3")));
+        onView(withId(R.id.tvDateDetail)).check(matches(withText(LocalDate.now().toString())));
+        onView(withId(R.id.tvTimeVar)).check(matches(withText("0.00145")));
 
+        Intent intent2 = new Intent(ApplicationProvider.getApplicationContext(), RideDetailActivity.class);
+        intent2.putExtra("RideId", 7);
+        ActivityScenario<RideDetailActivity> activityScenario2 = launch(intent2);
+
+        onView(withId(R.id.tvRideTitelDetail)).check(matches(withText("Test8")));
+        onView(withId(R.id.tvDateDetail)).check(matches(withText(LocalDate.now().toString())));
+        onView(withId(R.id.tvTimeVar)).check(matches(withText("0.001456")));
+    }
+
+    @Test
+    public void testIfMapOpens(){
+        Intent intent1 = new Intent(ApplicationProvider.getApplicationContext(), RideDetailActivity.class);
+        intent1.putExtra("RideId", 2);
+        ActivityScenario<RideDetailActivity> activityScenario1 = launch(intent1);
+
+        onView(withId(R.id.btnViewMap)).perform(click());
+
+        onView(withTagValue(is((Object) "mapView"))).check(matches(isDisplayed()));
+        pressBack();
         onView(withId(R.id.tvRideTitelDetail)).check(matches(withText("Test3")));
         onView(withId(R.id.tvDateDetail)).check(matches(withText(LocalDate.now().toString())));
         onView(withId(R.id.tvTimeVar)).check(matches(withText("0.00145")));

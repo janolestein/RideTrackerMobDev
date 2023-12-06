@@ -39,6 +39,7 @@ import com.jole.ridetrackermobdev.model.RideRepositoryInterface;
 
 import org.osmdroid.util.GeoPoint;
 
+import java.time.Clock;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -65,10 +66,12 @@ public class RecordRideService extends Service
     public static Boolean isRunning = false;
     private double dist = 0D;
     private double elapsedTime = 0D;
-    private double startTime = System.currentTimeMillis();;
+    private double startTime;
     private double avSpeed = 0D;
     @Inject
     RideRepositoryInterface rideRepository;
+    @Inject
+    Clock clock;
 
     public RecordRideService(){
 
@@ -92,14 +95,15 @@ public class RecordRideService extends Service
         startForeground(1001, getNotification());
         Log.v("ABC", "onCreate");
 
-        registerLocationCallback();
+        registerLocationCallback(clock);
         startLocationUpdates();
 
         return super.onStartCommand(intent, flags, startId);
     }
 
 
-    public void registerLocationCallback(){
+    public void registerLocationCallback(Clock clock){
+        startTime = clock.millis();
         locationCallback = new LocationCallback()
         {
             @Override
@@ -124,7 +128,7 @@ public class RecordRideService extends Service
                             lastKnownGeoPoint = current;
                         } else
                         {
-                            elapsedTime = System.currentTimeMillis() - startTime;
+                            elapsedTime = clock.millis() - startTime;
                             dist += Util.distanceBetweenTwoGeoPoints(lastKnownGeoPoint, current);
                             avSpeed = dist / (elapsedTime / (1000 *  (60 * 60)));
                             Log.v("ABC", Double.toString(dist));
@@ -142,7 +146,6 @@ public class RecordRideService extends Service
     @Override
     public void onCreate()
     {
-
         isRunning = true;
         super.onCreate();
     }

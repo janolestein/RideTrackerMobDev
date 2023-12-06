@@ -1,31 +1,30 @@
 //package com.jole.ridetrackermobdev.hilt;
 //
 //import com.jole.ridetrackermobdev.model.DaoInterface;
-//import com.jole.ridetrackermobdev.model.RideRepository;
-//import com.jole.ridetrackermobdev.model.RideRepositoryInterface;
+//import com.jole.ridetrackermobdev.model.RideDatabase;
 //
 //import org.mockito.Mockito;
+//
+//import java.time.Clock;
 //
 //import javax.inject.Singleton;
 //
 //import dagger.Module;
 //import dagger.Provides;
-//import dagger.hilt.InstallIn;
 //import dagger.hilt.components.SingletonComponent;
 //import dagger.hilt.testing.TestInstallIn;
 //
 //@Module
 //@TestInstallIn(
 //        components = SingletonComponent.class,
-//        replaces = RideRepositoryModule.class
+//        replaces = ClockModule.class
 //)
-//public class RideRepositoryModuleMock
+//public class ClockModuleMock
 //{
 //    @Singleton
 //    @Provides
-//    public RideRepositoryInterface bindRideRepository(DaoInterface rideDao)
+//    public Clock provideDaoInterface()
 //    {
-//        return Mockito.mock(RideRepository.class);
+//        return Mockito.mock(Clock.class);
 //    }
-//
 //}

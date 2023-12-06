@@ -23,6 +23,10 @@ import com.jole.ridetrackermobdev.HiltTestActivity;
 import com.jole.ridetrackermobdev.R;
 import com.jole.ridetrackermobdev.controller.MainFragmentsViewModel;
 import com.jole.ridetrackermobdev.controller.RecordRideService;
+import com.jole.ridetrackermobdev.hilt.RideRepositoryModule;
+import com.jole.ridetrackermobdev.model.DaoInterface;
+import com.jole.ridetrackermobdev.model.RideRepository;
+import com.jole.ridetrackermobdev.model.RideRepositoryInterface;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -30,13 +34,21 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
+import javax.inject.Singleton;
+
+import dagger.Module;
+import dagger.Provides;
+import dagger.hilt.InstallIn;
 import dagger.hilt.android.testing.BindValue;
 import dagger.hilt.android.testing.HiltAndroidRule;
 import dagger.hilt.android.testing.HiltAndroidTest;
+import dagger.hilt.android.testing.UninstallModules;
+import dagger.hilt.components.SingletonComponent;
 
 @LargeTest
 @HiltAndroidTest
 public class RecordRideFragmentEspressoTest {
+
     @Rule
     public HiltAndroidRule hiltRule = new HiltAndroidRule(this);
 

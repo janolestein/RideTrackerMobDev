@@ -139,7 +139,7 @@ public class ServiceTest
     }
 
     @Test
-    public void testServiceStartsAndSaves() throws TimeoutException
+    public void testServiceStarts() throws TimeoutException
     {
 
         assertFalse(RecordRideService.isRunning);

@@ -10,6 +10,11 @@ import dagger.hilt.InstallIn;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
 
+/**
+ * Hilt Module for a Local Broadcast Manager
+ * No Longer in Use in favor of the Repository and ViewModel way
+ */
+@Deprecated
 @Module
 @InstallIn(SingletonComponent.class)
 public class BroadcasterModule

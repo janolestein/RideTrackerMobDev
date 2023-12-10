@@ -15,7 +15,10 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
-
+/**
+ * RideRepository as a abstraction above the Dao
+ * Functions are described in the RideRepositoryInterface
+ */
 public class RideRepository implements RideRepositoryInterface
 {
 

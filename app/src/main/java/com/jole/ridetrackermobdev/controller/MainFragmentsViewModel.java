@@ -21,6 +21,10 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
+/**
+ * ViewModel for the Fragments in the Main Activity
+ * Extends Android ViewModel
+ */
 @HiltViewModel
 public class MainFragmentsViewModel extends ViewModel {
     private LiveData<List<Ride>> allRides;
@@ -29,6 +33,10 @@ public class MainFragmentsViewModel extends ViewModel {
 
     private LiveData<double[]> uiState;
 
+    /**
+     * Constructor for the ViewModel
+     * @param rideRepository injected by DaggerHilt
+     */
     @Inject
     public MainFragmentsViewModel(RideRepositoryInterface rideRepository) {
         this.rideRepository = rideRepository;
@@ -36,10 +44,18 @@ public class MainFragmentsViewModel extends ViewModel {
         this.uiState = rideRepository.getRideServiceUiState();
     }
 
+    /**
+     * Return All Rides from the Database as LiveData
+     * @return LiveData<List<Ride>>
+     */
     public LiveData<List<Ride>> getAllRides() {
         return allRides;
     }
 
+    /**
+     * Returns the Service UI-State for use in the UI
+     * @return LiveData<double[]>
+     */
     public LiveData<double[]> getUiState() {
         return uiState;
     }

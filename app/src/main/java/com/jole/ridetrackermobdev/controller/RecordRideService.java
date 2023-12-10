@@ -49,6 +49,10 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
+/**
+ * Service to Record a Ride
+ * Acts as Android Foreground Service and uses a FusedLocationProvider for the Location Data
+ */
 @AndroidEntryPoint
 public class RecordRideService extends Service
 {
@@ -73,21 +77,50 @@ public class RecordRideService extends Service
     @Inject
     Clock clock;
 
+    /**
+     * Standard Empty Constructor
+     */
     public RecordRideService(){
 
     }
 
+    /**
+     * Only for testing purposes
+     * @param rideRepository
+     */
     public RecordRideService(RideRepository rideRepository)
     {
         this.rideRepository = rideRepository;
     }
 
+    /**
+     * Mostly for testing
+     *
+     * @param intent The Intent that was used to bind to this service,
+     * as given to {@link android.content.Context#bindService
+     * Context.bindService}.  Note that any extras that were included with
+     * the Intent at that point will <em>not</em> be seen here.
+     *
+     * @return
+     */
     @Override
     public IBinder onBind(Intent intent)
     {
         return new Binder();
     }
 
+    /**
+     * Registers the Location Callback and starts Location Updates for the Service
+     * @param intent The Intent supplied to {@link android.content.Context#startService},
+     * as given.  This may be null if the service is being restarted after
+     * its process has gone away, and it had previously returned anything
+     * except {@link #START_STICKY_COMPATIBILITY}.
+     * @param flags Additional data about this start request.
+     * @param startId A unique integer representing this specific request to
+     * start.  Use with {@link #stopSelfResult(int)}.
+     *
+     * @return
+     */
     @Override
     public int onStartCommand(Intent intent, int flags, int startId)
     {
@@ -101,7 +134,10 @@ public class RecordRideService extends Service
         return super.onStartCommand(intent, flags, startId);
     }
 
-
+    /**
+     * Overrides the Callback function of the FusedLocationProvider
+     * @param clock needed to keep the time the service started and elapsed between Callbacks
+     */
     public void registerLocationCallback(Clock clock){
         startTime = clock.millis();
         locationCallback = new LocationCallback()
@@ -143,6 +179,9 @@ public class RecordRideService extends Service
         };
     }
 
+    /**
+     * Sets the static Variable isRunning to true
+     */
     @Override
     public void onCreate()
     {
@@ -150,6 +189,9 @@ public class RecordRideService extends Service
         super.onCreate();
     }
 
+    /**
+     * Saves the Recorded Ride and unregisters the Callback from the FusedLocationProvider on teardown of the Service
+     */
     @Override
     public void onDestroy()
     {
@@ -160,6 +202,9 @@ public class RecordRideService extends Service
         super.onDestroy();
     }
 
+    /**
+     * Function to Save a Recorded Ride to the Repository
+     */
     public void saveRide()
     {
         rideRepository.addNewRide(new Ride("Wednesday Evening Ride", "This is a Example Ride Description", LocalDate.now().toString(), dist, avSpeed, elapsedTime,
@@ -168,8 +213,8 @@ public class RecordRideService extends Service
     }
 
 
-    /*
-    UTILS
+    /**
+     * Registers the Callback with the FusedLocationProvider and requests LocationUpdates
      */
     private void startLocationUpdates()
     {
@@ -184,7 +229,10 @@ public class RecordRideService extends Service
                 Looper.getMainLooper());
     }
 
-
+    /**
+     * Notification Utilities neccecary for the Foreground Service
+     * @return a Notification to be displayed while the Service is running
+     */
     public Notification getNotification()
     {
         String channel;
@@ -205,6 +253,10 @@ public class RecordRideService extends Service
                 .build();
     }
 
+    /**
+     * Creates a Notification Channel to display the Notification from the Service
+     * @return String to identify the Channel
+     */
     @NonNull
     private synchronized String createChannel()
     {

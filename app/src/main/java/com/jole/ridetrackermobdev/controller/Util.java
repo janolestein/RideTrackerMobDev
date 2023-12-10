@@ -2,8 +2,16 @@ package com.jole.ridetrackermobdev.controller;
 
 import org.osmdroid.util.GeoPoint;
 
+/**
+ * Util Class with different Functions
+ */
 public class Util {
-
+    /**
+     * Calculates the Distance between to GeoPoints
+     * @param gp1 GeoPoint one
+     * @param gp2 GeoPoint two
+     * @return distance as Double
+     */
     public static double distanceBetweenTwoGeoPoints(GeoPoint gp1, GeoPoint gp2)
     {
 

@@ -8,6 +8,11 @@ import org.osmdroid.util.GeoPoint;
 
 import java.time.LocalDate;
 import java.util.List;
+
+/**
+ * Data Class for a Ride
+ * Is the Entity for the Rooms Database
+ */
 @Entity
 public class Ride {
     @PrimaryKey(autoGenerate = true)

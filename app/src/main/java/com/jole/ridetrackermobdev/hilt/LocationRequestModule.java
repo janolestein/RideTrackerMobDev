@@ -12,6 +12,10 @@ import dagger.Provides;
 import dagger.hilt.InstallIn;
 import dagger.hilt.android.components.ServiceComponent;
 import dagger.hilt.android.qualifiers.ApplicationContext;
+
+/**
+ * Hilt Module that provides a LocationRequest
+ */
 @Module
 @InstallIn(ServiceComponent.class)
 public class LocationRequestModule

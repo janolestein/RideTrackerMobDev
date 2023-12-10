@@ -13,12 +13,19 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.lifecycle.HiltViewModel;
 
+/**
+ * ViewModel for the Detail UIs
+ * Extends Android ViewModel
+ */
 @HiltViewModel
 public class RideDetailViewModel extends ViewModel
 {
     RideRepositoryInterface rideRepository;
 
-
+    /**
+     * Constructor for the ViewModel
+     * @param rideRepository injected by DaggerHilt
+     */
     @Inject
     public RideDetailViewModel(RideRepositoryInterface rideRepository) {
         this.rideRepository = rideRepository;

@@ -20,6 +20,9 @@ import dagger.hilt.android.components.ActivityComponent;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
 
+/**
+ * Hilt Module that Provides a Database based on the DaoInterface as Singleton
+ */
 @Module
 @InstallIn(SingletonComponent.class)
 public class DaoModule

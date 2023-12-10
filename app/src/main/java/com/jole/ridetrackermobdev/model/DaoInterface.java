@@ -9,6 +9,10 @@ import androidx.room.Query;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+/**
+ * Interface that functions as the Basis of the Rooms Database
+ */
 @Dao
 public interface DaoInterface
 {

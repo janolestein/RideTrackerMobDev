@@ -11,6 +11,9 @@ import dagger.hilt.InstallIn;
 import dagger.hilt.android.components.ServiceComponent;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 
+/**
+ * Hilt Module that provides a FusedLocationProvider
+ */
 @Module
 @InstallIn(ServiceComponent.class)
 public class FusedLocationProviderModule

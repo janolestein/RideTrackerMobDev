@@ -5,6 +5,9 @@ import androidx.lifecycle.LiveData;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Interface for RideRepository
+ */
 public interface RideRepositoryInterface
 {
     /**

@@ -12,6 +12,9 @@ import dagger.hilt.InstallIn;
 import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
 
+/**
+ * Hilt Module that Provides a Java.Util.Clock Object
+ */
 @Module
 @InstallIn(SingletonComponent.class)
 public class ClockModule

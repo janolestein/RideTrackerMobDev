@@ -15,6 +15,9 @@ import dagger.hilt.InstallIn;
 import dagger.hilt.android.components.ViewModelComponent;
 import dagger.hilt.components.SingletonComponent;
 
+/**
+ * Hilt Module that Provides a instance of a RideRepositoryInterface
+ */
 @Module
 @InstallIn(SingletonComponent.class)
 public class RideRepositoryModule

@@ -145,9 +145,9 @@ public class MainActivityEspressoTest {
         onView(withTagValue(is((Object) "mapView"))).check(matches(isDisplayed()));
 
         onView(withId(R.id.nav_record)).perform(click());
-        onView(withId(R.id.tvTimeTitle)).check(matches(withText("Zeit")));
-        onView(withId(R.id.tvFragTitelTraining)).check(matches(withText("Training aufnehmen")));
-        onView(withId(R.id.tvDistanceTitel)).check(matches(withText("Distanz")));
+        onView(withId(R.id.tvTimeTitle)).check(matches(withText("Time")));
+        onView(withId(R.id.tvFragTitelTraining)).check(matches(withText("Record Ride")));
+        onView(withId(R.id.tvDistanceTitel)).check(matches(withText("Distance")));
 
         onView(withId(R.id.nav_rides)).perform(click());
 
@@ -165,9 +165,9 @@ public class MainActivityEspressoTest {
                 ));
 
         pressBack();
-        onView(withId(R.id.tvTimeTitle)).check(matches(withText("Zeit")));
-        onView(withId(R.id.tvFragTitelTraining)).check(matches(withText("Training aufnehmen")));
-        onView(withId(R.id.tvDistanceTitel)).check(matches(withText("Distanz")));
+        onView(withId(R.id.tvTimeTitle)).check(matches(withText("Time")));
+        onView(withId(R.id.tvFragTitelTraining)).check(matches(withText("Record Ride")));
+        onView(withId(R.id.tvDistanceTitel)).check(matches(withText("Distance")));
 
         pressBack();
         onView(withId(16908290)).check(matches(isDisplayed()));

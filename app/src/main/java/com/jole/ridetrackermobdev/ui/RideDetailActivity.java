@@ -27,6 +27,9 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
+/**
+ * Shows the Details of a selected Ride
+ */
 @AndroidEntryPoint
 public class RideDetailActivity extends AppCompatActivity
 {

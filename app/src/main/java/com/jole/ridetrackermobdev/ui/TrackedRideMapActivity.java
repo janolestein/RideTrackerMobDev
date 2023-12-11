@@ -23,7 +23,7 @@ import dagger.hilt.android.AndroidEntryPoint;
 
 /**
  * This Activity only exists because i better know how to create a Map in a Fragment
- * TODO: Change that
+ *
  */
 @AndroidEntryPoint
 public class TrackedRideMapActivity extends AppCompatActivity

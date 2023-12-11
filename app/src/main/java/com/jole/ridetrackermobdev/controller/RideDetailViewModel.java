@@ -18,7 +18,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
  * Extends Android ViewModel
  */
 @HiltViewModel
-public class RideDetailViewModel extends ViewModel
+public class RideDetailViewModel extends ViewModel implements DetailViewModelInterface
 {
     RideRepositoryInterface rideRepository;
 

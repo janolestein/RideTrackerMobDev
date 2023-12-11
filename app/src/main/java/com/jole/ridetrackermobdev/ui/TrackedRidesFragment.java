@@ -25,9 +25,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link TrackedRidesFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment that shows all Saved Rides using a RecyclerView, Adapter for it is the RideItemRecViewAdapter
  */
 @AndroidEntryPoint
 public class TrackedRidesFragment extends Fragment

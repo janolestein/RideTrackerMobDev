@@ -27,6 +27,9 @@ import java.util.Map;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
+/**
+ * Entry Point for the App, handles the Fragments and Permissions
+ */
 @AndroidEntryPoint
 public class MainActivity extends AppCompatActivity
 {
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.frFragment, MapCurrentFragment.class, null).setReorderingAllowed(true).addToBackStack("MapCurrentFragment").commit();
 
+        // listener for the BottomNavigationBar that replaces the shown Fragment on click
         bottomNav.setOnItemSelectedListener(item ->
         {
             int id = item.getItemId();
@@ -71,10 +75,10 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    /**
-     * Rewrote Permissions because WRITE_EXTERNAL_STORAGE is Deprecated
-     */
 
+    /**
+     * Permissions Handling for the app
+     */
     private void checkPermissions()
     {
         List<String> permissions = new ArrayList<>();

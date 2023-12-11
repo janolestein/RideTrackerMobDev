@@ -96,9 +96,9 @@ public class EndToEndIntegrationTest
         onView(withTagValue(is((Object) "mapView"))).check(matches(isDisplayed()));
 
         onView(withId(R.id.nav_record)).perform(click());
-        onView(withId(R.id.tvTimeTitle)).check(matches(withText("Zeit")));
-        onView(withId(R.id.tvFragTitelTraining)).check(matches(withText("Training aufnehmen")));
-        onView(withId(R.id.tvDistanceTitel)).check(matches(withText("Distanz")));
+        onView(withId(R.id.tvTimeTitle)).check(matches(withText("Time")));
+        onView(withId(R.id.tvFragTitelTraining)).check(matches(withText("Record Ride")));
+        onView(withId(R.id.tvDistanceTitel)).check(matches(withText("Distance")));
         onView(withId(R.id.tvDistanceVar)).check(matches(withText("0.0")));
         onView(withId(R.id.tvElapsedTimeVar)).check(matches(withText("0.0")));
         onView(withId(R.id.tvAverageSpeedVar)).check(matches(withText("0.0")));
@@ -143,8 +143,8 @@ public class EndToEndIntegrationTest
                 ));
 
         pressBack();
-        onView(withId(R.id.tvFragTitelTraining)).check(matches(withText("Training aufnehmen")));
-        onView(withId(R.id.tvDistanceTitel)).check(matches(withText("Distanz")));
+        onView(withId(R.id.tvFragTitelTraining)).check(matches(withText("Record Ride")));
+        onView(withId(R.id.tvDistanceTitel)).check(matches(withText("Distance")));
         onView(withId(R.id.tvDistanceVar)).check(matches(withText("0.0")));
         onView(withId(R.id.tvElapsedTimeVar)).check(matches(withText("0.0")));
         onView(withId(R.id.tvAverageSpeedVar)).check(matches(withText("0.0")));

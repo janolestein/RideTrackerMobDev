@@ -63,9 +63,7 @@ import javax.inject.Inject;
 import dagger.hilt.android.AndroidEntryPoint;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link TrackedRideMapFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Uses OSMDroid to show a Map with a Tracked Ride drawn on it using the Recorded GeoPoints
  */
 @AndroidEntryPoint
 public class TrackedRideMapFragment extends Fragment

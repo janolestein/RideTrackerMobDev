@@ -28,9 +28,7 @@ import org.osmdroid.views.overlay.mylocation.GpsMyLocationProvider;
 import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 
 /**
- * A simple {@link Fragment} subclass.
- * Use the {@link MapCurrentFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * Fragment that uses OSMDroid to show a Map with current Location, first screen of the App on startup
  */
 public class MapCurrentFragment extends Fragment
 {
@@ -65,6 +63,18 @@ public class MapCurrentFragment extends Fragment
         super.onCreate(savedInstanceState);
     }
 
+    /**
+     * Creates the Map to display
+     * @param inflater The LayoutInflater object that can be used to inflate
+     * any views in the fragment,
+     * @param container If non-null, this is the parent view that the fragment's
+     * UI should be attached to.  The fragment should not add the view itself,
+     * but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     *
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mMapView = new MapView(inflater.getContext());
@@ -73,6 +83,12 @@ public class MapCurrentFragment extends Fragment
         return mMapView;
     }
 
+    /**
+     * Adds the Overlays on the Map
+     * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
     {
@@ -119,7 +135,9 @@ public class MapCurrentFragment extends Fragment
         mMapView.setExpectedCenter(new GeoPoint(latitude, longitude));
     }
 
-
+    /**
+     * Saves current State of the Map on Pause
+     */
     @Override
     public void onPause() {
         //save the current location
@@ -144,6 +162,9 @@ public class MapCurrentFragment extends Fragment
 
     }
 
+    /**
+     * Reloads current state of the map if one is saved
+     */
     @Override
     public void onResume() {
         super.onResume();

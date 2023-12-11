@@ -83,17 +83,17 @@ public class RecordRideFragmentEspressoTest {
 
     @Test
     public void testIfContentInViewsIsCorrect(){
-        onView(withId(R.id.tvTimeTitle)).check(matches(withText("Zeit")));
-        onView(withId(R.id.tvFragTitelTraining)).check(matches(withText("Training aufnehmen")));
-        onView(withId(R.id.tvDistanceTitel)).check(matches(withText("Distanz")));
+        onView(withId(R.id.tvTimeTitle)).check(matches(withText("Time")));
+        onView(withId(R.id.tvFragTitelTraining)).check(matches(withText("Record Ride")));
+        onView(withId(R.id.tvDistanceTitel)).check(matches(withText("Distance")));
 
         onView(withId(R.id.tvDistanceVar)).check(matches(withText(Double.toString(345D))));
         onView(withId(R.id.tvElapsedTimeVar)).check(matches(withText(Double.toString(475698D / 1000D))));
         onView(withId(R.id.tvAverageSpeedVar)).check(matches(withText(Double.toString(567567D))));
 
-        onView(withId(R.id.btnStartRecord)).check(matches(withText("Training starten")));
+        onView(withId(R.id.btnStartRecord)).check(matches(withText("Start")));
         onView(withId(R.id.btnStartRecord)).perform(click());
-        onView(withId(R.id.btnStopRecord)).check(matches(withText("Training stoppen")));
+        onView(withId(R.id.btnStopRecord)).check(matches(withText("Stop")));
     }
 
     @Test

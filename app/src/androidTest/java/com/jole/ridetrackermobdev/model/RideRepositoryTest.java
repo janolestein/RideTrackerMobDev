@@ -40,7 +40,7 @@ public class RideRepositoryTest {
             new InstantTaskExecutorRule();
     @Mock
     DaoInterface dao;
-    RideRepository repo;
+    RideRepositoryInterface repo;
     List<GeoPoint> gPoints;
     Ride ride;
     double[] liveDataArr;

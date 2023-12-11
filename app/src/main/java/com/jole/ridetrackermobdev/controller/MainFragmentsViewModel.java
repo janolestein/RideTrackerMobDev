@@ -26,7 +26,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel;
  * Extends Android ViewModel
  */
 @HiltViewModel
-public class MainFragmentsViewModel extends ViewModel {
+public class MainFragmentsViewModel extends ViewModel implements MainViewModelInterface{
     private LiveData<List<Ride>> allRides;
 
     RideRepositoryInterface rideRepository;

@@ -26,6 +26,9 @@ import javax.inject.Inject;
 
 import dagger.hilt.android.AndroidEntryPoint;
 
+/**
+ * Recycle View Adapter for Ride Objects
+ */
 public class RideItemRecViewAdapter extends RecyclerView.Adapter<RideItemRecViewAdapter.ViewHolder>{
 
     private List<Ride> rideList = new ArrayList<>();

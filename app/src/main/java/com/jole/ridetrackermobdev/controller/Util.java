@@ -2,6 +2,9 @@ package com.jole.ridetrackermobdev.controller;
 
 import org.osmdroid.util.GeoPoint;
 
+import java.time.LocalDate;
+import java.util.Calendar;
+
 /**
  * Util Class with different Functions
  */
@@ -32,5 +35,25 @@ public class Util {
 
         // calculate the result
         return(c * r);
+    }
+
+
+    public static String getTimeOfDay(){
+        Calendar calendar = Calendar.getInstance();
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        if ((hour >= 0 && hour <= 5 ) || hour == 23){
+            return "night";
+        } else if (hour >= 6 && hour <= 10) {
+            return "morning";
+        } else if (hour >= 11 && hour <= 15) {
+            return "noon";
+        } else if (hour >= 16 && hour <= 18) {
+            return "afternoon";
+        } else if (hour >= 19 && hour <= 22) {
+            return "evening";
+        }
+        else {
+            return "";
+        }
     }
 }

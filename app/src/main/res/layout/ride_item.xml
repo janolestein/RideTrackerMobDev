@@ -13,54 +13,49 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/ivRideScreenShot"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <TextView
             android:id="@+id/tvTitelRide"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
             android:text="Ride Titel"
-            android:textSize="16sp"
-            app:layout_constraintBottom_toBottomOf="@+id/ivRideScreenShot"
-            app:layout_constraintStart_toEndOf="@+id/ivRideScreenShot"
-            app:layout_constraintTop_toTopOf="@+id/ivRideScreenShot"
-            app:layout_constraintVertical_bias="0.120000005" />
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tvDateDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
             android:text="Datum"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@+id/ivRideScreenShot"
-            app:layout_constraintStart_toEndOf="@+id/ivRideScreenShot"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitelRide"
-            app:layout_constraintVertical_bias="0.13" />
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvTitelRide" />
 
         <TextView
-            android:id="@+id/tvDescDetail"
-            android:layout_width="0dp"
+            android:id="@+id/tvDistanceItem"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="Beschreibung"
-            android:textSize="9sp"
-            app:layout_constraintBottom_toBottomOf="@+id/ivRideScreenShot"
+            android:text="TextView"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/ivRideScreenShot"
-            app:layout_constraintTop_toBottomOf="@+id/tvDateDetail"
-            app:layout_constraintVertical_bias="0.19999999" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvAVSpeedItem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:text="TextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvDistanceItem" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

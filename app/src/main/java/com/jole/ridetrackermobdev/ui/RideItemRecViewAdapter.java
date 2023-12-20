@@ -52,13 +52,12 @@ public class RideItemRecViewAdapter extends RecyclerView.Adapter<RideItemRecView
     public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position)
     {
         holder.tvTitelRide.setText(rideList.get(position).getName());
-        holder.tvDate.setText(rideList.get(position).getDate().toString());
-        holder.tvDesc.setText(rideList.get(position).getDescription());
+        holder.tvDate.setText(rideList.get(position).getDate());
+        holder.tvDistanceItem.setText(String.format("%.2f",rideList.get(position).getRideLengthKm()) + " km");
+        holder.tvAVSpeedItem.setText(String.format("%.2f",rideList.get(position).getAverageSpeed()) + " km/h");
 
-        Glide.with(context)
-                .asBitmap()
-                .load(rideList.get(position).getImgUrl())
-                .into(holder.ivRideScreenShot);
+
+
 
         holder.rideItemCard.setOnClickListener(v ->
         {
@@ -84,18 +83,17 @@ public class RideItemRecViewAdapter extends RecyclerView.Adapter<RideItemRecView
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        private ImageView ivRideScreenShot;
-        private TextView tvTitelRide, tvDate, tvDesc;
+        private TextView tvTitelRide, tvDate, tvDistanceItem, tvAVSpeedItem;
         private CardView rideItemCard;
 
         public ViewHolder(@NonNull View itemView)
         {
             super(itemView);
-            this.ivRideScreenShot = itemView.findViewById(R.id.ivRideScreenShot);
             this.tvTitelRide = itemView.findViewById(R.id.tvTitelRide);
             this.tvDate = itemView.findViewById(R.id.tvDateDetail);
-            this.tvDesc = itemView.findViewById(R.id.tvDescDetail);
             this.rideItemCard = itemView.findViewById(R.id.rideItemCard);
+            this.tvDistanceItem = itemView.findViewById(R.id.tvDistanceItem);
+            this.tvAVSpeedItem = itemView.findViewById(R.id.tvAVSpeedItem);
         }
     }
 

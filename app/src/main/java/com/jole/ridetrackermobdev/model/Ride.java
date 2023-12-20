@@ -18,24 +18,20 @@ public class Ride {
     @PrimaryKey(autoGenerate = true)
     private int id;
     private String name;
-    private String description;
     private String date;
     private double rideLengthKm;
     private double averageSpeed;
     private double totalRideTime;
-    private String imgUrl;
     @TypeConverters({Converters.class})
     private List<GeoPoint> geoPoints;
 
 
-    public Ride(String name, String description, String date, double rideLengthKm, double averageSpeed, double totalRideTime, String imgUrl, List<GeoPoint> geoPoints) {
+    public Ride(String name, String date, double rideLengthKm, double averageSpeed, double totalRideTime, List<GeoPoint> geoPoints) {
         this.name = name;
-        this.description = description;
         this.date = date;
         this.rideLengthKm = rideLengthKm;
         this.averageSpeed = averageSpeed;
         this.totalRideTime = totalRideTime;
-        this.imgUrl = imgUrl;
         this.geoPoints = geoPoints;
     }
 
@@ -57,16 +53,6 @@ public class Ride {
     public void setName(String name)
     {
         this.name = name;
-    }
-
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
     public String getDate()
@@ -109,16 +95,6 @@ public class Ride {
         this.totalRideTime = totalRideTime;
     }
 
-    public String getImgUrl()
-    {
-        return imgUrl;
-    }
-
-    public void setImgUrl(String imgUrl)
-    {
-        this.imgUrl = imgUrl;
-    }
-
     public List<GeoPoint> getGeoPoints()
     {
         return geoPoints;
@@ -134,12 +110,10 @@ public class Ride {
         return "Ride{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
                 ", date='" + date + '\'' +
                 ", rideLengthKm=" + rideLengthKm +
                 ", averageSpeed=" + averageSpeed +
                 ", totalRideTime=" + totalRideTime +
-                ", imgUrl='" + imgUrl + '\'' +
                 ", geoPoints=" + geoPoints +
                 '}';
     }

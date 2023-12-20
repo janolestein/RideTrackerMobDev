@@ -6,25 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.RideDetailActivity">
 
-    <ImageView
-        android:id="@+id/ivRideScrennshotDetail"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
-
     <TextView
         android:id="@+id/tvRideTitelDetail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:text="Ride Titel"
+        android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ivRideScrennshotDetail"
-        app:layout_constraintTop_toTopOf="@+id/ivRideScrennshotDetail" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvDateDetail"
@@ -32,19 +23,10 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:text="Date"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ivRideScrennshotDetail"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvRideTitelDetail" />
-
-    <TextView
-        android:id="@+id/tvDescDetail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Beschreibung"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/ivRideScrennshotDetail"
-        app:layout_constraintTop_toBottomOf="@+id/tvDateDetail" />
 
     <View
         android:id="@+id/divider"
@@ -72,11 +54,11 @@
         android:id="@+id/tvAvSpeedDetailTitel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:text="Average Speed"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider5" />
 
@@ -84,11 +66,11 @@
         android:id="@+id/btnViewMap"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="32dp"
         android:text="Show Map"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ivRideScrennshotDetail" />
+        app:layout_constraintTop_toBottomOf="@+id/divider7" />
 
     <TextView
         android:id="@+id/tvDistanceVarDetail"
@@ -150,8 +132,17 @@
         android:id="@+id/divider6"
         android:layout_width="409dp"
         android:layout_height="1dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:background="?android:attr/listDivider"
-        app:layout_constraintTop_toBottomOf="@+id/btnViewMap"
+        app:layout_constraintTop_toBottomOf="@+id/tvDateDetail"
+        tools:layout_editor_absoluteX="1dp" />
+
+    <View
+        android:id="@+id/divider7"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="24dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintTop_toBottomOf="@+id/tvAvSpeedVar"
         tools:layout_editor_absoluteX="1dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

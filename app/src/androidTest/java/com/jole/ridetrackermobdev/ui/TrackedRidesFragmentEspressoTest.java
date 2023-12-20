@@ -86,22 +86,14 @@ public class TrackedRidesFragmentEspressoTest {
         gPoints.add(new GeoPoint(52.46363503504482, 13.489868695841839));
         gPoints.add(new GeoPoint(52.4661139469194, 13.495570882101445));
 
-        ride1 = new Ride("Test1", "This is a Example Ride Description", LocalDate.now().toString(), 60, 25.6, 1.45,
-                "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
-        ride2 = new Ride("Test2", "This is a test", LocalDate.now().toString(), 60, 25.6, 1.45,
-                "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
-        ride3 = new Ride("Test3", "This is a test", LocalDate.now().toString(), 60, 25.6, 1.45,
-                "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
-        ride4 = new Ride("Test4", "This is a test", LocalDate.now().toString(), 60, 25.6, 1.45,
-                "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
-        ride5 = new Ride("Test5", "This is a test", LocalDate.now().toString(), 60, 25.6, 1.45,
-                "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
-        ride6 = new Ride("Test6", "This is a test", LocalDate.now().toString(), 60, 25.6, 1.45,
-                "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
-        ride7 = new Ride("Test7", "This is a test", LocalDate.now().toString(), 60, 25.6, 1.45,
-                "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
-        ride8 = new Ride("Test8", "This is a test", LocalDate.now().toString(), 60, 25.6, 1.45,
-                "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
+        ride1 = new Ride("Test1",  LocalDate.now().toString(), 60, 25.6, 1.45, gPoints);
+        ride2 = new Ride("Test2",  LocalDate.now().toString(), 60, 25.6, 1.45, gPoints);
+        ride3 = new Ride("Test3",  LocalDate.now().toString(), 60, 25.6, 1.45, gPoints);
+        ride4 = new Ride("Test4",  LocalDate.now().toString(), 60, 25.6, 1.45, gPoints);
+        ride5 = new Ride("Test5",  LocalDate.now().toString(), 60, 25.6, 1.45, gPoints);
+        ride6 = new Ride("Test6",  LocalDate.now().toString(), 60, 25.6, 1.45, gPoints);
+        ride7 = new Ride("Test7",  LocalDate.now().toString(), 60, 25.6, 1.45, gPoints);
+        ride8 = new Ride("Test8",  LocalDate.now().toString(), 60, 25.6, 1.45, gPoints);
 
 
         dao.addNewRide(ride1);

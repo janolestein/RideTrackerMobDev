@@ -40,7 +40,10 @@ import com.jole.ridetrackermobdev.model.RideRepositoryInterface;
 import org.osmdroid.util.GeoPoint;
 
 import java.time.Clock;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -207,9 +210,17 @@ public class RecordRideService extends Service
      */
     public void saveRide()
     {
-        rideRepository.addNewRide(new Ride("Wednesday Evening Ride", "This is a Example Ride Description", LocalDate.now().toString(), dist, avSpeed, elapsedTime,
-                "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", geoPointList));
-        rideRepository.setRideServiceUiState(new double[]{0, 0, 0});
+        if(dist == 0 ){
+            Toast.makeText(this, "Ride had no distance and will not be saved ", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            LocalDate today = LocalDate.now();
+            DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG);
+            DayOfWeek dayOfWeek = today.getDayOfWeek();
+            String formattedDate = today.format(pattern);
+            rideRepository.addNewRide(new Ride(dayOfWeek + " " + Util.getTimeOfDay() + " Ride", today.toString(), dist, avSpeed, elapsedTime, geoPointList));
+            rideRepository.setRideServiceUiState(new double[]{0, 0, 0});
+        }
     }
 
 

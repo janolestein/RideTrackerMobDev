@@ -63,17 +63,11 @@ public class RideDetailActivity extends AppCompatActivity
         }
 
         tvRideTitelDetail.setText(ride.map(Ride::getName).orElse(""));
-        tvDateDetail.setText(ride.map(r -> r.getDate().toString()).orElse(""));
-        tvDescDetail.setText(ride.map(Ride::getDescription).orElse(""));
-        tvDistanceVarDetail.setText(ride.map(r -> Double.toString(r.getRideLengthKm())).orElse(""));
-        tvAvSpeedVar.setText(ride.map(r -> Double.toString(r.getAverageSpeed())).orElse(""));
-        tvTimeVar.setText(ride.map(r -> Double.toString(r.getTotalRideTime() / 1000)).orElse(""));
+        tvDateDetail.setText(ride.map(r -> r.getDate()).orElse(""));
+        tvDistanceVarDetail.setText(ride.map(r -> String.format("%.2f", r.getRideLengthKm())).orElse(""));
+        tvAvSpeedVar.setText(ride.map(r -> String.format("%.2f", r.getAverageSpeed())).orElse(""));
+        tvTimeVar.setText(ride.map(r -> String.format("%.2f", r.getTotalRideTime() / 1000)).orElse(""));
 
-
-        Glide.with(this)
-                .asBitmap()
-                .load(ride.map(Ride::getImgUrl).orElse(""))
-                .into(ivRideScrennshotDetail);
 
         btnViewMap.setOnClickListener(v ->
         {
@@ -88,10 +82,8 @@ public class RideDetailActivity extends AppCompatActivity
 
     private void initViews()
     {
-        ivRideScrennshotDetail = findViewById(R.id.ivRideScrennshotDetail);
         tvRideTitelDetail = findViewById(R.id.tvRideTitelDetail);
         tvDateDetail = findViewById(R.id.tvDateDetail);
-        tvDescDetail = findViewById(R.id.tvDescDetail);
         tvDistanceTitelDetail = findViewById(R.id.tvDistanceTitelDetail);
         tvAvSpeedDetailTitel = findViewById(R.id.tvAvSpeedDetailTitel);
         tvTimeVar = findViewById(R.id.tvTimeVar);

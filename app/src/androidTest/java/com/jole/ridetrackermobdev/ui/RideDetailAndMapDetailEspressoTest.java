@@ -75,14 +75,14 @@ public class RideDetailAndMapDetailEspressoTest {
         gPoints.add(new GeoPoint(52.46363503504482, 13.489868695841839));
         gPoints.add(new GeoPoint(52.4661139469194, 13.495570882101445));
 
-        ride1 = new Ride("Test1",  LocalDate.now().toString(), 60, 25.6, 1.45, gPoints);
-        ride2 = new Ride("Test2",  LocalDate.now().toString(), 60, 25.6, 1.45, gPoints);
-        ride3 = new Ride("Test3",  LocalDate.now().toString(), 60, 25.6, 1.45, gPoints);
-        ride4 = new Ride("Test4",  LocalDate.now().toString(), 60, 25.6, 1.45, gPoints);
-        ride5 = new Ride("Test5",  LocalDate.now().toString(), 60, 25.6, 1.45, gPoints);
-        ride6 = new Ride("Test6",  LocalDate.now().toString(), 60, 25.6, 1.45, gPoints);
-        ride7 = new Ride("Test7",  LocalDate.now().toString(), 60, 25.6, 1.45, gPoints);
-        ride8 = new Ride("Test8",  LocalDate.now().toString(), 60, 25.6, 1.45, gPoints);
+        ride1 = new Ride("Test1",  LocalDate.now().toString(), 60, 25.6, 567567D, gPoints);
+        ride2 = new Ride("Test2",  LocalDate.now().toString(), 60, 25.6, 567567D, gPoints);
+        ride3 = new Ride("Test3",  LocalDate.now().toString(), 60, 25.6, 567567D, gPoints);
+        ride4 = new Ride("Test4",  LocalDate.now().toString(), 60, 25.6, 567567D, gPoints);
+        ride5 = new Ride("Test5",  LocalDate.now().toString(), 60, 25.6, 567567D, gPoints);
+        ride6 = new Ride("Test6",  LocalDate.now().toString(), 60, 25.6, 567567D, gPoints);
+        ride7 = new Ride("Test7",  LocalDate.now().toString(), 60, 25.6, 567567D, gPoints);
+        ride8 = new Ride("Test8",  LocalDate.now().toString(), 60, 25.6, 567567D, gPoints);
 
 
         rideList = new LinkedList<>();
@@ -107,7 +107,7 @@ public class RideDetailAndMapDetailEspressoTest {
 
         onView(withId(R.id.tvRideTitelDetail)).check(matches(withText("Test3")));
         onView(withId(R.id.tvDateDetail)).check(matches(withText(LocalDate.now().toString())));
-        onView(withId(R.id.tvTimeVar)).check(matches(withText("0.00145")));
+        onView(withId(R.id.tvTimeVar)).check(matches(withText("0h, 7min, 55sec")));
 
         Intent intent2 = new Intent(ApplicationProvider.getApplicationContext(), RideDetailActivity.class);
         intent2.putExtra("RideId", 7);
@@ -115,7 +115,7 @@ public class RideDetailAndMapDetailEspressoTest {
 
         onView(withId(R.id.tvRideTitelDetail)).check(matches(withText("Test8")));
         onView(withId(R.id.tvDateDetail)).check(matches(withText(LocalDate.now().toString())));
-        onView(withId(R.id.tvTimeVar)).check(matches(withText("0.001456")));
+        onView(withId(R.id.tvTimeVar)).check(matches(withText("0h, 7min, 55sec")));
     }
 
     @Test
@@ -130,6 +130,6 @@ public class RideDetailAndMapDetailEspressoTest {
         pressBack();
         onView(withId(R.id.tvRideTitelDetail)).check(matches(withText("Test3")));
         onView(withId(R.id.tvDateDetail)).check(matches(withText(LocalDate.now().toString())));
-        onView(withId(R.id.tvTimeVar)).check(matches(withText("0.00145")));
+        onView(withId(R.id.tvTimeVar)).check(matches(withText("0h, 7min, 55sec")));
     }
 }

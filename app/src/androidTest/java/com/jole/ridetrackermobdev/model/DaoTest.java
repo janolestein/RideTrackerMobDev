@@ -69,8 +69,7 @@ public class DaoTest {
         gPoints.add(new GeoPoint(52.46363503504482, 13.489868695841839));
         gPoints.add(new GeoPoint(52.4661139469194, 13.495570882101445));
 
-        ride = new Ride("Wednesday Evening Ride", "This is a Example Ride Description", LocalDate.now().toString(), 60, 25.6, 1.45,
-                "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
+        ride = new Ride("Wednesday Evening Ride",  LocalDate.now().toString(), 60, 25.6, 1.45, gPoints);
         rideDatabaseLiteral.clearAllTables();
 
 
@@ -81,12 +80,10 @@ public class DaoTest {
 
         rideDb.addNewRide(ride);
         assertEquals(rideDb.findRideById(1).get().getName(), ride.getName());
-        assertEquals(rideDb.findRideById(1).get().getDescription(), ride.getDescription());
         assertEquals(rideDb.findRideById(1).get().getDate(), ride.getDate());
         assertEquals(rideDb.findRideById(1).get().getRideLengthKm(), ride.getRideLengthKm(), 0);
         assertEquals(rideDb.findRideById(1).get().getAverageSpeed(), ride.getAverageSpeed(), 0);
         assertEquals(rideDb.findRideById(1).get().getTotalRideTime(), ride.getTotalRideTime(), 0);
-        assertEquals(rideDb.findRideById(1).get().getImgUrl(), ride.getImgUrl());
         assertEquals(rideDb.findRideById(1).get().getGeoPoints(), ride.getGeoPoints());
     }
 
@@ -101,12 +98,11 @@ public class DaoTest {
         rideDb.addNewRide(ride);
         rideDb.addNewRide(ride);
         assertEquals(rideDb.findRideById(7).get().getName(), ride.getName());
-        assertEquals(rideDb.findRideById(7).get().getDescription(), ride.getDescription());
+
         assertEquals(rideDb.findRideById(7).get().getDate(), ride.getDate());
         assertEquals(rideDb.findRideById(7).get().getRideLengthKm(), ride.getRideLengthKm(), 0);
         assertEquals(rideDb.findRideById(7).get().getAverageSpeed(), ride.getAverageSpeed(), 0);
         assertEquals(rideDb.findRideById(7).get().getTotalRideTime(), ride.getTotalRideTime(), 0);
-        assertEquals(rideDb.findRideById(7).get().getImgUrl(), ride.getImgUrl());
         assertEquals(rideDb.findRideById(7).get().getGeoPoints(), ride.getGeoPoints());
     }
 

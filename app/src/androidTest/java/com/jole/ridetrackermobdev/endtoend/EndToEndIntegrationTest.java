@@ -99,9 +99,9 @@ public class EndToEndIntegrationTest
         onView(withId(R.id.tvTimeTitle)).check(matches(withText("Time")));
         onView(withId(R.id.tvFragTitelTraining)).check(matches(withText("Record Ride")));
         onView(withId(R.id.tvDistanceTitel)).check(matches(withText("Distance")));
-        onView(withId(R.id.tvDistanceVar)).check(matches(withText("0.0")));
-        onView(withId(R.id.tvElapsedTimeVar)).check(matches(withText("0.0")));
-        onView(withId(R.id.tvAverageSpeedVar)).check(matches(withText("0.0")));
+        onView(withId(R.id.tvDistanceVar)).check(matches(withText("0,0 km")));
+        onView(withId(R.id.tvElapsedTimeVar)).check(matches(withText("0dh, 0dmin, 0dsec")));
+        onView(withId(R.id.tvAverageSpeedVar)).check(matches(withText("0,0 km/h")));
 
         assertFalse(RecordRideService.isRunning);
         onView(withId(R.id.btnStartRecord)).perform(click());
@@ -125,7 +125,7 @@ public class EndToEndIntegrationTest
 
         onView(withId(R.id.tvRideTitelDetail)).check(matches(withText("Wednesday Evening Ride")));
         onView(withId(R.id.tvDateDetail)).check(matches(withText(LocalDate.now().toString())));
-        onView(withId(R.id.tvTimeVar)).check(matches(not(withText("0.0"))));
+        onView(withId(R.id.tvTimeVar)).check(matches(not(withText("0dh, 0dmin, 0dsec"))));
 
         onView(withId(R.id.btnViewMap)).perform(click());
 
@@ -134,7 +134,7 @@ public class EndToEndIntegrationTest
         pressBack();
         onView(withId(R.id.tvRideTitelDetail)).check(matches(withText("Wednesday Evening Ride")));
         onView(withId(R.id.tvDateDetail)).check(matches(withText(LocalDate.now().toString())));
-        onView(withId(R.id.tvTimeVar)).check(matches(not(withText("0.0"))));
+        onView(withId(R.id.tvTimeVar)).check(matches(not(withText("0dh, 0dmin, 0dsec"))));
 
         pressBack();
         onView(ViewMatchers.withId(R.id.recViewAllRides))
@@ -145,9 +145,9 @@ public class EndToEndIntegrationTest
         pressBack();
         onView(withId(R.id.tvFragTitelTraining)).check(matches(withText("Record Ride")));
         onView(withId(R.id.tvDistanceTitel)).check(matches(withText("Distance")));
-        onView(withId(R.id.tvDistanceVar)).check(matches(withText("0.0")));
-        onView(withId(R.id.tvElapsedTimeVar)).check(matches(withText("0.0")));
-        onView(withId(R.id.tvAverageSpeedVar)).check(matches(withText("0.0")));
+        onView(withId(R.id.tvDistanceVar)).check(matches(withText("0,0 km")));
+        onView(withId(R.id.tvElapsedTimeVar)).check(matches(withText("0dh, 0dmin, 0dsec")));
+        onView(withId(R.id.tvAverageSpeedVar)).check(matches(withText("0,0 km/h")));
 
         pressBack();
         onView(withTagValue(is((Object) "mapView"))).check(matches(isDisplayed()));

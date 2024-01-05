@@ -9,6 +9,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
+import com.jole.ridetrackermobdev.controller.Util;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -18,10 +20,12 @@ import org.mockito.MockitoAnnotations;
 import org.osmdroid.util.GeoPoint;
 
 import java.time.LocalDate;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.concurrent.CountDownLatch;
@@ -65,8 +69,7 @@ public class RideRepositoryTest {
         gPoints.add(new GeoPoint(52.46363503504482, 13.489868695841839));
         gPoints.add(new GeoPoint(52.4661139469194, 13.495570882101445));
 
-        ride = new Ride("Wednesday Evening Ride", "This is a Example Ride Description", LocalDate.now().toString(), 60, 25.6, 1.45,
-                "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
+        ride = new Ride("Wednesday Evening Ride", LocalDate.now().toString(), 60, 25.6, 1.45, gPoints);
         ArrayList<Ride> aList = new ArrayList<>();
         aList.add(ride);
         aList.add(ride);

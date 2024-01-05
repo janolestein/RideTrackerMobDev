@@ -4,6 +4,8 @@ package com.jole.ridetrackermobdev.ui;
 import static com.jole.ridetrackermobdev.controller.RecordRideService.isRunning;
 
 
+import static java.lang.Math.round;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,6 +30,7 @@ import com.jole.ridetrackermobdev.R;
 import com.jole.ridetrackermobdev.controller.MainFragmentsViewModel;
 import com.jole.ridetrackermobdev.controller.RecordRideService;
 
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 import dagger.hilt.android.AndroidEntryPoint;
@@ -114,13 +117,14 @@ public class RecordRideFragment extends Fragment
             public void onChanged(double[] doubles)
             {
                 Log.v("ABC", "onChanged");
-                tvDistanceVar.setText(Double.toString(doubles[0]));
-                tvElapsedTimeVar.setText(String.format("%d min, %d sec",
+                tvDistanceVar.setText(String.format(Locale.GERMANY, "%.2f",doubles[0]) + " km");
+                tvElapsedTimeVar.setText(String.format(Locale.GERMANY,"%dh, %dmin, %dsec",
+                        TimeUnit.MILLISECONDS.toHours((long) doubles[1]),
                         TimeUnit.MILLISECONDS.toMinutes((long) doubles[1]),
                         TimeUnit.MILLISECONDS.toSeconds((long) doubles[1]) -
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) doubles[1]))
                 ));
-                tvAverageSpeedVar.setText(Double.toString(doubles[2]));
+                tvAverageSpeedVar.setText(String.format(Locale.GERMANY, "%.2f",doubles[2]) + " km/h");
 
             }
         });

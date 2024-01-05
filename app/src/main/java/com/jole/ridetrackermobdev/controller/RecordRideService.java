@@ -44,9 +44,11 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -212,13 +214,13 @@ public class RecordRideService extends Service
     {
         if(dist == 0 ){
             Toast.makeText(this, "Ride had no distance and will not be saved ", Toast.LENGTH_SHORT).show();
+            rideRepository.setRideServiceUiState(new double[]{0, 0, 0});
         }
         else {
             LocalDate today = LocalDate.now();
             DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG);
-            DayOfWeek dayOfWeek = today.getDayOfWeek();
             String formattedDate = today.format(pattern);
-            rideRepository.addNewRide(new Ride(dayOfWeek + " " + Util.getTimeOfDay() + " Ride", today.toString(), dist, avSpeed, elapsedTime, geoPointList));
+            rideRepository.addNewRide(new Ride(today.getDayOfWeek().getDisplayName(TextStyle.FULL_STANDALONE, Locale.US) + " " + Util.getTimeOfDay() + " Ride", formattedDate, dist, avSpeed, elapsedTime, geoPointList));
             rideRepository.setRideServiceUiState(new double[]{0, 0, 0});
         }
     }

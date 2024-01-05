@@ -87,9 +87,9 @@ public class RecordRideFragmentEspressoTest {
         onView(withId(R.id.tvFragTitelTraining)).check(matches(withText("Record Ride")));
         onView(withId(R.id.tvDistanceTitel)).check(matches(withText("Distance")));
 
-        onView(withId(R.id.tvDistanceVar)).check(matches(withText(Double.toString(345D))));
-        onView(withId(R.id.tvElapsedTimeVar)).check(matches(withText(Double.toString(475698D / 1000D))));
-        onView(withId(R.id.tvAverageSpeedVar)).check(matches(withText(Double.toString(567567D))));
+        onView(withId(R.id.tvDistanceVar)).check(matches(withText("345,00 km")));
+        onView(withId(R.id.tvElapsedTimeVar)).check(matches(withText("0h, 7min, 55sec")));
+        onView(withId(R.id.tvAverageSpeedVar)).check(matches(withText("567567,00 km/h")));
 
         onView(withId(R.id.btnStartRecord)).check(matches(withText("Start")));
         onView(withId(R.id.btnStartRecord)).perform(click());

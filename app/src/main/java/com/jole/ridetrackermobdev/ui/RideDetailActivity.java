@@ -21,7 +21,9 @@ import com.jole.ridetrackermobdev.model.Ride;
 import com.jole.ridetrackermobdev.model.RideRepository;
 import com.jole.ridetrackermobdev.model.RideRepositoryInterface;
 
+import java.util.Locale;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -64,9 +66,14 @@ public class RideDetailActivity extends AppCompatActivity
 
         tvRideTitelDetail.setText(ride.map(Ride::getName).orElse(""));
         tvDateDetail.setText(ride.map(r -> r.getDate()).orElse(""));
-        tvDistanceVarDetail.setText(ride.map(r -> String.format("%.2f", r.getRideLengthKm())).orElse(""));
-        tvAvSpeedVar.setText(ride.map(r -> String.format("%.2f", r.getAverageSpeed())).orElse(""));
-        tvTimeVar.setText(ride.map(r -> String.format("%.2f", r.getTotalRideTime() / 1000)).orElse(""));
+        tvDistanceVarDetail.setText(ride.map(r -> String.format(Locale.GERMANY,"%.2f", r.getRideLengthKm()) + " km").orElse(""));
+        tvAvSpeedVar.setText(ride.map(r -> String.format(Locale.GERMANY,"%.2f", r.getAverageSpeed()) + " km/h").orElse(""));
+        tvTimeVar.setText(ride.map(r -> String.format(Locale.GERMANY,"%dh, %dmin, %dsec",
+                TimeUnit.MILLISECONDS.toHours((long) r.getTotalRideTime()),
+                TimeUnit.MILLISECONDS.toMinutes((long) r.getTotalRideTime()),
+                TimeUnit.MILLISECONDS.toSeconds((long) r.getTotalRideTime()) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long) r.getTotalRideTime()))
+        )).orElse(""));
 
 
         btnViewMap.setOnClickListener(v ->

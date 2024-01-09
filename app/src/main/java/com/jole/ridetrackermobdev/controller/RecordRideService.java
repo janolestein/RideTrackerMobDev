@@ -212,17 +212,11 @@ public class RecordRideService extends Service
      */
     public void saveRide()
     {
-        if(dist == 0 ){
-            Toast.makeText(this, "Ride had no distance and will not be saved ", Toast.LENGTH_SHORT).show();
-            rideRepository.setRideServiceUiState(new double[]{0, 0, 0});
-        }
-        else {
             LocalDate today = LocalDate.now();
             DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG);
             String formattedDate = today.format(pattern);
             rideRepository.addNewRide(new Ride(today.getDayOfWeek().getDisplayName(TextStyle.FULL_STANDALONE, Locale.US) + " " + Util.getTimeOfDay() + " Ride", formattedDate, dist, avSpeed, elapsedTime, geoPointList));
             rideRepository.setRideServiceUiState(new double[]{0, 0, 0});
-        }
     }
 
 

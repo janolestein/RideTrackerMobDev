@@ -16,6 +16,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
 import dagger.hilt.testing.TestInstallIn;
 
+/**
+ * Hilt Module that overwrites the original one to Create a in Memory Database for testing
+ */
 @Module
 @TestInstallIn(
         components = SingletonComponent.class,

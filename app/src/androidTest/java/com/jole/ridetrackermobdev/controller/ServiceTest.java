@@ -55,6 +55,9 @@ import dagger.hilt.components.SingletonComponent;
 @HiltAndroidTest
 public class ServiceTest
 {
+    /**
+     * Hilt Module that overwrites the original One to mock the Repository
+     */
     @Module
     @InstallIn(SingletonComponent.class)
     public class RideRepositoryModuleMock
@@ -88,6 +91,9 @@ public class ServiceTest
     @Inject
     RideRepository repoForMockTest;
 
+    /**
+     * Standard SetUp for Test, opens Mocks and executes the Hilt Rule
+     */
     @Before
     public void setUp(){
         MockitoAnnotations.openMocks(this);
@@ -95,6 +101,9 @@ public class ServiceTest
         Mockito.when(clock.millis()).thenReturn(100000L);
     }
 
+    /**
+     * Tests the Callback of the Service by instantiating the Service as a standard Object and then Calling the Location Callback Method manually
+     */
     @Test
     public void testCallback(){
         RecordRideService service = new RecordRideService((RideRepository) repo);
@@ -138,6 +147,10 @@ public class ServiceTest
 
     }
 
+    /**
+     * Tests if the service starts using the serviceRule and a Boolean Flag in the Service
+     * @throws TimeoutException
+     */
     @Test
     public void testServiceStarts() throws TimeoutException
     {
@@ -150,10 +163,10 @@ public class ServiceTest
     }
 
     /**
+     * THIS DOESN'T WORK AT IS NOT RUN AS A TEST
      * Test Service with LocationProvider in Mock mode
      * @throws TimeoutException
      */
-    @Test
     public void testMockMode() throws TimeoutException
     {
 

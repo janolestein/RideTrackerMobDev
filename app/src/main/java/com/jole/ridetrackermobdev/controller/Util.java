@@ -17,7 +17,6 @@ public class Util {
      */
     public static double distanceBetweenTwoGeoPoints(GeoPoint gp1, GeoPoint gp2)
     {
-
         double lon1 = Math.toRadians(gp1.getLongitude());
         double lon2 = Math.toRadians(gp2.getLongitude());
         double lat1 = Math.toRadians(gp1.getLatitude());
@@ -30,27 +29,28 @@ public class Util {
                 * Math.pow(Math.sin(dlon / 2),2);
 
         double c = 2 * Math.asin(Math.sqrt(a));
-
         double r = 6371;
 
-        // calculate the result
         return(c * r);
     }
 
-
+    /**
+     * Gives back a String with the Time of Day
+     * @return String
+     */
     public static String getTimeOfDay(){
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        if ((hour >= 0 && hour <= 5 ) || hour == 23){
-            return "night";
-        } else if (hour >= 6 && hour <= 10) {
-            return "morning";
-        } else if (hour >= 11 && hour <= 15) {
-            return "noon";
-        } else if (hour >= 16 && hour <= 18) {
-            return "afternoon";
-        } else if (hour >= 19 && hour <= 22) {
-            return "evening";
+        if (hour <= 5 || hour == 23){
+            return "Night";
+        } else if (hour <= 10) {
+            return "Morning";
+        } else if (hour <= 15) {
+            return "Noon";
+        } else if (hour <= 18) {
+            return "Afternoon";
+        } else if (hour <= 22) {
+            return "Evening";
         }
         else {
             return "";

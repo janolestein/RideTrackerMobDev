@@ -29,6 +29,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -37,6 +39,9 @@ import dagger.hilt.android.testing.HiltAndroidTest;
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule;
 
+/**
+ * Tests the Database directly against the DaoInterface
+ */
 @HiltAndroidTest
 public class DaoTest {
     @Rule
@@ -50,6 +55,7 @@ public class DaoTest {
     RideDatabase rideDatabaseLiteral;
     List<GeoPoint> gPoints;
     Ride ride;
+    private CountDownLatch lock = new CountDownLatch(4);
 
 
     @Before
@@ -75,6 +81,9 @@ public class DaoTest {
 
     }
 
+    /**
+     * Tests the Insert and findById Methods of the Dao Interface
+     */
     @Test
     public void testInsertAndFind() {
 
@@ -87,6 +96,9 @@ public class DaoTest {
         assertEquals(rideDb.findRideById(1).get().getGeoPoints(), ride.getGeoPoints());
     }
 
+    /**
+     * Tests Multiple Inserts in Succession
+     */
     @Test
     public void testMultipleInsert() {
 
@@ -106,12 +118,18 @@ public class DaoTest {
         assertEquals(rideDb.findRideById(7).get().getGeoPoints(), ride.getGeoPoints());
     }
 
+    /**
+     * Tests if the Database throws a Exception if a Id is Searched that doesn't exist
+     */
     @Test
     public void testNullFind() {
 
         assertThrows(NoSuchElementException.class, () -> rideDb.findRideById(500).get());
     }
 
+    /**
+     * Tests the Delete Method of the DaoInterface
+     */
     @Test
     public void testDelete() {
         rideDb.addNewRide(ride);
@@ -121,7 +139,10 @@ public class DaoTest {
         assertThrows(NoSuchElementException.class, () -> rideDb.findRideById(1).get());
     }
 
-
+    /**
+     * Tests the getAllRides Method of the Interface
+     * @throws InterruptedException
+     */
     @Test
     public void testGetAll() throws InterruptedException
     {
@@ -146,28 +167,8 @@ public class DaoTest {
             }
         });
 
-        Thread t = new Thread(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                try
-                {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e)
-                {
-                    throw new RuntimeException(e);
-                }
-            }
-        });
-        t.start();
-        try
-        {
-            t.join();
-        } catch (InterruptedException e)
-        {
-            throw new RuntimeException(e);
-        }
+        lock.countDown();
+        lock.await(5000, TimeUnit.MILLISECONDS);
 
         assertEquals(7, tempList.size());
 

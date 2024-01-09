@@ -1,18 +1,29 @@
 package com.jole.ridetrackermobdev.ui;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+
+
+import com.jole.ridetrackermobdev.R;
 
 import org.osmdroid.tileprovider.tilesource.ITileSource;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -30,7 +41,7 @@ import org.osmdroid.views.overlay.mylocation.MyLocationNewOverlay;
 /**
  * Fragment that uses OSMDroid to show a Map with current Location, first screen of the App on startup
  */
-public class MapCurrentFragment extends Fragment
+public class MapCurrentFragment extends Fragment implements LocationListener
 {
     private static final String PREFS_NAME = "org.andnav.osm.prefs";
     private static final String PREFS_TILE_SOURCE = "tilesource";
@@ -38,10 +49,9 @@ public class MapCurrentFragment extends Fragment
     private static final String PREFS_LONGITUDE_STRING = "longitudeString";
     private static final String PREFS_ORIENTATION = "orientation";
     private static final String PREFS_ZOOM_LEVEL_DOUBLE = "zoomLevelDouble";
-
     private static final int MENU_ABOUT = Menu.FIRST + 1;
     private static final int MENU_LAST_ID = MENU_ABOUT + 1; // Always set to last unused id
-
+    private LocationManager lm;
     // ===========================================================
     // Fields
     // ===========================================================
@@ -53,41 +63,49 @@ public class MapCurrentFragment extends Fragment
     private ScaleBarOverlay mScaleBarOverlay;
     private RotationGestureOverlay mRotationGestureOverlay;
     private CopyrightOverlay mCopyrightOverlay;
+    private ImageButton btCenterMap;
+    private Location currentLocation = null;
 
-    public static MapCurrentFragment newInstance() {
+    public static MapCurrentFragment newInstance()
+    {
         return new MapCurrentFragment();
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
     }
 
     /**
      * Creates the Map to display
-     * @param inflater The LayoutInflater object that can be used to inflate
-     * any views in the fragment,
-     * @param container If non-null, this is the parent view that the fragment's
-     * UI should be attached to.  The fragment should not add the view itself,
-     * but this can be used to generate the LayoutParams of the view.
-     * @param savedInstanceState If non-null, this fragment is being re-constructed
-     * from a previous saved state as given here.
      *
+     * @param inflater           The LayoutInflater object that can be used to inflate
+     *                           any views in the fragment,
+     * @param container          If non-null, this is the parent view that the fragment's
+     *                           UI should be attached to.  The fragment should not add the view itself,
+     *                           but this can be used to generate the LayoutParams of the view.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     *                           from a previous saved state as given here.
      * @return
      */
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mMapView = new MapView(inflater.getContext());
-        mMapView.setDestroyMode(false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+    {
+        View v = inflater.inflate(R.layout.fragment_map_current, null);
+        mMapView = v.findViewById(R.id.mapview);
         mMapView.setTag("mapView");
-        return mMapView;
+
+        return v;
+
     }
 
     /**
      * Adds the Overlays on the Map
-     * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     *
+     * @param view               The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
      * @param savedInstanceState If non-null, this fragment is being re-constructed
-     * from a previous saved state as given here.
+     *                           from a previous saved state as given here.
      */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState)
@@ -99,13 +117,14 @@ public class MapCurrentFragment extends Fragment
 
         mPrefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
-        mLocationOverlay = new MyLocationNewOverlay(new GpsMyLocationProvider(context), mMapView);
+        GpsMyLocationProvider gpsProvider = new GpsMyLocationProvider(context);
+
+        mLocationOverlay = new MyLocationNewOverlay(gpsProvider, mMapView);
         mLocationOverlay.enableMyLocation();
         mMapView.getOverlays().add(this.mLocationOverlay);
 
         //On screen compass
-        mCompassOverlay = new CompassOverlay(context, new InternalCompassOrientationProvider(context),
-                mMapView);
+        mCompassOverlay = new CompassOverlay(context, new InternalCompassOrientationProvider(context), mMapView);
         mCompassOverlay.enableCompass();
         mMapView.getOverlays().add(this.mCompassOverlay);
 
@@ -115,6 +134,24 @@ public class MapCurrentFragment extends Fragment
         mScaleBarOverlay.setScaleBarOffset(dm.widthPixels / 2, 10);
         mMapView.getOverlays().add(this.mScaleBarOverlay);
 
+
+        btCenterMap = view.findViewById(R.id.ic_center_map);
+
+        btCenterMap.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Log.v("ABC", "onClick");
+                if (currentLocation != null)
+                {
+                    mMapView.getController().zoomTo(15);
+                    Log.v("ABC", "onClickIF");
+                    GeoPoint myPosition = new GeoPoint(currentLocation.getLatitude(), currentLocation.getLongitude());
+                    mMapView.getController().animateTo(myPosition);
+                }
+            }
+        });
 
 
         //needed for pinch zooms
@@ -139,7 +176,14 @@ public class MapCurrentFragment extends Fragment
      * Saves current State of the Map on Pause
      */
     @Override
-    public void onPause() {
+    public void onPause()
+    {
+        try
+        {
+            lm.removeUpdates(this);
+        } catch (Exception ex)
+        {
+        }
         //save the current location
         final SharedPreferences.Editor edit = mPrefs.edit();
         edit.putString(PREFS_TILE_SOURCE, mMapView.getTileProvider().getTileSource().name());
@@ -154,7 +198,14 @@ public class MapCurrentFragment extends Fragment
     }
 
     @Override
-    public void onDestroyView() {
+    public void onLocationChanged(Location location)
+    {
+        currentLocation = location;
+    }
+
+    @Override
+    public void onDestroyView()
+    {
         super.onDestroyView();
         //this part terminates all of the overlays and background threads for osmdroid
         //only needed when you programmatically create the map
@@ -166,14 +217,35 @@ public class MapCurrentFragment extends Fragment
      * Reloads current state of the map if one is saved
      */
     @Override
-    public void onResume() {
+    public void onResume()
+    {
         super.onResume();
-        final String tileSourceName = mPrefs.getString(PREFS_TILE_SOURCE,
-                TileSourceFactory.DEFAULT_TILE_SOURCE.name());
-        try {
+        lm = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+        try
+        {
+            //this fails on AVD 19s, even with the appcompat check, says no provided named gps is available
+            if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED)
+            {
+                lm.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0l, 0f, this);
+            }
+
+        } catch (Exception ex)
+        {
+        }
+
+        try
+        {
+            lm.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0l, 0f, this);
+        } catch (Exception ex)
+        {
+        }
+        final String tileSourceName = mPrefs.getString(PREFS_TILE_SOURCE, TileSourceFactory.DEFAULT_TILE_SOURCE.name());
+        try
+        {
             final ITileSource tileSource = TileSourceFactory.getTileSource(tileSourceName);
             mMapView.setTileSource(tileSource);
-        } catch (final IllegalArgumentException e) {
+        } catch (final IllegalArgumentException e)
+        {
             mMapView.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE);
         }
 

@@ -34,6 +34,7 @@ import org.mockito.Mockito;
 import org.osmdroid.util.GeoPoint;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -119,15 +120,15 @@ public class TrackedRidesFragmentEspressoTest {
     public void testRecyclerViewPosition() throws InterruptedException
     {
         onView(withId(R.id.recViewAllRides)).perform(RecyclerViewActions.actionOnItemAtPosition(7, click()));
-        onView(withId(R.id.tvRideTitelDetail)).check(matches(withText("Test8")));
-        pressBack();
-        onView(withId(R.id.recViewAllRides));
-        onView(withId(R.id.recViewAllRides)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withId(R.id.tvRideTitelDetail)).check(matches(withText("Test1")));
         pressBack();
         onView(withId(R.id.recViewAllRides));
+        onView(withId(R.id.recViewAllRides)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        onView(withId(R.id.tvRideTitelDetail)).check(matches(withText("Test8")));
+        pressBack();
+        onView(withId(R.id.recViewAllRides));
         onView(withId(R.id.recViewAllRides)).perform(RecyclerViewActions.actionOnItemAtPosition(3, click()));
-        onView(withId(R.id.tvRideTitelDetail)).check(matches(withText("Test4")));
+        onView(withId(R.id.tvRideTitelDetail)).check(matches(withText("Test5")));
         pressBack();
         onView(withId(R.id.recViewAllRides));
     }
@@ -136,7 +137,7 @@ public class TrackedRidesFragmentEspressoTest {
     public void testDifferentHolders(){
         onView(ViewMatchers.withId(R.id.recViewAllRides))
                 .perform(RecyclerViewActions.scrollTo(
-                        hasDescendant(withText("Test3"))
+                        hasDescendant(withText("Test6"))
                 ));
         onView(ViewMatchers.withId(R.id.recViewAllRides))
                 .perform(RecyclerViewActions.scrollTo(
@@ -144,7 +145,7 @@ public class TrackedRidesFragmentEspressoTest {
                 ));
         onView(ViewMatchers.withId(R.id.recViewAllRides))
                 .perform(RecyclerViewActions.scrollTo(
-                        hasDescendant(withText("Test8"))
+                        hasDescendant(withText("Test1"))
                 ));
     }
 

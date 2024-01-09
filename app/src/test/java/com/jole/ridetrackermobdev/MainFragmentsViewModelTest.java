@@ -63,8 +63,7 @@ public class MainFragmentsViewModelTest
         gPoints.add(new GeoPoint(52.46363503504482, 13.489868695841839));
         gPoints.add(new GeoPoint(52.4661139469194, 13.495570882101445));
 
-        ride = new Ride("Wednesday Evening Ride", "This is a Example Ride Description", LocalDate.now().toString(), 60, 25.6, 1.45,
-                "https://static-maps.alltrails.com/production/at-map/132570830/v1-trail-england-northumberland-holy-island-bicycle-ride-at-map-132570830-1689185982-327w203h-en-US-i-2-style_3.png", gPoints);
+        ride = new Ride("Wednesday Evening Ride", LocalDate.now().toString(), 60, 25.6, 1.45, gPoints);
 
         rideServiceUiState = new MutableLiveData<double[]>(new double[]{3453, 56756, 2342342});
         ArrayList<Ride> aList = new ArrayList<>();

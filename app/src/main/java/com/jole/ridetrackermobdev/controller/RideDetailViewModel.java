@@ -35,4 +35,10 @@ public class RideDetailViewModel extends ViewModel implements DetailViewModelInt
     {
         return rideRepository.findRideById(id);
     }
+
+    @Override
+    public void deleteRide(Ride ride)
+    {
+        rideRepository.removeRide(ride);
+    }
 }

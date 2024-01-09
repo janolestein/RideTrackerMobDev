@@ -16,6 +16,9 @@ import dagger.hilt.android.qualifiers.ApplicationContext;
 import dagger.hilt.components.SingletonComponent;
 import dagger.hilt.testing.TestInstallIn;
 
+/**
+ * Hilt Module for the FusedLocationProvider that overwrites the original one for testing
+ */
 @Module
 @TestInstallIn(
         components = SingletonComponent.class,

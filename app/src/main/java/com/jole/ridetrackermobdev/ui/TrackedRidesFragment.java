@@ -18,6 +18,7 @@ import com.jole.ridetrackermobdev.model.DaoInterface;
 import com.jole.ridetrackermobdev.model.Ride;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -66,6 +67,7 @@ public class TrackedRidesFragment extends Fragment
             @Override
             public void onChanged(List<Ride> rides)
             {
+                Collections.reverse(rides);
                 adapter.setRides(rides);
             }
         });

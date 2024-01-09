@@ -43,6 +43,7 @@ public class DaoModule
                 context,
                 RideDatabase.class,
                 "rideDb")
+                .fallbackToDestructiveMigration()
                 .build();
 
     }

@@ -10,6 +10,9 @@ import dagger.hilt.android.components.ServiceComponent;
 import dagger.hilt.components.SingletonComponent;
 import dagger.hilt.testing.TestInstallIn;
 
+/**
+ * Hilt Module for the Location Request that overwrites the original one for testing
+ */
 @Module
 @TestInstallIn(
         components = ServiceComponent.class,

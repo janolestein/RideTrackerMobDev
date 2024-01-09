@@ -1,11 +1,17 @@
 package com.jole.ridetrackermobdev.ui;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -37,7 +43,7 @@ public class RideDetailActivity extends AppCompatActivity
 {
     private ImageView ivRideScrennshotDetail;
     private TextView tvRideTitelDetail, tvDateDetail, tvDescDetail, tvDistanceTitelDetail, tvAvSpeedDetailTitel, tvTimeVar, tvTimeTitel, tvDistanceVarDetail, tvAvSpeedVar;
-    private Button btnViewMap;
+    private Button btnViewMap, btnDelete;
     private int rideId;
     private RideDetailViewModel rideDetailViewModel;
 
@@ -81,8 +87,31 @@ public class RideDetailActivity extends AppCompatActivity
             Intent intent = new Intent(RideDetailActivity.this, TrackedRideMapActivity.class);
             intent.putExtra("rideId", rideId);
             startActivity(intent);
-
         });
+
+        btnDelete.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                AlertDialog.Builder builder = new AlertDialog.Builder(RideDetailActivity.this);
+                builder.setMessage("Do you really want to delete this Ride?").setTitle("Delete");
+                builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        ride.ifPresent(value -> rideDetailViewModel.deleteRide(value));
+                        RideDetailActivity.this.finish();
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                    }
+                });
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
 
 
     }
@@ -99,6 +128,8 @@ public class RideDetailActivity extends AppCompatActivity
         tvDistanceVarDetail = findViewById(R.id.tvDistanceVarDetail);
         tvAvSpeedVar = findViewById(R.id.tvAvSpeedVar);
         btnViewMap = findViewById(R.id.btnViewMap);
+        btnDelete = findViewById(R.id.btnDelete);
 
     }
+
 }

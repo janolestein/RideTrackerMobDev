@@ -27,6 +27,7 @@ import androidx.test.rule.GrantPermissionRule;
 
 import com.jole.ridetrackermobdev.R;
 import com.jole.ridetrackermobdev.controller.RecordRideService;
+import com.jole.ridetrackermobdev.controller.Util;
 import com.jole.ridetrackermobdev.hilt.RideRepositoryModule;
 import com.jole.ridetrackermobdev.model.DaoInterface;
 import com.jole.ridetrackermobdev.model.Ride;
@@ -41,8 +42,12 @@ import org.mockito.Mockito;
 import org.osmdroid.util.GeoPoint;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.time.format.TextStyle;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -79,14 +84,26 @@ public class EndToEndIntegrationTest
     @Rule(order = 3)
     public GrantPermissionRule permissionRule2 = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
+    String formattedDate;
+    String title;
+
     private CountDownLatch lock = new CountDownLatch(4);
     @Before
     public void setUp() throws InterruptedException
     {
         hiltRule.inject();
 
+        LocalDate today = LocalDate.now();
+        DateTimeFormatter pattern = DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG);
+        formattedDate = today.format(pattern);
+        title = today.getDayOfWeek().getDisplayName(TextStyle.FULL_STANDALONE, Locale.US) + " " + Util.getTimeOfDay() + " Ride";
+
     }
 
+    /**
+     * Runs trough the complete App and tests if all parts are working together Correctly
+     * @throws InterruptedException
+     */
     @Test
     public void integrationTest() throws InterruptedException
     {
@@ -99,9 +116,9 @@ public class EndToEndIntegrationTest
         onView(withId(R.id.tvTimeTitle)).check(matches(withText("Time")));
         onView(withId(R.id.tvFragTitelTraining)).check(matches(withText("Record Ride")));
         onView(withId(R.id.tvDistanceTitel)).check(matches(withText("Distance")));
-        onView(withId(R.id.tvDistanceVar)).check(matches(withText("0,0 km")));
-        onView(withId(R.id.tvElapsedTimeVar)).check(matches(withText("0dh, 0dmin, 0dsec")));
-        onView(withId(R.id.tvAverageSpeedVar)).check(matches(withText("0,0 km/h")));
+        onView(withId(R.id.tvDistanceVar)).check(matches(withText("0,00 km")));
+        onView(withId(R.id.tvElapsedTimeVar)).check(matches(withText("0h, 0min, 0sec")));
+        onView(withId(R.id.tvAverageSpeedVar)).check(matches(withText("0,00 km/h")));
 
         assertFalse(RecordRideService.isRunning);
         onView(withId(R.id.btnStartRecord)).perform(click());
@@ -113,41 +130,41 @@ public class EndToEndIntegrationTest
         onView(withId(R.id.tvElapsedTimeVar)).check(matches(not((withText("0.0")))));
         onView(withId(R.id.btnStopRecord)).perform(click());
         assertFalse(RecordRideService.isRunning);
-        onView(withId(R.id.tvDistanceVar)).check(matches(withText("0.0")));
+        onView(withId(R.id.tvDistanceVar)).check(matches(withText("0,00 km")));
 
         onView(withId(R.id.nav_rides)).perform(click());
         onView(ViewMatchers.withId(R.id.recViewAllRides))
                 .perform(RecyclerViewActions.scrollTo(
-                        hasDescendant(withText(LocalDate.now().toString()))
+                        hasDescendant(withText(formattedDate))
                 ));
 
         onView(withId(R.id.recViewAllRides)).perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
 
-        onView(withId(R.id.tvRideTitelDetail)).check(matches(withText("Wednesday Evening Ride")));
-        onView(withId(R.id.tvDateDetail)).check(matches(withText(LocalDate.now().toString())));
-        onView(withId(R.id.tvTimeVar)).check(matches(not(withText("0dh, 0dmin, 0dsec"))));
+        onView(withId(R.id.tvRideTitelDetail)).check(matches(withText(title)));
+        onView(withId(R.id.tvDateDetail)).check(matches(withText(formattedDate)));
+        onView(withId(R.id.tvTimeVar)).check(matches(not(withText("0h, 0min, 0sec"))));
 
         onView(withId(R.id.btnViewMap)).perform(click());
 
         onView(withTagValue(is((Object) "mapView"))).check(matches(isDisplayed()));
         //Starts checking in reverse
         pressBack();
-        onView(withId(R.id.tvRideTitelDetail)).check(matches(withText("Wednesday Evening Ride")));
-        onView(withId(R.id.tvDateDetail)).check(matches(withText(LocalDate.now().toString())));
-        onView(withId(R.id.tvTimeVar)).check(matches(not(withText("0dh, 0dmin, 0dsec"))));
+        onView(withId(R.id.tvRideTitelDetail)).check(matches(withText(title)));
+        onView(withId(R.id.tvDateDetail)).check(matches(withText(formattedDate)));
+        onView(withId(R.id.tvTimeVar)).check(matches(not(withText("0dh, 0min, 0sec"))));
 
         pressBack();
         onView(ViewMatchers.withId(R.id.recViewAllRides))
                 .perform(RecyclerViewActions.scrollTo(
-                        hasDescendant(withText(LocalDate.now().toString()))
+                        hasDescendant(withText(formattedDate))
                 ));
 
         pressBack();
         onView(withId(R.id.tvFragTitelTraining)).check(matches(withText("Record Ride")));
         onView(withId(R.id.tvDistanceTitel)).check(matches(withText("Distance")));
-        onView(withId(R.id.tvDistanceVar)).check(matches(withText("0,0 km")));
-        onView(withId(R.id.tvElapsedTimeVar)).check(matches(withText("0dh, 0dmin, 0dsec")));
-        onView(withId(R.id.tvAverageSpeedVar)).check(matches(withText("0,0 km/h")));
+        onView(withId(R.id.tvDistanceVar)).check(matches(withText("0,00 km")));
+        onView(withId(R.id.tvElapsedTimeVar)).check(matches(withText("0h, 0min, 0sec")));
+        onView(withId(R.id.tvAverageSpeedVar)).check(matches(withText("0,00 km/h")));
 
         pressBack();
         onView(withTagValue(is((Object) "mapView"))).check(matches(isDisplayed()));

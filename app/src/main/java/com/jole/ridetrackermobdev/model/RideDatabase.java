@@ -8,7 +8,7 @@ import androidx.room.TypeConverters;
  * Database Class that describes a Room Database
  * extends RoomDatabase
  */
-@Database(entities = {Ride.class}, version = 1)
+@Database(entities = {Ride.class}, version = 2)
 @TypeConverters({Converters.class})
 public abstract class RideDatabase extends RoomDatabase
 {

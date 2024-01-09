@@ -1,3 +1,5 @@
+
+
 plugins {
     id("com.android.application")
     id ("com.google.dagger.hilt.android")
@@ -70,7 +72,8 @@ dependencies {
     androidTestImplementation ("androidx.test.espresso:espresso-contrib:3.5.1")
     androidTestImplementation ("org.hamcrest:hamcrest:2.2")
 
-
 }
 
+tasks.withType<Javadoc> {
 
+}

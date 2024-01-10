@@ -67,6 +67,7 @@ public class MainActivityEspressoTest {
     @Rule
     public InstantTaskExecutorRule instantTaskExecutorRule =
             new InstantTaskExecutorRule();
+
     List<Ride> rideList;
     List<GeoPoint> gPoints;
     @Inject
@@ -81,7 +82,8 @@ public class MainActivityEspressoTest {
     public GrantPermissionRule permissionRule1 = GrantPermissionRule.grant(Manifest.permission.ACCESS_FINE_LOCATION);
     @Rule
     public GrantPermissionRule permissionRule2 = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE);
-
+    @Rule
+    public GrantPermissionRule permissionRule3 = GrantPermissionRule.grant(Manifest.permission.POST_NOTIFICATIONS);
     @Before
     public void setUp() throws InterruptedException
     {

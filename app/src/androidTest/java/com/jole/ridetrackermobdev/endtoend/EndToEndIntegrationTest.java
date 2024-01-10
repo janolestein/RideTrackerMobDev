@@ -75,7 +75,7 @@ public class EndToEndIntegrationTest
     public InstantTaskExecutorRule instantTaskExecutorRule =
             new InstantTaskExecutorRule();
 
-    @Rule(order = 4)
+    @Rule(order = 5)
     public ActivityScenarioRule<MainActivity> activityRule =
             new ActivityScenarioRule<>(MainActivity.class);
 
@@ -83,6 +83,8 @@ public class EndToEndIntegrationTest
     public GrantPermissionRule permissionRule1 = GrantPermissionRule.grant(Manifest.permission.ACCESS_FINE_LOCATION);
     @Rule(order = 3)
     public GrantPermissionRule permissionRule2 = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+    @Rule(order = 4)
+    public GrantPermissionRule permissionRule3 = GrantPermissionRule.grant(Manifest.permission.POST_NOTIFICATIONS);
 
     String formattedDate;
     String title;

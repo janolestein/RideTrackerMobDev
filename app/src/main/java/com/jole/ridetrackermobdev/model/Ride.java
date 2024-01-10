@@ -15,13 +15,34 @@ import java.util.List;
  */
 @Entity
 public class Ride {
+    /**
+     * Id as Integer, not used in the Constructor only set by the Rooms Database
+     */
     @PrimaryKey(autoGenerate = true)
     private int id;
+    /**
+     * The Name or Titel of the Ride as a String
+     */
     private String name;
+    /**
+     * Date of the Ride as a String
+     */
     private String date;
+    /**
+     * Total length of the Ride as a Double
+     */
     private double rideLengthKm;
+    /**
+     * Average Speed of the Ride as a Double
+     */
     private double averageSpeed;
+    /**
+     * Total Time of the Ride as a Double
+     */
     private double totalRideTime;
+    /**
+     * List of GeoPoints that got recorded during the Ride
+     */
     @TypeConverters({Converters.class})
     private List<GeoPoint> geoPoints;
 

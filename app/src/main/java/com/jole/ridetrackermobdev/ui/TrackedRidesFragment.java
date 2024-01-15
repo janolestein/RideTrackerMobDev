@@ -67,7 +67,6 @@ public class TrackedRidesFragment extends Fragment
             @Override
             public void onChanged(List<Ride> rides)
             {
-                Collections.reverse(rides);
                 adapter.setRides(rides);
             }
         });

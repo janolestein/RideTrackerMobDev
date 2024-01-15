@@ -34,7 +34,7 @@ public interface DaoInterface
      * Gets a List of all Ride Objects in the Database
      * @return List of all Rides as LiveData<List>
      */
-    @Query("SELECT * FROM Ride")
+    @Query("SELECT * FROM Ride ORDER BY id DESC")
     LiveData<List<Ride>> getAllRidesList();
 
     /**

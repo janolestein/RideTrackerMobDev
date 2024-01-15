@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.jole.ridetrackermobdev"},{"l":"com.jole.ridetrackermobdev.controller"},{"l":"com.jole.ridetrackermobdev.endtoend"},{"l":"com.jole.ridetrackermobdev.hilt"},{"l":"com.jole.ridetrackermobdev.model"},{"l":"com.jole.ridetrackermobdev.ui"}];updateSearchResults();

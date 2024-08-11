@@ -1,9 +1,12 @@
 # TrackMyRide
 
-### Android App for my Mobile Development Course
+This an Android Ride Tracker App to record Distance based Workouts using GPS.
+It also uses OSMDroid as a Map Service.
 
-### JavaDoc is included in the Project files
+Thoroughly tested with unit and integration Tests using Mockito and Espresso. 
+Build with the MVVM Pattern und the Rooms Database API.
 
-### Small Problem for the Tests: 
-Running the instrumented Tests may require you to manually accept Notfication Permissions in the Emulator. I couldnt figure out why and when the Tests automaticly fail if i handle the Permission with a Test Rule. 
-It does it on some of my Computers but not all even with the same emulated Devices.
+## UI Screenshots
+![First Map UI](example-pics/Screenshot_20240811_175318_RideTrackerMobDev.jpg)
+![First Map UI](example-pics/Screenshot_20240811_175324_RideTrackerMobDev.jpg)
+![First Map UI](example-pics/Screenshot_20240811_175328_RideTrackerMobDev.jpg)

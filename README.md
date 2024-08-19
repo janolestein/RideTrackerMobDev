@@ -1,5 +1,3 @@
-# TrackMyRide
-
 This an Android Ride Tracker App to record Distance based Workouts using GPS.
 It also uses OSMDroid as a Map Service.
 
